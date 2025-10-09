@@ -6,12 +6,12 @@ using UnityEngine;
 public class UnitDetectionComponent : EntityComponent
 {
     [SerializeField] private LayerMask layerMask;
-    public Unit ClosestEnemy { get; private set; }
+    public UnitEntity ClosestEnemy { get; private set; }
     
     private Entity _entity;
     private float _detectionRadius;
 
-    private Stack<Unit> _potentialTargets;
+    private Stack<UnitEntity> _potentialTargets;
     private Collider[] _cachedHitsColliders;
     
     private Coroutine _getClosestUnitCoroutine;
@@ -20,7 +20,7 @@ public class UnitDetectionComponent : EntityComponent
     {
         _entity = entity;
         _cachedHitsColliders = new Collider[100];
-        _potentialTargets = new Stack<Unit>(20);
+        _potentialTargets = new Stack<UnitEntity>(20);
         
         _getClosestUnitCoroutine = StartCoroutine(GetClosestUnitCoroutine());
     }
@@ -38,12 +38,12 @@ public class UnitDetectionComponent : EntityComponent
             yield return new WaitForSeconds(0.3f);
             
             int spottedCount = Physics.OverlapSphereNonAlloc(transform.position, _detectionRadius, _cachedHitsColliders, layerMask);
-            Unit closest = null;
+            UnitEntity closest = null;
             float minDist = float.MaxValue;
 
             for (var i = 0; i < spottedCount; i++)
             {
-                var entity = _cachedHitsColliders[i].GetComponent<Unit>();
+                var entity = _cachedHitsColliders[i].GetComponent<UnitEntity>();
 
                 if (entity == null)
                 {

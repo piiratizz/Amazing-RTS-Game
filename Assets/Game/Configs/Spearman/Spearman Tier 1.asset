@@ -17,7 +17,7 @@ MonoBehaviour:
     1"
   Health: 100
   DetectionRadius: 7
-  EntityType: 0
+  EntityType: 1
   ActiveClothParts:
   - WK_Units_Arms_A
   - WK_Units_Body_C

@@ -24,6 +24,10 @@ public class UnitMovementComponent : EntityComponent, IMoveable
     {
         if(_unitAnimation == null) return;
         
+        if(!navMeshAgent.enabled) return;
+        
+        if(navMeshAgent.isStopped) return;
+        
         if (transform.position != navMeshAgent.destination)
         {
             _unitAnimation.SetMove(true);
@@ -45,7 +49,17 @@ public class UnitMovementComponent : EntityComponent, IMoveable
     {
         if (navMeshAgent.enabled)
         {
+            navMeshAgent.isStopped = false;
             navMeshAgent.destination = position;
+        }
+    }
+
+    public void StopMoving()
+    {
+        if (navMeshAgent.enabled)
+        {
+            navMeshAgent.isStopped = true;
+            _unitAnimation.SetMove(false);
         }
     }
 

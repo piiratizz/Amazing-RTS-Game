@@ -21,17 +21,26 @@ public class UnitStateComponent : EntityComponent
     {
         UnitState previousState = CurrentState;
         
-        if (_healthComponent.IsDead)
+        if (_attackComponent != null)
         {
-            CurrentState = UnitState.Dead;
+            if (_healthComponent.IsDead)
+            {
+                CurrentState = UnitState.Dead;
+            }
         }
-        else if (_attackComponent.IsAttacking)
+        else if (_attackComponent != null)
         {
-            CurrentState = UnitState.Attack;
+            if(_attackComponent.IsAttacking)
+            {
+                CurrentState = UnitState.Attack;
+            }
         }
-        else if (_unitMovementComponent.IsMoving())
+        else if (_unitMovementComponent != null)
         {
-            CurrentState = UnitState.Move;
+            if (_unitMovementComponent.IsMoving())
+            {
+                CurrentState = UnitState.Move;
+            }
         }
         else
         {

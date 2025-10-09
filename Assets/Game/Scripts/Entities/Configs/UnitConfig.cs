@@ -19,4 +19,8 @@ public class UnitConfig : EntityConfig
     public int Armor;
     public DamageType DamageType;
     public DamageResist[] DamageResists;
+
+    [Header("Resources")]
+    public float GatherRatePerSecond;
+    public int LiftingCapacity;
 }

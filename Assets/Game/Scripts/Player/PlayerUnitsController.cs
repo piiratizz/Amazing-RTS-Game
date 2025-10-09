@@ -1,26 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerUnitsController : MonoBehaviour
 {
     [SerializeField] private Player player;
     [SerializeField] private float formationSpacing = 1f;
-    private List<ISelectable> _selectedObjects = new();
-    private List<Unit> _unitsInFormation = new();
+    private List<Entity> _selectedEntities = new();
+    private readonly List<UnitEntity> _unitsInFormation = new();
     
-    public void SetSelectedUnits(List<ISelectable> units)
+    public void SetSelectedUnits(List<Entity> units)
     {
-        _selectedObjects = units;
+        _selectedEntities = units;
+        
         _unitsInFormation.Clear();
         
-        foreach (var selectedObject in _selectedObjects)
+        foreach (var selectedObject in _selectedEntities)
         {
-            if (selectedObject.SelectedObject().TryGetComponent<Unit>(out var unit))
+            if (selectedObject.SelectedObject().TryGetComponent<UnitEntity>(out var unit))
             { 
                 if (player.OwnerId == unit.OwnerId)
                 {
                     _unitsInFormation.Add(unit);
-                    unit.OnSelect(player);
                 }
             }
         }
@@ -30,16 +31,27 @@ public class PlayerUnitsController : MonoBehaviour
     {
         if (hit.collider.TryGetComponent(out Entity entity))
         {
-            if (entity.OwnerId != player.OwnerId)
+            if (entity is UnitEntity unit)
             {
-                SendAttackCommand(entity);
-                return;
+                if (entity.OwnerId != player.OwnerId)
+                {
+                    SendAttackCommand(entity);
+                    return;
+                }
             }
+            else
+            {
+                if (entity is ResourceEntity resource)
+                {
+                    SendGatherCommand(resource);
+                    return;
+                }
+            }
+
         }
         
         MoveSelectedUnitsInSquareFormation(hit.point);
     }
-    
     
     private void MoveSelectedUnitsInSquareFormation(Vector3 center)
     {
@@ -76,13 +88,28 @@ public class PlayerUnitsController : MonoBehaviour
                 
                 var dispatcher = _unitsInFormation[i].GetEntityComponent<UnitCommandDispatcher>();
                 
-                var stateComponent = _unitsInFormation[i].GetEntityComponent<UnitStateComponent>();
-
-
                 var args = new MoveArgs() { Position = targetPos };
                 dispatcher?.ExecuteCommand(UnitCommandsType.Move, args);
                 
                 i++;
+            }
+        }
+    }
+
+    private void SendGatherCommand(Entity resource)
+    {
+        foreach (var unit in _unitsInFormation)
+        {
+            if(!unit.IsAvailableToSelect || unit == null) 
+                continue;
+            
+            var component = unit.GetEntityComponent<UnitCommandDispatcher>();
+            if (component != null)
+            {
+                component.ExecuteCommand(
+                    UnitCommandsType.ResourceGather,
+                    new ResourceGatherArgs() { Resource = resource }
+                );
             }
         }
     }

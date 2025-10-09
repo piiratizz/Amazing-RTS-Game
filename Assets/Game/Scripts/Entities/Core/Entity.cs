@@ -1,25 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class Entity : MonoBehaviour, IOwned, ISelectable
+public class Entity : MonoBehaviour, IOwned
 {
     [SerializeField] private int ownerId;
     [SerializeField] private GameObject selectionOutlineObject;
-    [SerializeField] private List<EntityComponent> unitComponents;
+    [SerializeField] private List<EntityComponent> entityComponents;
     [SerializeField] private EntityConfig entityConfig;
     
-    public IReadOnlyList<EntityComponent> UnitComponents => unitComponents;
+    protected EntityConfig Config => entityConfig;
+    
+    public IReadOnlyList<EntityComponent> EntityComponents => entityComponents;
     public EntityType EntityType => entityConfig.EntityType;
     public string DisplayName => entityConfig.DisplayName;
     public Sprite Icon => entityConfig.Icon;
-    
+
+    public Action<Entity> OnEntityDestroyed { get; set; }
     public int OwnerId { get => ownerId; set => ownerId = value; }
 
     public bool IsAvailableToSelect { get; set; } = true;
     
     public virtual void Start()
     {
-        foreach (var comp in unitComponents)
+        foreach (var comp in entityComponents)
         {
             comp.Init(this);
             comp.InitializeFields(entityConfig);
@@ -28,23 +33,25 @@ public class Entity : MonoBehaviour, IOwned, ISelectable
 
     private void Update()
     {
-        foreach (var comp in unitComponents)
+        foreach (var comp in entityComponents)
         {
             comp.OnUpdate();
         }
     }
     
-    public void OnSelect(Player selecter)
+    public void OnSelect()
     {
-        if (selecter.OwnerId == OwnerId)
-        {
-            selectionOutlineObject.SetActive(true);
-        }
+        selectionOutlineObject.SetActive(true);
     }
     
     public void OnDeselect()
     {
         selectionOutlineObject.SetActive(false);
+    }
+
+    public void InvokeSelectionDestroyed()
+    {
+        OnEntityDestroyed?.Invoke(this);
     }
 
     public GameObject SelectedObject()
@@ -54,7 +61,7 @@ public class Entity : MonoBehaviour, IOwned, ISelectable
     
     public T GetEntityComponent<T>() where T : EntityComponent
     {
-        foreach (var comp in unitComponents)
+        foreach (var comp in entityComponents)
             if (comp is T tComp) return tComp;
 
         return null;
@@ -62,10 +69,15 @@ public class Entity : MonoBehaviour, IOwned, ISelectable
     
     public T GetComponentByInterface<T>() where T : class
     {
-        foreach (var comp in unitComponents)
+        foreach (var comp in entityComponents)
             if (comp is T tComp)
                 return tComp;
 
         return null;
+    }
+
+    private void OnDestroy()
+    {
+        OnEntityDestroyed = null;
     }
 }

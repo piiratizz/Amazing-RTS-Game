@@ -17,8 +17,13 @@ MonoBehaviour:
     2"
   Health: 100
   DetectionRadius: 7
-  EntityType: 0
-  ActiveUnitParts: []
+  EntityType: 1
+  ActiveClothParts: []
+  ClothLayer: 
+  RightHandLayer: 
+  RightHandWeapon: 
+  LeftHandLayer: 
+  LeftHandWeapon: 
   Damage: 50
   AttackRange: 3
   Speed: 5

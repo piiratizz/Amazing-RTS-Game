@@ -5,11 +5,13 @@ public class UnitMoveCommand : IEntityCommand<MoveArgs>
     private UnitDetectionComponent _detectionComponent;
     private IMoveable _moveable;
     private IAttackable _attackable;
-
+    private Entity _entity;
+    
     public CommandPriorityType Priority { get; set; }
 
     public void Init(Entity entity)
     {
+        _entity = entity;
         _moveable = entity.GetComponentByInterface<IMoveable>();
         _detectionComponent = entity.GetEntityComponent<UnitDetectionComponent>();
         _attackable = entity.GetComponentByInterface<IAttackable>();
@@ -17,14 +19,13 @@ public class UnitMoveCommand : IEntityCommand<MoveArgs>
 
     public void Execute(MoveArgs args)
     {
-        if (_detectionComponent.ClosestEnemy != null)
+        if(_entity.EntityType != EntityType.Unit) return;
+
+        if (_detectionComponent != null)
         {
-            _attackable.SetAutoAttack(false);
+            _attackable?.SetAutoAttack(_detectionComponent.ClosestEnemy == null);
         }
-        else
-        {
-            _attackable.SetAutoAttack(true);
-        }
+        
         
         _moveable.MoveTo(args.Position);
     }
