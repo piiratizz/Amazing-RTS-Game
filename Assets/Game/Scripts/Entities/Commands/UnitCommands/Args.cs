@@ -12,3 +12,8 @@ public struct AttackArgs
     public int UnitOffsetIndex;
     public int TotalUnits;
 }
+
+public struct ResourceGatherArgs
+{
+    public Entity Resource;
+}

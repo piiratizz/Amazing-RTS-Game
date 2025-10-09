@@ -1,5 +1,6 @@
 ﻿public enum UnitCommandsType
 {
     Move,
-    Attack
+    Attack,
+    ResourceGather
 }

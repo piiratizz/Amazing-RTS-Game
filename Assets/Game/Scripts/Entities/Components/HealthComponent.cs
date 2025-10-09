@@ -7,6 +7,7 @@ public class HealthComponent : EntityComponent
     [SerializeField] private bool canCounterAttack;
     
     private int _health;
+    private int _maxHealth;
     private Entity _entity;
     private UnitCommandDispatcher _unitCommandDispatcher;
     
@@ -14,6 +15,7 @@ public class HealthComponent : EntityComponent
     public int OwnerId { get; set; }
 
     public int CurrentHealth => _health;
+    public int MaxHealth => _maxHealth;
 
     public Action OnDead;
     public Action<int> OnHealthChanged;
@@ -28,6 +30,7 @@ public class HealthComponent : EntityComponent
     public override void InitializeFields(EntityConfig config)
     {
         _health = config.Health;
+        _maxHealth = config.Health;
     }
     
     public void TakeDamage(Entity sender, int finalDamage)
@@ -48,7 +51,9 @@ public class HealthComponent : EntityComponent
 
         if (canCounterAttack)
         {
-            _unitCommandDispatcher.ExecuteCommand(UnitCommandsType.Attack, new AttackArgs() { Entity = sender , TotalUnits = 1, UnitOffsetIndex = 0});
+            _unitCommandDispatcher.ExecuteCommand(
+                UnitCommandsType.Attack,
+                new AttackArgs() { Entity = sender , TotalUnits = 1, UnitOffsetIndex = 0});
         }
     }
     
@@ -57,10 +62,11 @@ public class HealthComponent : EntityComponent
         IsDead = true;
         _entity.IsAvailableToSelect = false;
         _entity.OnDeselect();
+        _entity.InvokeSelectionDestroyed();
         
         _unitCommandDispatcher.ExitComponents();
 
-        foreach (var component in _entity.UnitComponents)
+        foreach (var component in _entity.EntityComponents)
         {
             component.OnKillComponent();
         }

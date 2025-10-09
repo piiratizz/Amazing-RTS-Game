@@ -15,6 +15,7 @@ public class UnitCommandDispatcher : EntityComponent
         _commands = new Dictionary<UnitCommandsType, IEntityCommandWrapperBase>();
         _commands.Add(UnitCommandsType.Move, new EntityCommandWrapper<MoveArgs>(new UnitMoveCommand()));
         _commands.Add(UnitCommandsType.Attack, new EntityCommandWrapper<AttackArgs>(new UnitAttackCommand()));
+        _commands.Add(UnitCommandsType.ResourceGather, new EntityCommandWrapper<ResourceGatherArgs>(new UnitResourceGatherCommand()));
 
         foreach (var command in _commands.Values)
         {
@@ -48,7 +49,7 @@ public class UnitCommandDispatcher : EntityComponent
     
     public void ExitComponents()
     {
-        foreach (var component in _entity.UnitComponents)
+        foreach (var component in _entity.EntityComponents)
         {
             component.OnExit();
         }

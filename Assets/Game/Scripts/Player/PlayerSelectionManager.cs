@@ -1,16 +1,11 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-using Game.Scripts.UI;
 using UnityEngine.InputSystem;
 
 public class PlayerSelectionManager : MonoBehaviour
 {
-    public event Action<List<ISelectable>> OnSelectionChanged;
-
-    //DEBUG
-    [SerializeField] private SelectionPanel selectionPanel;
-    //
+    public event Action<List<Entity>> OnSelectionChanged;
     
     [SerializeField] private Camera camera;
     [SerializeField] private float boxHeight = 2f;
@@ -18,7 +13,7 @@ public class PlayerSelectionManager : MonoBehaviour
     [SerializeField] private Color backgroundColor = new Color(0.3f, 0.6f, 1f, 0.2f);
     [SerializeField] private Player player;
     
-    private readonly List<ISelectable> _selectedObjects = new();
+    private readonly List<Entity> _selectedEntities = new();
     private Vector3 _bottomLeft;
     private Vector3 _bottomRight;
     private Vector2 _startMousePos;
@@ -38,33 +33,39 @@ public class PlayerSelectionManager : MonoBehaviour
         _bottomLeft = worldPoint;
         _isSelecting = true;
     }
-
+    
     public void EndSelection(Vector3 worldPoint)
     {
         _bottomRight = worldPoint;
         CreateSelectionBox(_bottomLeft, _bottomRight);
-        OnSelectionChanged?.Invoke(_selectedObjects);
+        
+        OnSelectionChanged?.Invoke(_selectedEntities);
+        foreach (var selectable in _selectedEntities)
+        {
+            selectable.OnEntityDestroyed += SelectionDestroyed;
+        }
         _isSelecting = false;
-
-        //DEBUG
-        if(_selectedObjects.Count > 0)
-            selectionPanel.Show(_selectedObjects);
-        else
-            selectionPanel.Hide();
-        //
     }
 
+    private void SelectionDestroyed(Entity entity)
+    {
+        _selectedEntities.Remove(entity);
+        OnSelectionChanged?.Invoke(_selectedEntities);
+    }
+    
     private void ClearSelection()
     {
-        for (var i = 0; i < _selectedObjects.Count; i++)
+        for (var i = 0; i < _selectedEntities.Count; i++)
         {
-            if (_selectedObjects[i] is UnityEngine.Object unityObj && unityObj != null)
+            if (_selectedEntities[i] is UnityEngine.Object unityObj && unityObj != null)
             {
-                _selectedObjects[i].OnDeselect();
+                _selectedEntities[i].OnEntityDestroyed -= SelectionDestroyed;
+                _selectedEntities[i].OnDeselect();
             }
         }
 
-        _selectedObjects.Clear();
+        _selectedEntities.Clear();
+        OnSelectionChanged?.Invoke(_selectedEntities);
     }
 
     private void CreateSelectionBox(Vector3 left, Vector3 right)
@@ -75,11 +76,12 @@ public class PlayerSelectionManager : MonoBehaviour
         
         foreach (var col in Physics.OverlapBox(center, size / 2f))
         {
-            if (col.TryGetComponent(out ISelectable selectable))
+            if (col.TryGetComponent(out Entity entity))
             {
-                if (selectable.IsAvailableToSelect && selectable.OwnerId == player.OwnerId)
+                if (entity.IsAvailableToSelect && entity.OwnerId == player.OwnerId)
                 {
-                    _selectedObjects.Add(selectable);
+                    _selectedEntities.Add(entity);
+                    entity.OnSelect();
                 }
             }
         }
