@@ -76,14 +76,14 @@ public class PlayerSelectionManager : MonoBehaviour
         
         foreach (var col in Physics.OverlapBox(center, size / 2f))
         {
-            if (col.TryGetComponent(out Entity entity))
-            {
-                if (entity.IsAvailableToSelect && entity.OwnerId == player.OwnerId)
-                {
-                    _selectedEntities.Add(entity);
-                    entity.OnSelect();
-                }
-            }
+            if (!col.TryGetComponent(out Entity entity)) continue;
+            
+            if (!entity.IsAvailableToSelect) continue;
+
+            if (entity.OwnerId != player.OwnerId && entity.OwnerId != 0) continue;
+            
+            _selectedEntities.Add(entity);
+            entity.OnSelect();
         }
     }
     

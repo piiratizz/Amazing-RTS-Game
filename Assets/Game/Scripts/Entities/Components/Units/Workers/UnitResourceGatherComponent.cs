@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;
 using UnityEngine;
@@ -7,28 +8,28 @@ using Random = UnityEngine.Random;
 
 public class UnitResourceGatherComponent : EntityComponent
 {
-    [SerializeField] [Range(0, 1)] private float rotationToTargetSpeed; 
-    
+    [SerializeField] [Range(0, 1)] private float rotationToTargetSpeed;
+
     private UnitEntity _unitEntity;
-    
+
     private UnitMovementComponent _movementComponent;
     private UnitAnimationComponent _animationComponent;
-    
+
     private ResourceEntity _resourceEntity;
     private ResourceStorageComponent _resourceSource;
-    
+
     private BuildingEntity _storageBuilding;
     private BuildingResourceStorageComponent _resourceStorage;
-    
-    private Coroutine _resourceGatheringRoutine;
-    
+
+    private CancellationTokenSource _cancellationToken;
+
     private int _liftingCapacity;
     private float _timeToGather;
+
+    private int _liftedResources;
     
     private readonly CompositeDisposable _resourceGatheringRoutineDisposable = new();
 
-    private bool _requestedCoroutineStop;
-    
     public override void Init(Entity entity)
     {
         _unitEntity = entity as UnitEntity;
@@ -39,64 +40,67 @@ public class UnitResourceGatherComponent : EntityComponent
     public override void InitializeFields(EntityConfig config)
     {
         var unitConfig = config as UnitConfig;
-        
-        if(unitConfig == null) return;
-        
+
+        if (unitConfig == null) return;
+
         _liftingCapacity = unitConfig.LiftingCapacity;
         _timeToGather = _liftingCapacity / unitConfig.GatherRatePerSecond;
     }
 
-    private IEnumerator ResourceGatheringLoop()
+    private async void StartResourceGatheringLoop(CancellationToken cancellationToken)
     {
-        while (!_requestedCoroutineStop)
+        try
         {
-            FollowToSource();
-            yield return null;
-            yield return new WaitWhile(() => _movementComponent.IsMoving());
-            
-            if(_requestedCoroutineStop) 
-                yield break;
-            
-            _movementComponent.StopMoving();
-            RotateToTarget(_resourceSource.transform.position);
-            _animationComponent.SetAttack(true);
-            
-            float t = 0f;
-            while (t < _timeToGather)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                if (_requestedCoroutineStop) 
-                    yield break;
-                
-                t += Time.deltaTime;
-                yield return null;
+                await FollowToSource(cancellationToken);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                _movementComponent.StopMoving();
+                RotateToTarget(_resourceSource.transform.position);
+                _animationComponent.SetAttack(true);
+
+                float t = 0f;
+                while (t < _timeToGather)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    t += Time.deltaTime;
+                    await UniTask.Yield(cancellationToken);
+                }
+
+                _liftedResources = _resourceSource.TryExtractResource(_liftingCapacity);
+                _animationComponent.SetAttack(false);
+
+                FindNearestStorage();
+                await FollowToStorage(cancellationToken);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                _resourceStorage.StoreResource(_resourceSource.ResourceType, _liftedResources);
+                _liftedResources = 0;
             }
-            
-            var extractedResources = _resourceSource.TryExtractResource(_liftingCapacity);
+        }
+        catch (OperationCanceledException)
+        {
+            _resourceGatheringRoutineDisposable.Clear();
             _animationComponent.SetAttack(false);
-            
-            FindNearestStorage();
-            FollowToStorage();
-            yield return null;
-            yield return new WaitWhile(() => _movementComponent.IsMoving());
-            
-            if (_requestedCoroutineStop) 
-                yield break;
-            
-            _resourceStorage.StoreResource(_resourceSource.ResourceType, extractedResources);
         }
     }
+
 
     private void FindNearestStorage()
     {
         BuildingResourceStorageComponent nearestStorage = null;
         BuildingEntity nearestStorageBuilding = null;
-        
+
         float nearestStorageDistance = 500f;
         var buildings = Physics.OverlapSphere(transform.position, 100f, LayerMask.GetMask("Buildings"));
         foreach (var building in buildings)
         {
-            if(building.TryGetComponent<BuildingEntity>(out var storage))
+            if (building.TryGetComponent<BuildingEntity>(out var storage))
             {
+                if (storage.OwnerId != _unitEntity.OwnerId)
+                    continue;
+
                 var distance = Vector3.Distance(building.transform.position, transform.position);
                 if (distance < nearestStorageDistance)
                 {
@@ -110,12 +114,12 @@ public class UnitResourceGatherComponent : EntityComponent
                 }
             }
         }
-        
+
         _storageBuilding = nearestStorageBuilding;
         _resourceStorage = nearestStorage;
     }
-    
-    private void FollowToSource()
+
+    private async UniTask FollowToSource(CancellationToken cancellationToken)
     {
         float angle = Random.Range(0f, 360f);
 
@@ -123,20 +127,31 @@ public class UnitResourceGatherComponent : EntityComponent
         float rad = angle * Mathf.Deg2Rad;
         Vector3 offset = new Vector3(Mathf.Cos(rad), 0f, Mathf.Sin(rad)) * r;
         Vector3 targetPoint = _resourceSource.transform.position + offset;
-        
+
         _movementComponent.MoveTo(targetPoint);
+
+        await UniTask.WaitWhile(() => _movementComponent.IsMoving(), cancellationToken: cancellationToken);
     }
-    
-    private void FollowToStorage()
+
+    private async UniTask FollowToStorage(CancellationToken cancellationToken)
     {
-        _movementComponent.MoveTo(_resourceStorage.transform.position);
+        float angle = Random.Range(0f, 360f);
+
+        float r = Mathf.Max(_storageBuilding.SizeX, _storageBuilding.SizeZ);
+        float rad = angle * Mathf.Deg2Rad;
+        Vector3 offset = new Vector3(Mathf.Cos(rad), 0f, Mathf.Sin(rad)) * r;
+        Vector3 targetPoint = _storageBuilding.transform.position + offset;
+
+        _movementComponent.MoveTo(targetPoint);
+        
+        await UniTask.WaitWhile(() => _movementComponent.IsMoving(), cancellationToken: cancellationToken);
     }
 
     private void RotateToTarget(Vector3 target)
     {
         transform.DOLookAt(target, rotationToTargetSpeed, AxisConstraint.Y);
     }
-    
+
     public void SetNewResourceSource(Entity resourceStorage)
     {
         _resourceEntity = resourceStorage as ResourceEntity;
@@ -145,37 +160,32 @@ public class UnitResourceGatherComponent : EntityComponent
         {
             throw new NullReferenceException("Resource entity is not a resource entity");
         }
-        
+
         _resourceSource = resourceStorage.GetEntityComponent<ResourceStorageComponent>();
-        
-        if (_resourceGatheringRoutine != null)
-        {
-            _requestedCoroutineStop = true;
-        }
+
 
         if (_resourceSource.IsEmpty.CurrentValue == true)
         {
             return;
         }
-        
-        _requestedCoroutineStop = false;
-        _resourceSource.IsEmpty.Where(s => s == true).Subscribe(StopGathering).AddTo(_resourceGatheringRoutineDisposable);
-        _resourceGatheringRoutine = StartCoroutine(ResourceGatheringLoop());
+
+
+        _resourceSource.IsEmpty.Where(s => s == true).Subscribe(OnResourceEmpty)
+            .AddTo(_resourceGatheringRoutineDisposable);
+        _cancellationToken = new CancellationTokenSource();
+        StartResourceGatheringLoop(_cancellationToken.Token);
     }
 
-    private void StopGathering(bool state = true)
+    private void OnResourceEmpty(bool state = true)
     {
-        if (_resourceGatheringRoutine != null)
-        {
-            _requestedCoroutineStop = true;
-            StopCoroutine(_resourceGatheringRoutine);
-        }
-        
-        _resourceGatheringRoutineDisposable.Clear();
-        _animationComponent.SetAttack(false);
-        _movementComponent.StopMoving();
+        StopGathering();
     }
     
+    private void StopGathering()
+    {
+        _cancellationToken?.Cancel();
+    }
+
     public override void OnExit()
     {
         StopGathering();

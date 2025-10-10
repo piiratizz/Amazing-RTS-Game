@@ -36,7 +36,7 @@ public class ResourceStorageComponent : EntityComponent
     /// <returns></returns>
     public int TryExtractResource(int amount)
     {
-        if (amount > _currentAmount.Value)
+        if (amount >= _currentAmount.Value)
         {
             var current = _currentAmount.Value;
             _currentAmount.Value = 0;

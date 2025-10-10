@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using R3;
 using Zenject;
 using TMPro;
@@ -19,6 +21,12 @@ namespace Game.Scripts.UI.Modules
         [SerializeField] private TextMeshProUGUI unitNameText;
         [SerializeField] private Image unitIconImage;
 
+        [SerializeField] private GameObject statsContainer;
+        [SerializeField] private TextMeshProUGUI attackStatsText;
+        [SerializeField] private TextMeshProUGUI armorStatsText;
+        [SerializeField] private TextMeshProUGUI speedStatsText;
+        [SerializeField] private TextMeshProUGUI rangeStatsText;
+        
         [Inject] private Player _player;
         
         private readonly Dictionary<string, UnitInfoPanelView> _panelsInstances = new Dictionary<string, UnitInfoPanelView>();
@@ -27,6 +35,9 @@ namespace Game.Scripts.UI.Modules
         private readonly Dictionary<string, int> _entitiesCount = new Dictionary<string, int>(10);
         
         private HealthComponent _singleSelectedUnitHealthComponent;
+        
+        private int _baseResourcesAmount;
+        private readonly CompositeDisposable _resourcesSubscription = new();
         
         public override void Show(List<Entity> targets)
         {
@@ -53,20 +64,23 @@ namespace Game.Scripts.UI.Modules
             if (isUnit)
             {
                 ShowUnits(targets);
+                return;
             }
             
             if(targets.Count == 1)
             {
-                if (targets[0].EntityType == EntityType.Resource)
+                if (targets[0] is ResourceEntity resourceEntity)
                 {
-                    ShowResource(targets[0]);
+                    ShowResource(resourceEntity);
+                }
+                if (targets[0] is BuildingEntity buildingEntity)
+                {
+                    ShowBuilding(buildingEntity);
                 }
             }
         }
-
-        private int _baseResourcesAmount;
-        private CompositeDisposable _resourcesSubscription = new();
-        private void ShowResource(Entity target)
+        
+        private void ShowResource(ResourceEntity target)
         {
             hpSlider.gameObject.SetActive(true);
             hpText.gameObject.SetActive(true);
@@ -139,18 +153,48 @@ namespace Game.Scripts.UI.Modules
 
         private void ShowSingleUnit(Entity target)
         {
+            var unit = target as UnitEntity;
+
+            if (unit == null)
+            {
+                throw new InvalidCastException("target is not a UnitEntity");
+            }
+            
             hpSlider.gameObject.SetActive(true);
             hpText.gameObject.SetActive(true);
             unitNameText.gameObject.SetActive(true);
             unitIconImage.gameObject.SetActive(true);
-
+            statsContainer.SetActive(true);
+            
             var isDamageable = target.TryGetComponent(out _singleSelectedUnitHealthComponent);
             
             if(!isDamageable) return;
 
             UpdateHealth(_singleSelectedUnitHealthComponent.CurrentHealth);
-            unitIconImage.sprite = target.Icon;
-            unitNameText.text = target.DisplayName;
+            unitIconImage.sprite = unit.Icon;
+            unitNameText.text = unit.DisplayName;
+            attackStatsText.text = unit.Damage.ToString();
+            armorStatsText.text = unit.Armor.ToString();
+            speedStatsText.text = unit.Speed.ToString(CultureInfo.CurrentCulture);
+            rangeStatsText.text = unit.Range.ToString(CultureInfo.CurrentCulture);
+            
+            _singleSelectedUnitHealthComponent.OnHealthChanged += UpdateHealth;
+        }
+
+        private void ShowBuilding(BuildingEntity building)
+        {
+            hpSlider.gameObject.SetActive(true);
+            hpText.gameObject.SetActive(true);
+            unitNameText.gameObject.SetActive(true);
+            unitIconImage.gameObject.SetActive(true);
+
+            var isDamageable = building.TryGetComponent(out _singleSelectedUnitHealthComponent);
+            
+            if(!isDamageable) return;
+
+            UpdateHealth(_singleSelectedUnitHealthComponent.CurrentHealth);
+            unitIconImage.sprite = building.Icon;
+            unitNameText.text = building.DisplayName;
             _singleSelectedUnitHealthComponent.OnHealthChanged += UpdateHealth;
         }
         
@@ -181,6 +225,7 @@ namespace Game.Scripts.UI.Modules
             hpText.gameObject.SetActive(false);
             unitNameText.gameObject.SetActive(false);
             unitIconImage.gameObject.SetActive(false);
+            statsContainer.SetActive(false);
             
             _resourcesSubscription?.Clear();
         }

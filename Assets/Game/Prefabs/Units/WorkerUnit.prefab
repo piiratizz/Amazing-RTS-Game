@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 2855317789104467235}
   - component: {fileID: 2553029537178897005}
   - component: {fileID: 228340883394780367}
+  - component: {fileID: 1674777325705995679}
   - component: {fileID: 629168906206318865}
   - component: {fileID: 4359848022910336598}
   m_Layer: 0
@@ -58,7 +59,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownerId: 0
   selectionOutlineObject: {fileID: 6899721401656976755}
-  entityComponents: []
+  entityComponents:
+  - {fileID: 367461848217558873}
+  - {fileID: 200737831259772737}
+  - {fileID: 2855317789104467235}
+  - {fileID: 4254715069615994431}
+  - {fileID: 472224535386230045}
+  - {fileID: 2553029537178897005}
+  - {fileID: 8303280944547642815}
+  - {fileID: 228340883394780367}
+  - {fileID: 1674777325705995679}
   entityConfig: {fileID: 0}
 --- !u!114 &367461848217558873
 MonoBehaviour:
@@ -158,6 +168,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63f76eed64dc4081a3accbe11873bdac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationToTargetSpeed: 0
+--- !u!114 &1674777325705995679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6879839181109687417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e206c00d7a7b4eeaaa9ad5144400cb97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!195 &629168906206318865
