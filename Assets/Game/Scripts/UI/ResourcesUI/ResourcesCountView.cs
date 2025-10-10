@@ -20,16 +20,21 @@ public class ResourcesCountView : MonoBehaviour
 
     private void OnResourceChanged(ResourceType resourceType, int currentAmount)
     {
+        UpdateResourceCount(resourceType, currentAmount);
+    }
+
+    private void UpdateResourceCount(ResourceType resourceType, int currentAmount)
+    {
         switch (resourceType)
         {
             case ResourceType.Food:
-                foodText.text = _globalResourceStorage.GetResource(ResourceType.Food).ToString();
+                foodText.text = currentAmount.ToString();
                 break;
             case ResourceType.Wood:
-                woodText.text = _globalResourceStorage.GetResource(ResourceType.Wood).ToString();
+                woodText.text = currentAmount.ToString();
                 break;
             case ResourceType.Gold:
-                goldText.text = _globalResourceStorage.GetResource(ResourceType.Gold).ToString();
+                goldText.text = currentAmount.ToString();
                 break;
         }
     }

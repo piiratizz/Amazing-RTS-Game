@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b73cfb621c6841c2ae6cf5cb22f5f8d8, type: 3}
   m_Name: GoldMineConfig
   m_EditorClassIdentifier: 
-  Icon: {fileID: 21300000, guid: 431a2a6b1eb3bec4e814a3705bf67a4e, type: 3}
+  Icon: {fileID: 21300000, guid: 61d18beba92011644a4199d5cedbec38, type: 3}
   DisplayName: "\u0428\u0430\u0445\u0442\u0430 \u0437\u043E\u043B\u043E\u0442\u0430"
   Health: 100
   DetectionRadius: 1
   EntityType: 0
   ResourceType: 2
-  Amount: 500
+  Amount: 5000
   SizeX: 5
   SizeZ: 5

@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 public class Entity : MonoBehaviour, IOwned
 {
-    [SerializeField] private int ownerId;
+    [SerializeField][Tooltip("0 = available for all players")] private int ownerId;
     [SerializeField] private GameObject selectionOutlineObject;
     [SerializeField] private List<EntityComponent> entityComponents;
     [SerializeField] private EntityConfig entityConfig;
