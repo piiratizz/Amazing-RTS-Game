@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
@@ -45,6 +47,29 @@ public class PlayerInputHandler : MonoBehaviour
             playerUnitController.HandlePlayerCommand(player, hit);
     }
 
-    private bool RaycastMouse(out RaycastHit hit) =>
-        Physics.Raycast(camera.ScreenPointToRay(Mouse.current.position.ReadValue()), out hit);
+    private bool RaycastMouse(out RaycastHit hit)
+    {
+        var mousePosition = Mouse.current.position.ReadValue();
+        
+        if (!IsPointerOverUI(mousePosition))
+        {
+            return Physics.Raycast(camera.ScreenPointToRay(mousePosition), out hit);
+        }
+
+        hit = default;
+        return false;
+    }
+        
+    private bool IsPointerOverUI(Vector2 mousePosition)
+    {
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = mousePosition
+        };
+
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+        return results.Count > 0;
+    }   
+        
 }
