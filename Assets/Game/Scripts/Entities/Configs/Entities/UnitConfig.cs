@@ -23,4 +23,7 @@ public class UnitConfig : EntityConfig
     [Header("Resources")]
     public float GatherRatePerSecond;
     public int LiftingCapacity;
+    
+    [Header("Building")]
+    public BuildingConfig[] BuildingsAvailableToBuild;
 }
