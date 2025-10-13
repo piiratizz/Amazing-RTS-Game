@@ -47,7 +47,7 @@ public class UnitResourceGatherComponent : EntityComponent
         _timeToGather = _liftingCapacity / unitConfig.GatherRatePerSecond;
     }
 
-    private async void StartResourceGatheringLoop(CancellationToken cancellationToken)
+    private async UniTask StartResourceGatheringLoop(CancellationToken cancellationToken)
     {
         try
         {
@@ -172,8 +172,8 @@ public class UnitResourceGatherComponent : EntityComponent
 
         _resourceSource.IsEmpty.Where(s => s == true).Subscribe(OnResourceEmpty)
             .AddTo(_resourceGatheringRoutineDisposable);
-        _cancellationToken = new CancellationTokenSource();
-        StartResourceGatheringLoop(_cancellationToken.Token);
+        _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(new CancellationTokenSource().Token, this.GetCancellationTokenOnDestroy());
+        StartResourceGatheringLoop(_cancellationToken.Token).Forget();
     }
 
     private void OnResourceEmpty(bool state = true)
@@ -189,5 +189,7 @@ public class UnitResourceGatherComponent : EntityComponent
     public override void OnExit()
     {
         StopGathering();
+        _cancellationToken?.Dispose();
+        _cancellationToken = null;
     }
 }
