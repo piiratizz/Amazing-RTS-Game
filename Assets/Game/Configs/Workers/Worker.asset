@@ -39,3 +39,5 @@ MonoBehaviour:
     ResistModifier: 0
   GatherRatePerSecond: 25
   LiftingCapacity: 100
+  BuildingsAvailableToBuild:
+  - {fileID: 11400000, guid: 081d215487ff9ff49a12964699538041, type: 2}

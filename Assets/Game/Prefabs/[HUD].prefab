@@ -853,7 +853,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f523a5e58f87742abfa2b1d2741fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildMenuItemView: {fileID: 6029226983378787251, guid: 679455b6f495691469aae78a40a49647, type: 3}
   background: {fileID: 8346450758553966177}
+  itemsContainer: {fileID: 8244910836857045634}
 --- !u!1 &2354008741896710894
 GameObject:
   m_ObjectHideFlags: 0
@@ -2837,8 +2839,9 @@ GameObject:
   - component: {fileID: 8244910836857045634}
   - component: {fileID: 6108234819869056723}
   - component: {fileID: 2181308139186435946}
+  - component: {fileID: 4896010401683388811}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: BuildingsContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2860,8 +2863,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -356.7295, y: 115.93289}
-  m_SizeDelta: {x: 713.4491, y: 231.8558}
+  m_AnchoredPosition: {x: -356.73, y: 115.93289}
+  m_SizeDelta: {x: 713.45, y: 231.8558}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6108234819869056723
 CanvasRenderer:
@@ -2884,7 +2887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0, g: 0.13673714, b: 0.5283019, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2901,6 +2904,30 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4896010401683388811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8346450758553966177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 100, y: 100}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &8476478835023538307
 GameObject:
   m_ObjectHideFlags: 0
