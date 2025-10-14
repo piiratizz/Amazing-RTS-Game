@@ -13,6 +13,11 @@ namespace Game.Scripts.UI
         private void Start()
         {
             Hide();
+            
+            foreach (var module in modules)
+            {
+                module.Initialize();
+            }
         }
 
         private void OnEnable()

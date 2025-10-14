@@ -41,3 +41,4 @@ MonoBehaviour:
   LiftingCapacity: 100
   BuildingsAvailableToBuild:
   - {fileID: 11400000, guid: 081d215487ff9ff49a12964699538041, type: 2}
+  - {fileID: 11400000, guid: b5e504c2429694643bf499419becd46a, type: 2}

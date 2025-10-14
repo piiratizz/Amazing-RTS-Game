@@ -69,7 +69,11 @@ namespace Game.Scripts.UI.Modules.Presenters
             _buildingHpText.gameObject.SetActive(false);
             _buildingNameText.gameObject.SetActive(false);
             _buildingIconImage.gameObject.SetActive(false);
-            _buildingHealthComponent.OnHealthChanged -= UpdateHealth;
+
+            if (_buildingHealthComponent != null)
+            {
+                _buildingHealthComponent.OnHealthChanged -= UpdateHealth;
+            }
         }
     }
 }

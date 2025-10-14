@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public class BuildingEntity : Entity
 {
@@ -6,7 +7,7 @@ public class BuildingEntity : Entity
     
     public float SizeX => _config.SizeX;
     public float SizeZ => _config.SizeZ;
-
+    
     public override void Start()
     {
         base.Start();

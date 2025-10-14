@@ -32,17 +32,17 @@ namespace Game.Scripts.UI.Modules
         
         private Dictionary<Type, IEntityInfoPresenter> _presenters;
         private IEntityInfoPresenter _currentPresenter;
-        
-        private void Awake()
+
+        public override void Initialize()
         {
             _presenters = new Dictionary<Type, IEntityInfoPresenter>()
             {
                 {
                     typeof(BuildingEntity), new BuildingsInfoPresenter(
-                    hpSlider,
-                    hpText,
-                    unitNameText,
-                    unitIconImage)
+                        hpSlider,
+                        hpText,
+                        unitNameText,
+                        unitIconImage)
                 },
                 {
                     typeof(ResourceEntity), new ResourceInfoPresenter(
@@ -66,6 +66,11 @@ namespace Game.Scripts.UI.Modules
                         rangeStatsText)
                 }
             };
+
+            foreach (var presenter in _presenters.Values)
+            {
+                presenter.Hide();
+            }
         }
 
         public override void Show(List<Entity> targets)

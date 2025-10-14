@@ -120,7 +120,6 @@ namespace Game.Scripts.UI.Modules.Presenters
             if (unit == null)
             {
                 Debug.LogError("Target is not a UnitEntity. Cannot display single unit info.");
-                Hide(); 
                 return;
             }
             
@@ -179,7 +178,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _hpText.gameObject.SetActive(false);
             _unitNameText.gameObject.SetActive(false);
             _unitIconImage.gameObject.SetActive(false);
-            _statsContainer.SetActive(false);
+            _statsContainer.gameObject.SetActive(false);
         }
     }
 }

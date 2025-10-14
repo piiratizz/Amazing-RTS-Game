@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Game.Scripts.UI;
 using NTC.Pool;
@@ -18,9 +19,9 @@ public class WorkerBuildModule : SelectionPanelModule
         _unitBuildingComponent = null;
         _instances =  new List<BuildMenuItemView>();
         
-        foreach (var target in targets)
+        foreach (var entity in targets)
         {
-            var component = target.GetEntityComponent<UnitBuildingComponent>();
+            var component = entity.GetEntityComponent<UnitBuildingComponent>();
             if (component != null)
             {
                 _unitBuildingComponent = component;
@@ -37,7 +38,7 @@ public class WorkerBuildModule : SelectionPanelModule
         foreach (var item in _unitBuildingComponent.AvailableBuildings)
         {
             var instance = NightPool.Spawn(buildMenuItemView, itemsContainer);
-            instance.Initialize(item.Preview, OnClickCallback);
+            instance.Initialize(item.Preview, item.ResourceCosts, OnClickCallback);
             _instances.Add(instance);
         }
     }
