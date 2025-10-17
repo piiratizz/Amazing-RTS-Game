@@ -38,7 +38,7 @@ public class WorkerBuildModule : SelectionPanelModule
         foreach (var item in _unitBuildingComponent.AvailableBuildings)
         {
             var instance = NightPool.Spawn(buildMenuItemView, itemsContainer);
-            instance.Initialize(item.Preview, item.ResourceCosts, OnClickCallback);
+            instance.Initialize(item.Preview, item.BuildResourceCost, OnClickCallback);
             _instances.Add(instance);
         }
     }

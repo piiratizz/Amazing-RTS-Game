@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildingCostView : MonoBehaviour
+public class ResourceCostView : MonoBehaviour
 {
     [SerializeField] private Image resourceImage;
     [SerializeField] private TextMeshProUGUI costText;

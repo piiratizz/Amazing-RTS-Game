@@ -4,7 +4,7 @@ using Zenject;
 public class GameplayInstaller : MonoInstaller
 {
     [SerializeField] private Player playerPrefab;
-    [SerializeField] private GameObject gameplayUIPrefab;
+    [SerializeField] private GameplayHUD gameplayUIPrefab;
     
     
     public override void InstallBindings()
@@ -18,6 +18,7 @@ public class GameplayInstaller : MonoInstaller
         var playerInstance = Container.InstantiatePrefabForComponent<Player>(playerPrefab);
         Container.Bind<Player>().FromInstance(playerInstance).AsSingle();
         
-        Container.InstantiatePrefab(gameplayUIPrefab);
+        var hudInstance = Container.InstantiatePrefabForComponent<GameplayHUD>(gameplayUIPrefab);
+        Container.QueueForInject(hudInstance);
     }
 }

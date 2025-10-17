@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9741f5c400544b5ba97ecd775adfdd13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingCostView: {fileID: 1724700492824590158, guid: 6fa379ec46f00a146b7d89953b448ba8, type: 3}
+  resourceCostView: {fileID: 1724700492824590158, guid: 6fa379ec46f00a146b7d89953b448ba8, type: 3}
   buildingCostsContainer: {fileID: 1895227617134123483}
   previewImage: {fileID: 1006113298945655408}
   button: {fileID: 7981283766675929804}
@@ -236,9 +236,9 @@ MonoBehaviour:
     m_Left: 0
     m_Right: 0
     m_Top: 0
-    m_Bottom: 0
+    m_Bottom: -30
   m_ChildAlignment: 7
-  m_Spacing: 0
+  m_Spacing: 20
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0

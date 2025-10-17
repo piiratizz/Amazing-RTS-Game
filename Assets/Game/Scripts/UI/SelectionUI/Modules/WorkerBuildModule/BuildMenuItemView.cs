@@ -9,8 +9,8 @@ using UnityEngine.UI;
 
 public class BuildMenuItemView : MonoBehaviour, IDisposable, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private BuildingCostView buildingCostView;
-    [SerializeField] private Transform buildingCostsContainer;
+    [SerializeField] private ResourceCostView resourceCostView;
+    [SerializeField] private RectTransform buildingCostsContainer;
     
     [SerializeField] private Image previewImage;
     [SerializeField] private Button button;
@@ -19,7 +19,7 @@ public class BuildMenuItemView : MonoBehaviour, IDisposable, IPointerEnterHandle
 
     private ResourcesConfig[] _resourcesConfigs;
 
-    private List<BuildingCostView> _buildingCostInstances;
+    private List<ResourceCostView> _buildingCostInstances;
     
     private bool _initialized;
     
@@ -31,7 +31,7 @@ public class BuildMenuItemView : MonoBehaviour, IDisposable, IPointerEnterHandle
         
         if (!_initialized)
         {
-            _buildingCostInstances = new List<BuildingCostView>();
+            _buildingCostInstances = new List<ResourceCostView>();
             _resourcesConfigs = Resources.LoadAll<ResourcesConfig>("ResourceConfigs");
             _initialized = true;
         }
@@ -41,7 +41,7 @@ public class BuildMenuItemView : MonoBehaviour, IDisposable, IPointerEnterHandle
     {
         foreach (var cost in _buildingCosts)
         {
-            var instance = NightPool.Spawn(buildingCostView, buildingCostsContainer);
+            var instance = NightPool.Spawn(resourceCostView, Vector3.zero, Quaternion.identity, buildingCostsContainer);
             var config = _resourcesConfigs.Where(c => c.ResourceType == cost.Resource);
             instance.Initialize(config.First().Icon, cost.Amount);
             _buildingCostInstances.Add(instance);

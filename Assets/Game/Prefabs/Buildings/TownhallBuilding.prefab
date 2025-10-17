@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 5956057073937559381}
   - component: {fileID: 3477233060432461936}
   - component: {fileID: 845361553529814911}
+  - component: {fileID: 4568258674866962540}
   - component: {fileID: 2053579499171497363}
   - component: {fileID: 5138872218112278492}
   m_Layer: 7
@@ -139,6 +140,7 @@ MonoBehaviour:
   selectionOutlineObject: {fileID: 2353459061270997056}
   entityComponents:
   - {fileID: 845361553529814911}
+  - {fileID: 4568258674866962540}
   entityConfig: {fileID: 11400000, guid: b5e504c2429694643bf499419becd46a, type: 2}
 --- !u!114 &845361553529814911
 MonoBehaviour:
@@ -153,6 +155,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canCounterAttack: 0
+--- !u!114 &4568258674866962540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8772023555039426579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9261bc823e643c6bedc6ce059616761, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &2053579499171497363
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -10,7 +10,11 @@ public class BuildingConfig : EntityConfig
     [Space]
     [Header("UI Data")] 
     public Sprite Preview;
-    public ResourceCost[] ResourceCosts;
+    public ResourceCost[] BuildResourceCost;
+
+    [Space]
+    [Header("Units Production")] 
+    public UnitResourceCost[] UnitsCanProduce;
 }
 
 [Serializable]
@@ -18,4 +22,18 @@ public class ResourceCost
 {
     public ResourceType Resource;
     public int Amount;
+}
+
+[Serializable]
+public class UnitResourceCost
+{
+    public ResourceCost[] ResourceCost;
+    public ConfigUnitPrefabLink Unit;
+}
+
+[Serializable]
+public class ConfigUnitPrefabLink
+{
+    public UnitConfig Config;
+    public UnitEntity UnitPrefab;
 }

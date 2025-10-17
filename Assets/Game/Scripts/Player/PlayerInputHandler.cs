@@ -7,7 +7,7 @@ public class PlayerInputHandler : MonoBehaviour
 {
     [SerializeField] private Player player;
     [SerializeField] private InputActionAsset inputActions;
-    [SerializeField] private Camera camera;
+    [SerializeField] private new Camera camera;
     [SerializeField] private PlayerSelectionManager playerSelectionManager;
     [SerializeField] private PlayerUnitsController playerUnitController;
 
@@ -25,7 +25,7 @@ public class PlayerInputHandler : MonoBehaviour
         inputActions.FindAction("Attack").performed -= StartSelection;
         inputActions.FindAction("Attack").canceled -= EndSelection;
         inputActions.FindAction("RightButton").performed -= OnRightClick;
-
+        
         playerSelectionManager.OnSelectionChanged -= playerUnitController.SetSelectedUnits;
     }
 

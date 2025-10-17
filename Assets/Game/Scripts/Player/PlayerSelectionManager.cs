@@ -7,7 +7,7 @@ public class PlayerSelectionManager : MonoBehaviour
 {
     public event Action<List<Entity>> OnSelectionChanged;
     
-    [SerializeField] private Camera camera;
+    [SerializeField] private new Camera camera;
     [SerializeField] private float boxHeight = 2f;
     [SerializeField] private Color borderColor = new Color(0.3f, 0.6f, 1f);
     [SerializeField] private Color backgroundColor = new Color(0.3f, 0.6f, 1f, 0.2f);
