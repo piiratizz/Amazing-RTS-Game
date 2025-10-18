@@ -23,7 +23,7 @@ public class ResourceStorageComponent : EntityComponent
             throw new NullReferenceException("ResourcesConfig must be of type ResourcesConfig");
         }
         
-        _resourceType = resourcesConfig.ResourceType;
+        _resourceType = resourcesConfig.Resource.ResourceType;
         _baseAmount = resourcesConfig.Amount;
         _currentAmount = new ReactiveProperty<int>(resourcesConfig.Amount);
         _isEmpty = new ReactiveProperty<bool>(false);

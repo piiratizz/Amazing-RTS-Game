@@ -15,6 +15,7 @@ public class BuildingConfig : EntityConfig
     [Space]
     [Header("Units Production")] 
     public UnitResourceCost[] UnitsCanProduce;
+    public float ProductionRatePerSecond;
 }
 
 [Serializable]

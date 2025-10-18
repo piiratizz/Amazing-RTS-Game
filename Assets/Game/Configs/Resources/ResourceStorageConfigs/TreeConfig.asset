@@ -17,7 +17,7 @@ MonoBehaviour:
   Health: 100
   DetectionRadius: 1
   EntityType: 0
-  ResourceType: 1
+  Resource: {fileID: 11400000, guid: 7d9e34d4e29219b4abd9cdf5a6a9ae3a, type: 2}
   Amount: 1000
   SizeX: 1
   SizeZ: 1

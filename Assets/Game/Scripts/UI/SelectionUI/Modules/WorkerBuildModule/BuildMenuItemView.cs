@@ -17,7 +17,7 @@ public class BuildMenuItemView : MonoBehaviour, IDisposable, IPointerEnterHandle
     
     private IReadOnlyCollection<ResourceCost> _buildingCosts;
 
-    private ResourcesConfig[] _resourcesConfigs;
+    private ResourceData[] _resourcesData;
 
     private List<ResourceCostView> _buildingCostInstances;
     
@@ -32,7 +32,7 @@ public class BuildMenuItemView : MonoBehaviour, IDisposable, IPointerEnterHandle
         if (!_initialized)
         {
             _buildingCostInstances = new List<ResourceCostView>();
-            _resourcesConfigs = Resources.LoadAll<ResourcesConfig>("ResourceConfigs");
+            _resourcesData = Resources.LoadAll<ResourceData>("ResourcesData");
             _initialized = true;
         }
     }
@@ -42,8 +42,8 @@ public class BuildMenuItemView : MonoBehaviour, IDisposable, IPointerEnterHandle
         foreach (var cost in _buildingCosts)
         {
             var instance = NightPool.Spawn(resourceCostView, Vector3.zero, Quaternion.identity, buildingCostsContainer);
-            var config = _resourcesConfigs.Where(c => c.ResourceType == cost.Resource);
-            instance.Initialize(config.First().Icon, cost.Amount);
+            var data = _resourcesData.Where(c => c.ResourceType == cost.Resource);
+            instance.Initialize(data.First().UiDisplayIcon, cost.Amount);
             _buildingCostInstances.Add(instance);
         }
     }

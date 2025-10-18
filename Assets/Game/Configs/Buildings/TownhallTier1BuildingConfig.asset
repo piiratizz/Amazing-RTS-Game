@@ -36,6 +36,8 @@ MonoBehaviour:
   - ResourceCost:
     - Resource: 0
       Amount: 10
+    - Resource: 2
+      Amount: 10
     Unit:
       Config: {fileID: 11400000, guid: e45830f79d9de4341943818f43752548, type: 2}
       UnitPrefab: {fileID: 4179078604765834347, guid: 023a2f4d881fc98449aa499a17acaa1f, type: 3}
@@ -45,3 +47,4 @@ MonoBehaviour:
     Unit:
       Config: {fileID: 11400000, guid: e45830f79d9de4341943818f43752548, type: 2}
       UnitPrefab: {fileID: 4179078604765834347, guid: 023a2f4d881fc98449aa499a17acaa1f, type: 3}
+  ProductionRatePerSecond: 10

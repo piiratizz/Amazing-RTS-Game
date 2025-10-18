@@ -20,5 +20,12 @@ public class GameplayInstaller : MonoInstaller
         
         var hudInstance = Container.InstantiatePrefabForComponent<GameplayHUD>(gameplayUIPrefab);
         Container.QueueForInject(hudInstance);
+        
+        BindFactories();
+    }
+
+    private void BindFactories()
+    {
+        Container.BindFactory<UnitEntity, UnitsFactory>();
     }
 }

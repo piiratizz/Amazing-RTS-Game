@@ -26,4 +26,7 @@ public class UnitConfig : EntityConfig
     
     [Header("Building")]
     public BuildingConfig[] BuildingsAvailableToBuild;
+    
+    [Header("Production")]
+    public float TotalProductionCost;
 }

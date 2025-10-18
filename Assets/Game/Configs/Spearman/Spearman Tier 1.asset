@@ -42,3 +42,7 @@ MonoBehaviour:
     ResistModifier: 0
   - DamageType: 3
     ResistModifier: 0
+  GatherRatePerSecond: 0
+  LiftingCapacity: 0
+  BuildingsAvailableToBuild: []
+  TotalProductionCost: 100
