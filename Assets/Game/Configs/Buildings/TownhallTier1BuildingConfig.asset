@@ -18,6 +18,7 @@ MonoBehaviour:
   Health: 1000
   DetectionRadius: 0
   EntityType: 2
+  Selectable: 1
   SizeX: 5
   SizeZ: 5
   Preview: {fileID: 21300000, guid: ba9a671a342d07c45a8af9ed6f3202c0, type: 3}
@@ -31,8 +32,8 @@ MonoBehaviour:
     - Resource: 0
       Amount: 10
     Unit:
-      Config: {fileID: 11400000, guid: e45830f79d9de4341943818f43752548, type: 2}
-      UnitPrefab: {fileID: 4179078604765834347, guid: 023a2f4d881fc98449aa499a17acaa1f, type: 3}
+      Config: {fileID: 11400000, guid: c4b4efc3799f30644abdb85883368522, type: 2}
+      UnitPrefab: {fileID: 6676096206097128817, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
   - ResourceCost:
     - Resource: 0
       Amount: 10
@@ -43,8 +44,26 @@ MonoBehaviour:
       UnitPrefab: {fileID: 4179078604765834347, guid: 023a2f4d881fc98449aa499a17acaa1f, type: 3}
   - ResourceCost:
     - Resource: 0
-      Amount: 10
+      Amount: 100
+    - Resource: 2
+      Amount: 50
     Unit:
-      Config: {fileID: 11400000, guid: e45830f79d9de4341943818f43752548, type: 2}
-      UnitPrefab: {fileID: 4179078604765834347, guid: 023a2f4d881fc98449aa499a17acaa1f, type: 3}
+      Config: {fileID: 11400000, guid: 943ff144fc74f804487d30c428a4b761, type: 2}
+      UnitPrefab: {fileID: 4179078604765834347, guid: 1b828c5b1cc3bea4bbbc63ea418af8e7, type: 3}
+  - ResourceCost:
+    - Resource: 0
+      Amount: 10
+    - Resource: 1
+      Amount: 20
+    Unit:
+      Config: {fileID: 11400000, guid: d28b825c9b908744b8aeecda700ae0e1, type: 2}
+      UnitPrefab: {fileID: 5809232132187184330, guid: 58b85fcdb4c46074ead56fc84fd649ff, type: 3}
+  - ResourceCost:
+    - Resource: 0
+      Amount: 30
+    - Resource: 1
+      Amount: 40
+    Unit:
+      Config: {fileID: 11400000, guid: 09196a48020889a42983352ffe1b4580, type: 2}
+      UnitPrefab: {fileID: 5809232132187184330, guid: 58b85fcdb4c46074ead56fc84fd649ff, type: 3}
   ProductionRatePerSecond: 10

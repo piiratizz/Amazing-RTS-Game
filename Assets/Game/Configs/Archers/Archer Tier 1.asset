@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de0c381ae0684bdc9865786a1e764318, type: 3}
+  m_Name: Archer Tier 1
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: 40c6c1093104eb140899be533e9bd1bd, type: 3}
+  DisplayName: "\u041B\u0443\u0447\u043D\u0438\u043A "
+  Health: 100
+  DetectionRadius: 10
+  EntityType: 1
+  Selectable: 1
+  ActiveClothParts:
+  - WK_Units_Arms_A
+  - WK_Units_Body_B
+  - WK_Units_head_I
+  - WK_Units_Legs_B
+  ClothLayer: ClothLayer
+  RightHandLayer: RightHandLayer
+  RightHandWeapon: 
+  LeftHandLayer: LeftHandLayer
+  LeftHandWeapon: WK_Units_Bow
+  Damage: 20
+  AttackRange: 20
+  Speed: 6
+  Armor: 0
+  DamageType: 0
+  DamageResists:
+  - DamageType: 0
+    ResistModifier: 0
+  - DamageType: 1
+    ResistModifier: 0
+  - DamageType: 2
+    ResistModifier: 0
+  - DamageType: 3
+    ResistModifier: 0
+  GatherRatePerSecond: 0
+  LiftingCapacity: 0
+  BuildingsAvailableToBuild: []
+  TotalProductionCost: 100
+  DamageLostDistanceModifierCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -0.01114106
+      outSlope: -0.01114106
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.21369149
+    - serializedVersion: 3
+      time: 0.50201416
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.27536902
+      outWeight: 0.16599336
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
+      inSlope: 1.1355312
+      outSlope: 1.1355312
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.104847655
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HeightAdvantageRangeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ArrowSpeed: 5000
+  FireRatePerMinute: 0
+  AnimationOverrideController: {fileID: 0}

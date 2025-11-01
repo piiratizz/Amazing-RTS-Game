@@ -7,4 +7,5 @@ public class EntityConfig : ScriptableObject
     public int Health;
     public float DetectionRadius;
     public EntityType EntityType;
+    public bool Selectable = true;
 }

@@ -7,9 +7,14 @@ public class UnitMovementComponent : EntityComponent, IMoveable
     [SerializeField] private NavMeshAgent navMeshAgent;
     private UnitAnimationComponent _unitAnimation;
 
+    private bool _initialized;
+    
+    public Vector3 Velocity => navMeshAgent.velocity;
+    
     public override void Init(Entity entity)
     {
         _unitAnimation = entity.GetEntityComponent<UnitAnimationComponent>();
+        _initialized = true;
     }
 
     public override void InitializeFields(EntityConfig config)
@@ -22,6 +27,8 @@ public class UnitMovementComponent : EntityComponent, IMoveable
 
     public override void OnUpdate()
     {
+        if(!_initialized) return;
+        
         if(_unitAnimation == null) return;
         
         if(!navMeshAgent.enabled) return;
@@ -47,6 +54,8 @@ public class UnitMovementComponent : EntityComponent, IMoveable
 
     public void MoveTo(Vector3 position)
     {
+        if(!_initialized) return;
+        
         if (navMeshAgent.enabled)
         {
             navMeshAgent.isStopped = false;
@@ -56,6 +65,8 @@ public class UnitMovementComponent : EntityComponent, IMoveable
 
     public void StopMoving()
     {
+        if(!_initialized) return;
+        
         if (navMeshAgent.enabled)
         {
             navMeshAgent.isStopped = true;
@@ -65,6 +76,8 @@ public class UnitMovementComponent : EntityComponent, IMoveable
 
     public override void OnExit()
     {
+        if(!_initialized) return;
+        
         if (navMeshAgent.enabled)
         {
             navMeshAgent.destination = transform.position;
@@ -73,6 +86,8 @@ public class UnitMovementComponent : EntityComponent, IMoveable
 
     public override void OnKillComponent()
     {
+        if(!_initialized) return;
+        
         navMeshAgent.enabled = false;
     }
 }

@@ -5,8 +5,7 @@ using UnityEngine;
 public class UnitMeleeAttackComponent : EntityComponent, IAttackable
 {
     [SerializeField] private UnitAnimationsEventsHandler unitAnimationsEventsHandler;
-
-    public bool IsAttacking => _attacking;
+    
     public bool IsCanAutoAttack { get; set; } = true;
 
     private Entity _entity;
@@ -22,16 +21,14 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable
 
     private float _attackRange = 1f;
     private int _damage = 10;
-    private bool _attacking = false;
+    public bool IsAttacking { get; set; }
 
     private Vector3 _attackPosition;
     private int _unitsInFormation;
     private int _unitOffset;
 
     private DamageType _damageType;
-
-    private static readonly int Attacking = Animator.StringToHash("Attacking");
-
+    
     private bool _initialized = false;
     
     public override void Init(Entity entity)
@@ -61,6 +58,8 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable
 
     public override void OnUpdate()
     {
+        if(!_initialized) return;
+        
         if (_unitStateComponent.CurrentState == UnitState.Dead) return;
 
         if (IsCanAutoAttack)
@@ -70,12 +69,12 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable
             {
                 _unitCommandDispatcher.ExecuteCommand(UnitCommandsType.Attack,
                     new AttackArgs()
-                        { Entity = _unitDetectionComponent.ClosestEnemy, TotalUnits = 1, UnitOffsetIndex = 0 });
+                        { Entity = closestEnemy, TotalUnits = 1, UnitOffsetIndex = 0 });
             }
         }
 
 
-        if (!_attacking || _targetHealthComponent == null)
+        if (!IsAttacking || _targetHealthComponent == null)
         {
             return;
         }
@@ -135,14 +134,14 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable
             _unitOffset = unitCircleOffset;
             //_unitsInFormation = 10;
             //_unitOffset = unit.AttackersCount;
-            _attacking = true;
+            IsAttacking = true;
             unitEntity.AddAttacker();
         }
     }
 
-    private void PerformDamage()
+    private void PerformDamage(AnimationHitArgs hit)
     {
-        _targetUnitDamageResistanceComponent?.TakeDamage(_damageType, _damage);
+        _targetUnitDamageResistanceComponent?.TakeDamage(_entity, _damageType, _damage);
     }
 
     private void OnTargetKilled()
@@ -159,7 +158,7 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable
     public override void OnExit()
     {
         OnTargetLost();
-        _attacking = false;
+        IsAttacking = false;
         _unitAnimationComponent.SetAttack(false);
         _target = null;
         _targetHealthComponent = null;
@@ -175,6 +174,8 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable
 
     private void OnDisable()
     {
+        if(!_initialized) return;
+        
         _unitStateComponent.OnStateChange -= OnStateChanged;
         unitAnimationsEventsHandler.OnHitEvent -= PerformDamage;
     }
@@ -200,7 +201,7 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable
 
     private void OnDrawGizmos()
     {
-        if(!_attacking) return;
+        if(!IsAttacking) return;
         
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, 0.3f);

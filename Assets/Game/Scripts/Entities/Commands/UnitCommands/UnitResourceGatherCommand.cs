@@ -15,7 +15,7 @@ public class UnitResourceGatherCommand : IEntityCommand<ResourceGatherArgs>
     {
         if (_resourceGatherComponent != null)
         {
-            _resourceGatherComponent.SetNewResourceSource(args.Resource);
+            _resourceGatherComponent.OrderToGather(args.Resource);
         }
     }
 

@@ -33,6 +33,11 @@ public class WorkerBuildModule : SelectionPanelModule
             return;
         }
 
+        if (_unitBuildingComponent.AvailableBuildings == null)
+        {
+            return;
+        }
+        
         background.SetActive(true);
         
         foreach (var item in _unitBuildingComponent.AvailableBuildings)

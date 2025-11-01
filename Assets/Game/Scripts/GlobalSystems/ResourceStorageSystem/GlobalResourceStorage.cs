@@ -36,10 +36,15 @@ public class GlobalResourceStorage
         }
         
         _resources[resourceType] = currentAmount - amount;
-        OnResourceChanged?.Invoke(resourceType, currentAmount);
+        OnResourceChanged?.Invoke(resourceType, currentAmount - amount);
         return true;
     }
 
+    public bool IsEnough(ResourceType resourceType, int amount)
+    {
+        return _resources[resourceType] - amount >= 0;
+    }
+    
     public int GetResource(ResourceType resourceType)
     {
         return _resources[resourceType];

@@ -9,6 +9,7 @@ public class Entity : MonoBehaviour, IOwned
     [SerializeField] private GameObject selectionOutlineObject;
     [SerializeField] private List<EntityComponent> entityComponents;
     [SerializeField] private EntityConfig entityConfig;
+    [SerializeField] private bool initializeOnStart = true;
     
     protected EntityConfig Config => entityConfig;
     
@@ -16,14 +17,32 @@ public class Entity : MonoBehaviour, IOwned
     public EntityType EntityType => entityConfig.EntityType;
     public string DisplayName => entityConfig.DisplayName;
     public Sprite Icon => entityConfig.Icon;
-
+    /// <summary>
+    /// Changes in the config if you want to prohibit the selection from the very beginning
+    /// </summary>
+    public bool Selectable => entityConfig.Selectable;
+    
     public Action<Entity> OnEntityDestroyed { get; set; }
     public int OwnerId { get => ownerId; set => ownerId = value; }
 
+    /// <summary>
+    /// Change if you need to prohibit selection at runtime
+    /// </summary>
     public bool IsAvailableToSelect { get; set; } = true;
     
     public virtual void Start()
     {
+        if (initializeOnStart)
+        {
+            Init(ownerId, entityConfig);
+        }
+    }
+
+    public void Init(int ownerId, EntityConfig entityConfig)
+    {
+        this.ownerId = ownerId;
+        this.entityConfig = entityConfig;
+        
         foreach (var comp in entityComponents)
         {
             comp.Init(this);

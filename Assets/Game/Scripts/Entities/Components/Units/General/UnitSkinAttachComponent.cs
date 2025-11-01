@@ -37,6 +37,11 @@ public class UnitSkinAttachComponent : EntityComponent
 
     private void ApplyConfigToLayer(string layerName, Func<Transform, bool> shouldBeActive)
     {
+        if (layerName == string.Empty)
+        {
+            return;
+        }
+        
         var layer = FindChildRecursive(transform, layerName);
         if (layer == null)
         {

@@ -1,9 +1,11 @@
 ﻿using R3;
 using System.Collections.Generic;
+using System.Linq;
 using Game.Scripts.UI;
 using NTC.Pool;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class UnitsProductionModule : SelectionPanelModule
 {
@@ -12,6 +14,7 @@ public class UnitsProductionModule : SelectionPanelModule
     [SerializeField] private GameObject background;
     [SerializeField] private Transform unitsPanelsContainer;
     [SerializeField] private Transform unitsInProductionQueueContainer;
+    [SerializeField] private Transform progressBarParent;
     [SerializeField] private Image radialFillProgressBar;
     
     private BuildingUnitsProductionComponent _productionComponent;
@@ -20,27 +23,28 @@ public class UnitsProductionModule : SelectionPanelModule
 
     private CompositeDisposable _disposables = new CompositeDisposable();
     
+    private bool _isOpen;
+    
     public override void Show(List<Entity> targets)
     {
         _productionComponent = null;
         
         foreach (var target in targets)
         {
-            if (target is not BuildingEntity) continue;
+            if (target is not BuildingEntity) return;
 
             _productionComponent = target.GetEntityComponent<BuildingUnitsProductionComponent>();
             
-            if(_productionComponent == null) continue;
-            
-            background.SetActive(true);
+            if(_productionComponent == null) return;
         }
 
-        if (_productionComponent != null)
-        {
-            BindProgressBar();
-            ShowUnits();
-            ShowProductionQueue();
-        }
+        if (_productionComponent == null) return;
+        
+        BindProgressBar();
+        ShowUnits();
+        ShowProductionQueue();
+        background.SetActive(true);
+        _isOpen = true;
     }
 
     private void BindProgressBar()
@@ -76,15 +80,21 @@ public class UnitsProductionModule : SelectionPanelModule
                 producedQueueUnitView,
                 unitsInProductionQueueContainer
                 );
-            instance.Initialize(unit.Config.Icon);
+            instance.Initialize(unit.UnitId, unit.Unit.Config, OnProductionCancelled);
             _unitsInProductionQueueInstances.Add(instance);
         }
 
         if (_productionComponent.ProductionQueue.Count > 0)
         {
-            radialFillProgressBar.gameObject.SetActive(true);
+            progressBarParent.gameObject.SetActive(true);
         }
         
+    }
+
+    private void OnProductionCancelled(int queueId)
+    {
+        _productionComponent.RemoveFromProductionQueue(queueId);
+        UpdateProductionQueue();
     }
     
     private void HideProductionQueue()
@@ -94,17 +104,22 @@ public class UnitsProductionModule : SelectionPanelModule
             NightPool.Despawn(instance);
         }
         _unitsInProductionQueueInstances.Clear();
-        radialFillProgressBar.gameObject.SetActive(false);
+        progressBarParent.gameObject.SetActive(false);
     }
 
     private void TryProduceUnit(UnitConfig config)
     {
-        _productionComponent.AddUnitToProductionQueue(config, OnUnitProduced);
-        UpdateProductionQueue();
+        if (_productionComponent.TryAddUnitToProductionQueue(config, OnUnitProduced))
+        {
+            UpdateProductionQueue();
+        }
+        
     }
 
     private void UpdateProductionQueue()
     {
+        if(!_isOpen) return;
+        
         HideProductionQueue();
         ShowProductionQueue();
     }
@@ -124,8 +139,9 @@ public class UnitsProductionModule : SelectionPanelModule
         
         _unitsInstances.Clear();
         HideProductionQueue();
-        radialFillProgressBar.gameObject.SetActive(false);
+        progressBarParent.gameObject.SetActive(false);
         background.SetActive(false);
         _disposables.Clear();
+        _isOpen = false;
     }
 }

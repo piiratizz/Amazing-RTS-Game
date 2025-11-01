@@ -8,6 +8,8 @@ public class UnitCommandDispatcher : EntityComponent
     private Dictionary<UnitCommandsType, IEntityCommandWrapperBase> _commands;
     private IEntityCommandWrapperBase _lastCommand;
     
+    private bool _initialized;
+    
     public override void Init(Entity entity)
     {
         _entity = entity;
@@ -21,10 +23,15 @@ public class UnitCommandDispatcher : EntityComponent
         {
             command.Init(entity);
         }
+
+        _initialized = true;
+
     }
     
     public void ExecuteCommand<TArgs>(UnitCommandsType commandType, TArgs args, CommandPriorityType priority = CommandPriorityType.Default) where TArgs : struct
     {
+        if (!_initialized) return;
+        
         if (_lastCommand != null)
         {
             if (_lastCommand.IsComplete())

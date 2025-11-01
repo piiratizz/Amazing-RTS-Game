@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7003200928538845432}
   - component: {fileID: 8725367860164501654}
   - component: {fileID: 2059754737205191375}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spruce 2_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,12 +26,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1758282292712516417}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6126991882262242998}
+  m_Father: {fileID: 2523423460803475086}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8725367860164501654
 MeshFilter:
@@ -87,6 +87,41 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1912297406806902033
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2523423460803475086}
+  m_Layer: 9
+  m_Name: Meshes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2523423460803475086
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912297406806902033}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 686988504402673125}
+  - {fileID: 2115518045577838955}
+  - {fileID: 7365579397648678156}
+  - {fileID: 7003200928538845432}
+  m_Father: {fileID: 6126991882262242998}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2133945767247630457
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,7 +133,7 @@ GameObject:
   - component: {fileID: 4901824965998147784}
   - component: {fileID: 2197094731185389610}
   - component: {fileID: 2052051907153711785}
-  m_Layer: 6
+  m_Layer: 9
   m_Name: SelectionOutline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +219,7 @@ GameObject:
   - component: {fileID: 686988504402673125}
   - component: {fileID: 879689479543738525}
   - component: {fileID: 8141726327559224986}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spruce 2_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,12 +234,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2968314683304371750}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6126991882262242998}
+  m_Father: {fileID: 2523423460803475086}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &879689479543738525
 MeshFilter:
@@ -271,7 +306,7 @@ GameObject:
   - component: {fileID: 2115518045577838955}
   - component: {fileID: 1788462658251056341}
   - component: {fileID: 2063056781935913488}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spruce 2_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -286,12 +321,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7694564830060510862}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6126991882262242998}
+  m_Father: {fileID: 2523423460803475086}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1788462658251056341
 MeshFilter:
@@ -360,8 +395,10 @@ GameObject:
   - component: {fileID: 511213155730072363}
   - component: {fileID: 8749491113999801143}
   - component: {fileID: 8157963969954662772}
+  - component: {fileID: 1889526805971459096}
+  - component: {fileID: -2355317122037521210}
   - component: {fileID: -5011323761599455879}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,11 +418,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2523423460803475086}
   - {fileID: 4901824965998147784}
-  - {fileID: 686988504402673125}
-  - {fileID: 2115518045577838955}
-  - {fileID: 7365579397648678156}
-  - {fileID: 7003200928538845432}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &4434471810534536297
@@ -402,7 +436,7 @@ LODGroup:
   m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.1855831
+  - screenRelativeHeight: 0.50021386
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8141726327559224986}
@@ -459,6 +493,7 @@ MonoBehaviour:
   entityComponents:
   - {fileID: 8157963969954662772}
   entityConfig: {fileID: 11400000, guid: 0534b0627531e914ba7234a8a0ef2903, type: 2}
+  initializeOnStart: 1
 --- !u!114 &8157963969954662772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,6 +506,90 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e92bf789a9ca4b94865988d0e82694a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onResourceHitted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1889526805971459096}
+        m_TargetAssemblyTypeName: TreeChopEffect, Assembly-CSharp
+        m_MethodName: DoChop
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onResourceEnded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1889526805971459096}
+        m_TargetAssemblyTypeName: TreeChopEffect, Assembly-CSharp
+        m_MethodName: StartFalling
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onResourceSelectedToGather:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -2355317122037521210}
+        m_TargetAssemblyTypeName: TreeSelectHighlightEffect, Assembly-CSharp
+        m_MethodName: Flash
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  timeToDestroy: 5
+--- !u!114 &1889526805971459096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7897458412747063780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e75949725da94aae84bdcec63dc9cbf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  woodChipsEffect: {fileID: 4768683678884692918, guid: 8663a9a973f993f4b962cf9746f8c129, type: 3}
+  visual: {fileID: 2523423460803475086}
+  shakeDuration: 0.25
+  shakeStrength: 1.5
+  vibrato: 15
+  randomness: 90
+  fallDirection: {x: 0, y: 0, z: 1}
+  fallAngle: {x: 30, y: 180}
+  fallDuration: 1.5
+  dropAmount: 0.3
+--- !u!114 &-2355317122037521210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7897458412747063780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d722ab0aa81f4ac8a135912981ef6456, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  duration: 0.3
+  colorProperty: _EmissionColor
+  renderer: {fileID: 8141726327559224986}
 --- !u!208 &-5011323761599455879
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -498,7 +617,7 @@ GameObject:
   - component: {fileID: 7365579397648678156}
   - component: {fileID: 1366782832531908808}
   - component: {fileID: 8835670725821999476}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spruce 2_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -513,12 +632,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8767454158561750710}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6126991882262242998}
+  m_Father: {fileID: 2523423460803475086}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1366782832531908808
 MeshFilter:

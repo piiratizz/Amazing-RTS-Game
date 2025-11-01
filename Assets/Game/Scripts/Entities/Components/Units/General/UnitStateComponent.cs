@@ -1,4 +1,5 @@
 ﻿using System;
+using ComponentsActionTypes;
 using UnityEngine;
 
 public class UnitStateComponent : EntityComponent
@@ -6,41 +7,38 @@ public class UnitStateComponent : EntityComponent
     public UnitState CurrentState;
     public Action<UnitState> OnStateChange;
     
-    private UnitMeleeAttackComponent _attackComponent;
+    private IAttackable _attackComponent;
     private UnitMovementComponent _unitMovementComponent;
     private HealthComponent _healthComponent;
+    private bool _initialized;
 
     public override void Init(Entity entity)
     {
-        _attackComponent = entity.GetEntityComponent<UnitMeleeAttackComponent>();
+        _attackComponent = entity.GetComponentByInterface<IAttackable>();
         _unitMovementComponent = entity.GetEntityComponent<UnitMovementComponent>();
         _healthComponent = entity.GetEntityComponent<HealthComponent>();
+
+        _initialized = true;
     }
 
     public override void OnUpdate()
     {
+        if(!_initialized) return;
+        
         UnitState previousState = CurrentState;
         
-        if (_attackComponent != null)
+        
+        if (_healthComponent != null && _healthComponent.IsDead)
         {
-            if (_healthComponent.IsDead)
-            {
-                CurrentState = UnitState.Dead;
-            }
+            CurrentState = UnitState.Dead;
         }
-        else if (_attackComponent != null)
+        else if(_attackComponent != null && _attackComponent.IsAttacking)
         {
-            if(_attackComponent.IsAttacking)
-            {
-                CurrentState = UnitState.Attack;
-            }
+            CurrentState = UnitState.Attack;
         }
-        else if (_unitMovementComponent != null)
+        else if (_attackComponent != null && _unitMovementComponent.IsMoving())
         {
-            if (_unitMovementComponent.IsMoving())
-            {
-                CurrentState = UnitState.Move;
-            }
+            CurrentState = UnitState.Move;
         }
         else
         {
@@ -57,6 +55,5 @@ public enum UnitState
     Idle,
     Attack,
     Move,
-    Retreat,
     Dead
 }

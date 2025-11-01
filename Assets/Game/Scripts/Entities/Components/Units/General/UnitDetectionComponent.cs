@@ -6,6 +6,9 @@ using UnityEngine;
 public class UnitDetectionComponent : EntityComponent
 {
     [SerializeField] private LayerMask layerMask;
+    [SerializeField] private bool isLongRange;
+    [SerializeField] private float delayBetweenIterations = 0.3f;
+    
     public UnitEntity ClosestEnemy { get; private set; }
     
     private Entity _entity;
@@ -35,7 +38,7 @@ public class UnitDetectionComponent : EntityComponent
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(delayBetweenIterations);
             
             int spottedCount = Physics.OverlapSphereNonAlloc(transform.position, _detectionRadius, _cachedHitsColliders, layerMask);
             UnitEntity closest = null;
@@ -69,6 +72,16 @@ public class UnitDetectionComponent : EntityComponent
                     _potentialTargets.Push(closest);
                 }
             }
+
+            if (isLongRange && _potentialTargets.Count > 1)
+            {
+                ClosestEnemy = _potentialTargets.Pop();;
+                continue;
+            }
+            else if(isLongRange && _potentialTargets.Count <= 1)
+            {
+                ClosestEnemy = closest;
+            }
             
             if (closest?.AttackersCount > 3 && _potentialTargets.Count > 1)
             {
@@ -84,6 +97,9 @@ public class UnitDetectionComponent : EntityComponent
     
     public override void OnKillComponent()
     {
-        StopCoroutine(_getClosestUnitCoroutine);
+        if (_getClosestUnitCoroutine != null)
+        {
+            StopCoroutine(_getClosestUnitCoroutine);
+        }
     }
 }

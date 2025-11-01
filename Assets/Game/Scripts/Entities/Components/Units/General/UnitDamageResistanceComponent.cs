@@ -15,14 +15,14 @@
         _config = config as UnitConfig;
     }
 
-    public void TakeDamage(DamageType damageType, float baseDamage)
+    public void TakeDamage(Entity sender, DamageType damageType, float baseDamage)
     {
         foreach (var resist in _config.DamageResists)
         {
             if (resist.DamageType == damageType)
             {
                 int effectiveDamage = (int)(baseDamage * (1f - resist.ResistModifier) * (100f / (100f + _config.Armor)));
-                _healthComponent.TakeDamage(_entity, effectiveDamage);
+                _healthComponent.TakeDamage(sender, effectiveDamage);
                 return;
             }
         }

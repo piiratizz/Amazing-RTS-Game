@@ -22,6 +22,8 @@ public class UnitDeadComponent : EntityComponent
 
     private void OnDisable()
     {
+        if(!_initialized) return;
+        
         _healthComponent.OnDead -= OnDead;
     }
 

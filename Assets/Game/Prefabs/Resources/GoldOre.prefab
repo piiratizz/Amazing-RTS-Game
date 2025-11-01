@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6041436107426908966}
   - component: {fileID: 6541044379574485870}
   - component: {fileID: 8706602852617116269}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GoldOre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,6 +75,7 @@ MonoBehaviour:
   entityComponents:
   - {fileID: 6541044379574485870}
   entityConfig: {fileID: 11400000, guid: b6c51dc25e4cee144b0b243c4ceb858d, type: 2}
+  initializeOnStart: 1
 --- !u!114 &6541044379574485870
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -46,7 +46,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _resourceNameText.gameObject.SetActive(true);
             _resourceIconImage.gameObject.SetActive(true);
 
-            var resourceStorage = _target.GetEntityComponent<ResourceStorageComponent>();
+            var resourceStorage = _target.GetEntityComponent<ResourceSourceComponent>();
             _baseResourcesAmount = resourceStorage.BaseAmount;
             _resourceSlider.maxValue = _baseResourcesAmount;
             _resourceIconImage.sprite = _target.Icon;
@@ -55,10 +55,10 @@ namespace Game.Scripts.UI.Modules.Presenters
             CreateSubscriptions(resourceStorage);
         }
 
-        private void CreateSubscriptions(ResourceStorageComponent storage)
+        private void CreateSubscriptions(ResourceSourceComponent source)
         {
             _resourcesSubscription = new CompositeDisposable();
-            storage.Amount.Subscribe(UpdateResourcesCount).AddTo(_resourcesSubscription);
+            source.Amount.Subscribe(UpdateResourcesCount).AddTo(_resourcesSubscription);
         }
 
         private void RemoveSubscriptions()

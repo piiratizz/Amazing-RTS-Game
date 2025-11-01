@@ -40,6 +40,8 @@ public class UnitHealthBarViewComponent : EntityComponent
     
     private void OnDisable()
     {
+        if(!_initialized) return;
+        
         _healthComponent.OnHealthChanged -= OnHealthChanged;
     }
 }

@@ -82,7 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8c10a996694665b5d1a5acc8f02ecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ownerId: 1
+  ownerId: 0
   selectionOutlineObject: {fileID: 8702837516694460732}
   entityComponents:
   - {fileID: 4038651433753980042}
@@ -97,6 +97,7 @@ MonoBehaviour:
   - {fileID: -7690387564244148432}
   - {fileID: 5377128937220240867}
   entityConfig: {fileID: 11400000, guid: e45830f79d9de4341943818f43752548, type: 2}
+  initializeOnStart: 0
 --- !u!114 &3779574261203376947
 MonoBehaviour:
   m_ObjectHideFlags: 0

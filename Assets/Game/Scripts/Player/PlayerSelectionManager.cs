@@ -78,6 +78,8 @@ public class PlayerSelectionManager : MonoBehaviour
         {
             if (!col.TryGetComponent(out Entity entity)) continue;
             
+            if(!entity.Selectable) continue;
+            
             if (!entity.IsAvailableToSelect) continue;
 
             if (entity.OwnerId != player.OwnerId && entity.OwnerId != 0) continue;
