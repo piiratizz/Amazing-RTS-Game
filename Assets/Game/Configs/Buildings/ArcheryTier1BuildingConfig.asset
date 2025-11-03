@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8611b92185534c1e9a07cf01bfcfcfe6, type: 3}
-  m_Name: TownhallTier1BuildingConfig
+  m_Name: ArcheryTier1BuildingConfig
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: ba9a671a342d07c45a8af9ed6f3202c0, type: 3}
-  DisplayName: "\u0420\u0430\u0442\u0443\u0448\u0430 \u0443\u0440\u043E\u0432\u0435\u043D\u044C
+  DisplayName: "\u0421\u0442\u0440\u0435\u043B\u044C\u0431\u0438\u0449\u0435 \u0443\u0440\u043E\u0432\u0435\u043D\u044C
     1"
-  MaxHealth: 1000
+  MaxHealth: 500
   SpawnHealth: 0
   DetectionRadius: 0
   EntityType: 2
@@ -31,8 +31,18 @@ MonoBehaviour:
   UnitsCanProduce:
   - ResourceCost:
     - Resource: 0
-      Amount: 10
+      Amount: 20
+    - Resource: 2
+      Amount: 30
     Unit:
-      Config: {fileID: 11400000, guid: c4b4efc3799f30644abdb85883368522, type: 2}
-      UnitPrefab: {fileID: 6676096206097128817, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
+      Config: {fileID: 11400000, guid: d28b825c9b908744b8aeecda700ae0e1, type: 2}
+      UnitPrefab: {fileID: 5809232132187184330, guid: 58b85fcdb4c46074ead56fc84fd649ff, type: 3}
+  - ResourceCost:
+    - Resource: 0
+      Amount: 100
+    - Resource: 2
+      Amount: 200
+    Unit:
+      Config: {fileID: 11400000, guid: 09196a48020889a42983352ffe1b4580, type: 2}
+      UnitPrefab: {fileID: 5809232132187184330, guid: 58b85fcdb4c46074ead56fc84fd649ff, type: 3}
   ProductionRatePerSecond: 10

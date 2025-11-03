@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: 61d18beba92011644a4199d5cedbec38, type: 3}
   DisplayName: "\u0428\u0430\u0445\u0442\u0430 \u0437\u043E\u043B\u043E\u0442\u0430"
-  Health: 100
+  MaxHealth: 9999
+  SpawnHealth: 9999
   DetectionRadius: 1
   EntityType: 0
+  Selectable: 1
   Resource: {fileID: 11400000, guid: 186bd08da6418354ca1b493376fd7ac8, type: 2}
   Amount: 5000
   SizeX: 5

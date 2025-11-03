@@ -74,7 +74,7 @@ public class PlayerSelectionManager : MonoBehaviour
         var center = (left + right) / 2f + Vector3.up * (boxHeight / 2f);
         var size = new Vector3(width, boxHeight, Mathf.Abs(left.z - right.z));
         
-        foreach (var col in Physics.OverlapBox(center, size / 2f))
+        foreach (var col in Physics.OverlapBox(center, size / 2))
         {
             if (!col.TryGetComponent(out Entity entity)) continue;
             

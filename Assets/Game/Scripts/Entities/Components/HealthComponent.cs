@@ -29,8 +29,8 @@ public class HealthComponent : EntityComponent
 
     public override void InitializeFields(EntityConfig config)
     {
-        _health = config.Health;
-        _maxHealth = config.Health;
+        _health = config.SpawnHealth;
+        _maxHealth = config.MaxHealth;
     }
     
     public void TakeDamage(Entity sender, int finalDamage)
@@ -55,6 +55,14 @@ public class HealthComponent : EntityComponent
                 UnitCommandsType.Attack,
                 new AttackArgs() { Entity = sender , TotalUnits = 1, UnitOffsetIndex = 0});
         }
+    }
+
+    public void ApplyHealing(int amount)
+    {
+        if (_health + amount > _maxHealth) return;
+        
+        _health += amount;
+        OnHealthChanged?.Invoke(_health);
     }
     
     private void Dead()

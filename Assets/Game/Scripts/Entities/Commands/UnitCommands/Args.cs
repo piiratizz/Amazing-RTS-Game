@@ -17,3 +17,8 @@ public struct ResourceGatherArgs
 {
     public Entity Resource;
 }
+
+public struct BuildArgs
+{
+    public Entity Building;
+}

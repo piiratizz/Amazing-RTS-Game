@@ -24,10 +24,13 @@ public class UnitsProductionModule : SelectionPanelModule
     private CompositeDisposable _disposables = new CompositeDisposable();
     
     private bool _isOpen;
+
+    private List<Entity> _selectedTargets;
     
     public override void Show(List<Entity> targets)
     {
         _productionComponent = null;
+        _selectedTargets = targets;
         
         foreach (var target in targets)
         {
@@ -36,6 +39,20 @@ public class UnitsProductionModule : SelectionPanelModule
             _productionComponent = target.GetEntityComponent<BuildingUnitsProductionComponent>();
             
             if(_productionComponent == null) return;
+
+            var buildComponent = target.GetEntityComponent<BuildingBuildComponent>();
+
+            if (buildComponent != null)
+            {
+                if (!buildComponent.IsBuilded.CurrentValue)
+                {
+                    buildComponent.IsBuilded
+                        .Where(isBuilt => isBuilt)
+                        .Subscribe(_ => OnBuildCompleted())
+                        .AddTo(_disposables);
+                    return;
+                }
+            }
         }
 
         if (_productionComponent == null) return;
@@ -46,7 +63,13 @@ public class UnitsProductionModule : SelectionPanelModule
         background.SetActive(true);
         _isOpen = true;
     }
-
+    
+    private void OnBuildCompleted()
+    {
+        Hide();
+        Show(_selectedTargets);
+    }
+    
     private void BindProgressBar()
     {
         _productionComponent.Progress.Subscribe(OnProgressUpdated).AddTo(_disposables);
@@ -128,7 +151,6 @@ public class UnitsProductionModule : SelectionPanelModule
     {
         UpdateProductionQueue();
     }
-    
     
     public override void Hide()
     {

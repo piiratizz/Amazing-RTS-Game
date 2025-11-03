@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: d42c941876031c64d913586f4cf648b8, type: 3}
   DisplayName: "\u0420\u0430\u0431\u043E\u0447\u0438\u0439"
-  Health: 100
+  MaxHealth: 100
+  SpawnHealth: 100
   DetectionRadius: 5
   EntityType: 1
+  Selectable: 1
   ActiveClothParts: []
   ClothLayer: 
   RightHandLayer: 
@@ -42,4 +44,20 @@ MonoBehaviour:
   BuildingsAvailableToBuild:
   - {fileID: 11400000, guid: 081d215487ff9ff49a12964699538041, type: 2}
   - {fileID: 11400000, guid: b5e504c2429694643bf499419becd46a, type: 2}
+  BuildingRatePerSecond: 10
   TotalProductionCost: 100
+  DamageLostDistanceModifierCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  HeightAdvantageRangeCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ArrowSpeed: 0
+  FireRatePerMinute: 0
+  AnimationOverrideController: {fileID: 0}

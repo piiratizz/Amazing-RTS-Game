@@ -18,6 +18,7 @@ public class UnitCommandDispatcher : EntityComponent
         _commands.Add(UnitCommandsType.Move, new EntityCommandWrapper<MoveArgs>(new UnitMoveCommand()));
         _commands.Add(UnitCommandsType.Attack, new EntityCommandWrapper<AttackArgs>(new UnitAttackCommand()));
         _commands.Add(UnitCommandsType.ResourceGather, new EntityCommandWrapper<ResourceGatherArgs>(new UnitResourceGatherCommand()));
+        _commands.Add(UnitCommandsType.Build, new EntityCommandWrapper<BuildArgs>(new UnitBuildCommand()));
 
         foreach (var command in _commands.Values)
         {

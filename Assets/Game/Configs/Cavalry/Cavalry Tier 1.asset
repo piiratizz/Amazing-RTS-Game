@@ -15,10 +15,11 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 852a6a28f56d22e45bc97e55821526b7, type: 3}
   DisplayName: "\u041A\u0430\u0432\u0430\u043B\u0435\u0440\u0438\u044F \u0443\u0440\u043E\u0432\u0435\u043D\u044C
     1"
-  Health: 200
+  MaxHealth: 200
+  SpawnHealth: 200
   DetectionRadius: 7
   EntityType: 1
-  UnitName: 
+  Selectable: 1
   ActiveClothParts: []
   ClothLayer: 
   RightHandLayer: 
@@ -57,3 +58,4 @@ MonoBehaviour:
     m_RotationOrder: 4
   ArrowSpeed: 0
   FireRatePerMinute: 0
+  AnimationOverrideController: {fileID: 0}

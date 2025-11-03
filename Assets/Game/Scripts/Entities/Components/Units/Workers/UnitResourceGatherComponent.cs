@@ -18,6 +18,7 @@ public class UnitResourceGatherComponent : EntityComponent
 
     private UnitMovementComponent _movementComponent;
     private UnitAnimationComponent _animationComponent;
+    private UnitWorkerInventoryComponent _inventoryComponent;
     private UnitVisualResourceHoldingComponent _resourceHoldingComponent;
     
     private ResourceEntity _resourceEntity;
@@ -43,6 +44,7 @@ public class UnitResourceGatherComponent : EntityComponent
         _movementComponent = entity.GetEntityComponent<UnitMovementComponent>();
         _animationComponent = entity.GetEntityComponent<UnitAnimationComponent>();
         _resourceHoldingComponent = entity.GetEntityComponent<UnitVisualResourceHoldingComponent>();
+        _inventoryComponent = entity.GetEntityComponent<UnitWorkerInventoryComponent>();
     }
 
     private void OnHitEvent(AnimationHitArgs args)
@@ -96,7 +98,7 @@ public class UnitResourceGatherComponent : EntityComponent
                     {
                         break;
                     }
-                    await UniTask.Yield(cancellationToken);
+                    await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken);
                 }
 
                 if (_resourceSource != null)
@@ -113,7 +115,10 @@ public class UnitResourceGatherComponent : EntityComponent
 
                 if (_liftedResources != 0)
                 {
-                    FindNearestStorage();
+                    if (!TryFindNearestStorage())
+                    {
+                        return;
+                    }
                     await FollowToStorage(cancellationToken);
                 }
                
@@ -135,7 +140,7 @@ public class UnitResourceGatherComponent : EntityComponent
         }
     }
     
-    private void FindNearestStorage()
+    private bool TryFindNearestStorage()
     {
         BuildingResourceStorageComponent nearestStorage = null;
         BuildingEntity nearestStorageBuilding = null;
@@ -146,6 +151,16 @@ public class UnitResourceGatherComponent : EntityComponent
         {
             if (building.TryGetComponent<BuildingEntity>(out var storage))
             {
+                var buildingComponent = storage.GetEntityComponent<BuildingBuildComponent>();
+
+                if (buildingComponent != null)
+                {
+                    if (!buildingComponent.IsBuilded.CurrentValue)
+                    {
+                        continue;
+                    }
+                }
+                
                 if (storage.OwnerId != _unitEntity.OwnerId)
                     continue;
 
@@ -165,6 +180,8 @@ public class UnitResourceGatherComponent : EntityComponent
 
         _storageBuilding = nearestStorageBuilding;
         _resourceStorage = nearestStorage;
+
+        return _storageBuilding != null;
     }
 
     private bool TryFindNearestSource()
@@ -245,6 +262,7 @@ public class UnitResourceGatherComponent : EntityComponent
 
     public void OrderToGather(Entity resourceStorage)
     {
+        _inventoryComponent.AttachTool(WorkerTools.Pickaxe);
         SetNewResourceSource(resourceStorage);
         StartGathering();
     }

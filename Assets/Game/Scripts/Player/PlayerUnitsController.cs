@@ -31,28 +31,42 @@ public class PlayerUnitsController : MonoBehaviour
     {
         if (hit.collider.TryGetComponent(out Entity entity))
         {
-            if (entity is UnitEntity unit)
+            switch (entity)
             {
-                if (entity.OwnerId != player.OwnerId)
-                {
-                    SendAttackCommand(entity);
+                case UnitEntity unit when entity.OwnerId != player.OwnerId:
+                    SendAttackCommand(unit);
                     return;
-                }
-            }
-            else
-            {
-                if (entity is ResourceEntity resource)
-                {
+                case ResourceEntity resource:
                     SendGatherCommand(resource);
                     return;
-                }
+                case BuildingEntity building:
+                    SendBuildCommand(building);
+                    return;
             }
-
         }
         
         MoveSelectedUnitsInSquareFormation(hit.point);
     }
-    
+
+    private void SendBuildCommand(BuildingEntity building)
+    {
+        foreach (var unit in _unitsInFormation)
+        {
+            if(!unit.IsAvailableToSelect || unit == null) 
+                continue;
+            
+            var component = unit.GetEntityComponent<UnitCommandDispatcher>();
+            if (component != null)
+            {
+                component.ExecuteCommand(
+                    UnitCommandsType.Build,
+                    new BuildArgs() { Building = building }
+                );
+            }
+            
+        }
+    }
+
     private void MoveSelectedUnitsInSquareFormation(Vector3 center)
     {
         int count = _unitsInFormation.Count;
@@ -96,7 +110,7 @@ public class PlayerUnitsController : MonoBehaviour
         }
     }
 
-    private void SendGatherCommand(Entity resource)
+    private void SendGatherCommand(ResourceEntity resource)
     {
         foreach (var unit in _unitsInFormation)
         {
@@ -114,7 +128,7 @@ public class PlayerUnitsController : MonoBehaviour
         }
     }
     
-    private void SendAttackCommand(Entity target)
+    private void SendAttackCommand(UnitEntity target)
     {
         for (var i = 0; i < _unitsInFormation.Count; i++)
         {

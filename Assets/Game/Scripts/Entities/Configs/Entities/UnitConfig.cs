@@ -41,6 +41,8 @@ public class UnitConfig : EntityConfig
     // --- BUILDING ---
     [Foldout("Building")]
     public BuildingConfig[] BuildingsAvailableToBuild;
+    [Foldout("Building")]
+    public int BuildingRatePerSecond;
     
     // --- PRODUCTION ---
     [Foldout("Production")]

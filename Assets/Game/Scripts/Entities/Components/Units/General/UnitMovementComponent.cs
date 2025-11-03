@@ -48,8 +48,19 @@ public class UnitMovementComponent : EntityComponent, IMoveable
 
     public bool IsMoving()
     {
-        if (!navMeshAgent.enabled) return false;
-        return navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance;
+        if (!navMeshAgent.enabled || !navMeshAgent.isOnNavMesh)
+            return false;
+        
+        if (navMeshAgent.pathPending)
+            return true;
+        
+        if (navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance + 0.05f)
+            return true;
+        
+        if (navMeshAgent.velocity.sqrMagnitude > 0.01f)
+            return true;
+
+        return false;
     }
 
     public void MoveTo(Vector3 position)

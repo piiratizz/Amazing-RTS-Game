@@ -2,5 +2,6 @@
 {
     Move,
     Attack,
-    ResourceGather
+    ResourceGather,
+    Build
 }
