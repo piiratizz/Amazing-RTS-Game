@@ -17,6 +17,8 @@ public class BuildingUnitsProductionComponent : EntityComponent
 
     private Queue<ProductionLineUnit> _productionQueue;
 
+    private int _ownerId;
+    
     private float _currentUnitProductionValue;
     private float _currentUnitProductionCost;
     private float _productionRatePerSecond;
@@ -29,7 +31,7 @@ public class BuildingUnitsProductionComponent : EntityComponent
 
     private CancellationTokenSource _cancellationToken;
 
-    private UnitFactory _unitFactory;
+    [Inject] private UnitFactory _unitFactory;
 
     private ProductionLineUnit _unitCurrentlyProduced;
     
@@ -39,7 +41,7 @@ public class BuildingUnitsProductionComponent : EntityComponent
     {
         _productionQueue = new Queue<ProductionLineUnit>();
         _progress = new ReactiveProperty<float>();
-        _unitFactory = new UnitFactory(entity.OwnerId);
+        _ownerId = entity.OwnerId;
     }
 
     public override void InitializeFields(EntityConfig config)
@@ -159,7 +161,7 @@ public class BuildingUnitsProductionComponent : EntityComponent
 
     private void OnProductionComplete(ProductionLineUnit unit, Action<ConfigUnitPrefabLink> onUnitProduced)
     {
-        var instance = _unitFactory.CreateUnit(unit.Unit, unitsSpawnPoint.position);
+        var instance = _unitFactory.Create(_ownerId, unit.Unit, unitsSpawnPoint.position);
         onUnitProduced?.Invoke(unit.Unit);
     }
 }

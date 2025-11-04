@@ -19,18 +19,29 @@ public class GameplayInstaller : MonoInstaller
         Container.BindFactory<int, PlayerModes, Player, PlayerFactory>()
             .FromComponentInNewPrefab(playerPrefab)
             .AsSingle();
-
-        StartGameplay();
-    }
-
-    private void StartGameplay()
-    {
+        
         PlayerFactory playerFactory = Container.Resolve<PlayerFactory>();
         
         Player playerInstance = playerFactory.Create(1, PlayerModes.Default);
         Container.Bind<Player>().FromInstance(playerInstance).AsSingle();
         
         var hudInstance = Container.InstantiatePrefabForComponent<GameplayHUD>(gameplayUIPrefab);
-        Container.QueueForInject(hudInstance);
+        Container.Bind<GameplayHUD>().FromInstance(hudInstance).AsSingle();
+        
+        Container.BindFactory<int, ConfigUnitPrefabLink, Vector3, UnitEntity, UnitFactory>()
+            .FromMethod(CreateUnit);
+    }
+
+    private UnitEntity CreateUnit(DiContainer container, int ownerId, ConfigUnitPrefabLink link, Vector3 position)
+    {
+        var unit = container.InstantiatePrefabForComponent<UnitEntity>(
+            link.UnitPrefab,
+            position,
+            Quaternion.identity,
+            null
+        );
+
+        unit.Init(ownerId, link.Config);
+        return unit;
     }
 }

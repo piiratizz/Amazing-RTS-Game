@@ -91,7 +91,7 @@ public class UnitMovementComponent : EntityComponent, IMoveable
         
         if (navMeshAgent.enabled)
         {
-            navMeshAgent.destination = transform.position;
+            //navMeshAgent.destination = transform.position;
         }
     }
 

@@ -13,6 +13,8 @@ public class PlayerSelectionManager : MonoBehaviour
     [SerializeField] private Color backgroundColor = new Color(0.3f, 0.6f, 1f, 0.2f);
     [SerializeField] private Player player;
     
+    public bool IsSelecting => _isSelecting;
+    
     private readonly List<Entity> _selectedEntities = new();
     private Vector3 _bottomLeft;
     private Vector3 _bottomRight;
@@ -53,7 +55,7 @@ public class PlayerSelectionManager : MonoBehaviour
         OnSelectionChanged?.Invoke(_selectedEntities);
     }
     
-    private void ClearSelection()
+    public void ClearSelection()
     {
         for (var i = 0; i < _selectedEntities.Count; i++)
         {
@@ -66,6 +68,7 @@ public class PlayerSelectionManager : MonoBehaviour
 
         _selectedEntities.Clear();
         OnSelectionChanged?.Invoke(_selectedEntities);
+        _isSelecting = false;
     }
 
     private void CreateSelectionBox(Vector3 left, Vector3 right)

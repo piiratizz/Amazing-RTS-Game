@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Zenject;
 
 public class Entity : MonoBehaviour, IOwned
 {
@@ -10,6 +11,9 @@ public class Entity : MonoBehaviour, IOwned
     [SerializeField] private List<EntityComponent> entityComponents;
     [SerializeField] private EntityConfig entityConfig;
     [SerializeField] private bool initializeOnStart = true;
+    
+    [Inject] private GameplayHUD _gameplayHUD;
+    private MinimapManager _minimapManager;
     
     protected EntityConfig Config => entityConfig;
     
@@ -48,6 +52,9 @@ public class Entity : MonoBehaviour, IOwned
             comp.Init(this);
             comp.InitializeFields(entityConfig);
         }
+        
+        _minimapManager = _gameplayHUD.MinimapManager;
+        _minimapManager.RegisterEntity(this);
     }
 
     private void Update()
@@ -98,5 +105,6 @@ public class Entity : MonoBehaviour, IOwned
     private void OnDestroy()
     {
         OnEntityDestroyed = null;
+        _minimapManager.DeleteEntity(this);
     }
 }

@@ -38,7 +38,13 @@ public class PlayerInputHandler : MonoBehaviour
     private void EndSelection(InputAction.CallbackContext context)
     {
         if (RaycastMouse(out var hit))
+        {
             playerSelectionManager.EndSelection(hit.point);
+        }
+        else if (playerSelectionManager.IsSelecting)
+        {
+            playerSelectionManager.ClearSelection();
+        }
     }
 
     private void OnRightClick(InputAction.CallbackContext context)
@@ -51,14 +57,24 @@ public class PlayerInputHandler : MonoBehaviour
     {
         var mousePosition = Mouse.current.position.ReadValue();
         
-        if (!IsPointerOverUI(mousePosition))
+        if (mousePosition.x < 0 ||
+            mousePosition.y < 0 ||
+            mousePosition.x > Screen.width ||
+            mousePosition.y > Screen.height)
         {
-            return Physics.Raycast(camera.ScreenPointToRay(mousePosition), out hit);
+            hit = default;
+            return false;
         }
-
-        hit = default;
-        return false;
+        
+        if (IsPointerOverUI(mousePosition))
+        {
+            hit = default;
+            return false;
+        }
+        
+        return Physics.Raycast(camera.ScreenPointToRay(mousePosition), out hit);
     }
+
         
     private bool IsPointerOverUI(Vector2 mousePosition)
     {
