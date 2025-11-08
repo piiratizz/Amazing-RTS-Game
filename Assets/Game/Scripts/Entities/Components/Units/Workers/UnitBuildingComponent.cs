@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 public class UnitBuildingComponent : EntityComponent
 {
-    private List<BuildingConfig> _availableBuildings;
+    private List<BuildingConfigPrefabLink> _availableBuildings;
 
     private CancellationTokenSource _cancellationTokenSource;
     
@@ -17,11 +17,11 @@ public class UnitBuildingComponent : EntityComponent
     private UnitAnimationComponent _animationComponent;
     private UnitWorkerInventoryComponent _inventoryComponent;
     
-    public IReadOnlyList<BuildingConfig> AvailableBuildings => _availableBuildings;
+    public IReadOnlyList<BuildingConfigPrefabLink> AvailableBuildings => _availableBuildings;
     
     public override void Init(Entity entity)
     {
-        _availableBuildings = new List<BuildingConfig>();
+        _availableBuildings = new List<BuildingConfigPrefabLink>();
         
         _movementComponent = entity.GetEntityComponent<UnitMovementComponent>();
         _animationComponent = entity.GetEntityComponent<UnitAnimationComponent>();
@@ -78,11 +78,11 @@ public class UnitBuildingComponent : EntityComponent
         float rad = angle * Mathf.Deg2Rad;
         Vector3 offset = new Vector3(Mathf.Cos(rad), 0f, Mathf.Sin(rad)) * r;
         Vector3 targetPoint = buildingEntity.transform.position + offset;
-        
+
         _movementComponent.MoveTo(targetPoint);
         await UniTask.Yield(_cancellationTokenSource.Token);
         await UniTask.WaitWhile(_movementComponent.IsMoving, cancellationToken: _cancellationTokenSource.Token);
-        
+
         _animationComponent.SetAttack(true);
         transform.DOLookAt(buildingEntity.transform.position, 0.5f, AxisConstraint.Y);
         

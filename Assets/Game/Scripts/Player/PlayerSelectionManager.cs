@@ -77,6 +77,8 @@ public class PlayerSelectionManager : MonoBehaviour
         var center = (left + right) / 2f + Vector3.up * (boxHeight / 2f);
         var size = new Vector3(width, boxHeight, Mathf.Abs(left.z - right.z));
         
+        bool unitWasSelected = false;
+        
         foreach (var col in Physics.OverlapBox(center, size / 2))
         {
             if (!col.TryGetComponent(out Entity entity)) continue;
@@ -86,8 +88,20 @@ public class PlayerSelectionManager : MonoBehaviour
             if (!entity.IsAvailableToSelect) continue;
 
             if (entity.OwnerId != player.OwnerId && entity.OwnerId != 0) continue;
+
+            if (entity is UnitEntity && !unitWasSelected)
+            {
+                _selectedEntities.RemoveAll(e => e is not UnitEntity);
+                unitWasSelected = true;
+            }
+            
+            if(unitWasSelected && entity is not UnitEntity) continue;
             
             _selectedEntities.Add(entity);
+        }
+
+        foreach (var entity in _selectedEntities)
+        {
             entity.OnSelect();
         }
     }

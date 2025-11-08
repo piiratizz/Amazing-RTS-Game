@@ -7179,6 +7179,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6879839181109687417, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 6899721401656976755, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -7844,6 +7848,10 @@ PrefabInstance:
     - target: {fileID: 6879839181109687417, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879839181109687417, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6899721401656976755, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
       propertyPath: m_Layer
@@ -15019,6 +15027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 6656914476081953850, guid: 9eb88b1eeadd7924091acbb6eedf2ba8, type: 3}
   gameplayUIPrefab: {fileID: -3007325541284157859, guid: e355788a55c0d2b4992f3ea56da646a8, type: 3}
+  gridPrefab: {fileID: 8567894080588874463, guid: 49d02a3226423b249808cc44ce1f2542, type: 3}
 --- !u!1001 &1059527926
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16197,6 +16206,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6879839181109687417, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 6899721401656976755, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -17205,6 +17218,10 @@ PrefabInstance:
     - target: {fileID: 6879839181109687417, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879839181109687417, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6899721401656976755, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
       propertyPath: m_Layer
@@ -22547,6 +22564,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6879839181109687417, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 6899721401656976755, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -25975,6 +25996,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6879839181109687417, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 6899721401656976755, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -27680,6 +27705,10 @@ PrefabInstance:
     - target: {fileID: 6879839181109687417, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6879839181109687417, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6899721401656976755, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
       propertyPath: m_Layer
@@ -33898,6 +33927,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3477233060432461936, guid: fe5036b4f0945c643934d034c545c409, type: 3}
+      propertyPath: initializeOnStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3477233060432461936, guid: fe5036b4f0945c643934d034c545c409, type: 3}
       propertyPath: entityComponents.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -34002,6 +34035,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArcheryBuilding
       objectReference: {fileID: 0}
+    - target: {fileID: 7569933923917703589, guid: 6b7eddd6c997eb941b8502fb340a0bf2, type: 3}
+      propertyPath: initializeOnStart
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -34018,6 +34055,10 @@ PrefabInstance:
     - target: {fileID: 1323399669518342436, guid: 5ac512bfb6705994790a8f7a13f28dc3, type: 3}
       propertyPath: m_Name
       value: BarracksBuilding
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627359314723417412, guid: 5ac512bfb6705994790a8f7a13f28dc3, type: 3}
+      propertyPath: initializeOnStart
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8951716489635594881, guid: 5ac512bfb6705994790a8f7a13f28dc3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34436,6 +34477,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6879839181109687417, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
+      propertyPath: m_TagString
+      value: Unit
+      objectReference: {fileID: 0}
     - target: {fileID: 6899721401656976755, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -34502,6 +34547,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StablesBuilding
       objectReference: {fileID: 0}
+    - target: {fileID: 4543200640813814052, guid: 94619e962859aae41bd28c3eca04e2b8, type: 3}
+      propertyPath: initializeOnStart
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -34515,6 +34564,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3586531835046653686, guid: 2a6082d48159bf34b8dc2251df0157ed, type: 3}
+      propertyPath: initializeOnStart
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4167447457490215356, guid: 2a6082d48159bf34b8dc2251df0157ed, type: 3}
       propertyPath: m_Name
       value: StorageBuilding

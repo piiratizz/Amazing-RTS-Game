@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using GlobalResourceStorageSystem;
 using R3;
 using UnityEngine;
 using Zenject;
@@ -11,7 +12,8 @@ public class BuildingUnitsProductionComponent : EntityComponent
 {
     [SerializeField] private Transform unitsSpawnPoint;
 
-    [Inject] private GlobalResourceStorage _resourceStorage;
+    [Inject] private ResourcesStoragesManager _storagesManager;
+    private GlobalResourceStorage _resourceStorage;
     
     private BuildingConfig _buildingConfig;
 
@@ -42,6 +44,7 @@ public class BuildingUnitsProductionComponent : EntityComponent
         _productionQueue = new Queue<ProductionLineUnit>();
         _progress = new ReactiveProperty<float>();
         _ownerId = entity.OwnerId;
+        _resourceStorage = _storagesManager.Get(_ownerId);
     }
 
     public override void InitializeFields(EntityConfig config)

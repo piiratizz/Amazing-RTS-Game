@@ -5,18 +5,18 @@ using Zenject;
 
 namespace Game.Scripts.UI
 {
-    public class SelectionPanel : MonoBehaviour
+    public class SelectionPanel : UIModule
     {
         [SerializeField] private List<SelectionPanelModule> modules;
         [Inject] private Player _player;
         
-        private void Start()
+        public override void Initialize(int ownerId)
         {
             Hide();
             
             foreach (var module in modules)
             {
-                module.Initialize();
+                module.Initialize(ownerId);
             }
         }
 

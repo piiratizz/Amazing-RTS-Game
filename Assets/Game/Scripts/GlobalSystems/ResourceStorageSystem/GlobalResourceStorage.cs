@@ -28,7 +28,7 @@ public class GlobalResourceStorage
     
     public bool TrySpend(ResourceType resourceType, int amount)
     {
-        int currentAmount = _resources[resourceType];
+        int currentAmount = _resources.GetValueOrDefault(resourceType, 0);
         
         if (currentAmount - amount < 0)
         {
@@ -42,11 +42,11 @@ public class GlobalResourceStorage
 
     public bool IsEnough(ResourceType resourceType, int amount)
     {
-        return _resources[resourceType] - amount >= 0;
+        return _resources.GetValueOrDefault(resourceType, 0) - amount >= 0;
     }
     
     public int GetResource(ResourceType resourceType)
     {
-        return _resources[resourceType];
+        return _resources.GetValueOrDefault(resourceType, 0);
     }
 }

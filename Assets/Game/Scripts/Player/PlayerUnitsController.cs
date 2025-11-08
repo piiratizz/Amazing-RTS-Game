@@ -48,7 +48,7 @@ public class PlayerUnitsController : MonoBehaviour
         MoveSelectedUnitsInSquareFormation(hit.point);
     }
 
-    private void SendBuildCommand(BuildingEntity building)
+    public void SendBuildCommand(BuildingEntity building)
     {
         foreach (var unit in _unitsInFormation)
         {
@@ -110,7 +110,7 @@ public class PlayerUnitsController : MonoBehaviour
         }
     }
 
-    private void SendGatherCommand(ResourceEntity resource)
+    public void SendGatherCommand(ResourceEntity resource)
     {
         foreach (var unit in _unitsInFormation)
         {

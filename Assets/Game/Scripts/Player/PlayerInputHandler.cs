@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using R3;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -10,25 +11,82 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private new Camera camera;
     [SerializeField] private PlayerSelectionManager playerSelectionManager;
     [SerializeField] private PlayerUnitsController playerUnitController;
+    [SerializeField] private PlayerBuildingManager playerBuildingManager;
+    [SerializeField] private PlayerModeManager playerModeManager;
+    [SerializeField] private LayerMask terrainLayer;
+
+    private readonly CompositeDisposable _disposables = new CompositeDisposable();
+
+    private void SubscribeModeChangeHandling()
+    {
+        UnsubscribeAllActions();
+        
+        playerModeManager.Mode.Where(m => m == PlayerModes.Default)
+            .Subscribe(_ => SubscribeDefaultActions())
+            .AddTo(_disposables);
+
+        playerModeManager.Mode.Where(m => m == PlayerModes.Building)
+            .Subscribe(_ => SubscribeBuildingActions())
+            .AddTo(_disposables);
+    }
 
     private void OnEnable()
     {
-        inputActions.FindAction("Attack").performed += StartSelection;
-        inputActions.FindAction("Attack").canceled += EndSelection;
-        inputActions.FindAction("RightButton").performed += OnRightClick;
-
-        playerSelectionManager.OnSelectionChanged += playerUnitController.SetSelectedUnits;
+        SubscribeModeChangeHandling();
     }
 
     private void OnDisable()
     {
-        inputActions.FindAction("Attack").performed -= StartSelection;
-        inputActions.FindAction("Attack").canceled -= EndSelection;
-        inputActions.FindAction("RightButton").performed -= OnRightClick;
-        
-        playerSelectionManager.OnSelectionChanged -= playerUnitController.SetSelectedUnits;
+        UnsubscribeAllActions();
+        ClearSubscription();
     }
 
+    private void SubscribeDefaultActions()
+    {
+        UnsubscribeAllActions();
+
+        inputActions.FindAction("Attack").performed += StartSelection;
+        inputActions.FindAction("Attack").canceled += EndSelection;
+        inputActions.FindAction("RightButton").performed += TriggerPlayerCommandHandling;
+
+        playerSelectionManager.OnSelectionChanged += playerUnitController.SetSelectedUnits;
+    }
+
+    private void SubscribeBuildingActions()
+    {
+        UnsubscribeAllActions();
+
+        inputActions.FindAction("Attack").performed += PlaceBuilding;
+        inputActions.FindAction("RightButton").canceled += StopBuilding;
+    }
+
+    private void PlaceBuilding(InputAction.CallbackContext context)
+    {
+        playerBuildingManager.PlaceBuilding();
+    }
+
+    private void StopBuilding(InputAction.CallbackContext context)
+    {
+        playerBuildingManager.StopBuilding();
+    }
+
+    private void UnsubscribeAllActions()
+    {
+        Debug.Log("Unsubscribing all");
+        inputActions.FindAction("Attack").performed -= StartSelection;
+        inputActions.FindAction("Attack").canceled -= EndSelection;
+        inputActions.FindAction("RightButton").performed -= TriggerPlayerCommandHandling;
+        playerSelectionManager.OnSelectionChanged -= playerUnitController.SetSelectedUnits;
+
+        inputActions.FindAction("Attack").performed -= PlaceBuilding;
+        inputActions.FindAction("RightButton").canceled -= StopBuilding;
+    }
+
+    private void ClearSubscription()
+    {
+        _disposables?.Clear();
+    }
+    
     private void StartSelection(InputAction.CallbackContext context)
     {
         if (RaycastMouse(out var hit))
@@ -47,16 +105,16 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
-    private void OnRightClick(InputAction.CallbackContext context)
+    private void TriggerPlayerCommandHandling(InputAction.CallbackContext context)
     {
-        if (RaycastMouse(out var hit))
+        if (RaycastMouse(out var hit, false))
             playerUnitController.HandlePlayerCommand(player, hit);
     }
 
-    private bool RaycastMouse(out RaycastHit hit)
+    private bool RaycastMouse(out RaycastHit hit, bool useTerrainLayer = true)
     {
         var mousePosition = Mouse.current.position.ReadValue();
-        
+
         if (mousePosition.x < 0 ||
             mousePosition.y < 0 ||
             mousePosition.x > Screen.width ||
@@ -65,17 +123,21 @@ public class PlayerInputHandler : MonoBehaviour
             hit = default;
             return false;
         }
-        
+
         if (IsPointerOverUI(mousePosition))
         {
             hit = default;
             return false;
         }
+
+        if (useTerrainLayer)
+        {
+            return Physics.Raycast(camera.ScreenPointToRay(mousePosition), out hit, Mathf.Infinity, terrainLayer);
+        }
         
-        return Physics.Raycast(camera.ScreenPointToRay(mousePosition), out hit);
+        return Physics.Raycast(camera.ScreenPointToRay(mousePosition), out hit, Mathf.Infinity);
     }
 
-        
     private bool IsPointerOverUI(Vector2 mousePosition)
     {
         PointerEventData pointerData = new PointerEventData(EventSystem.current)
@@ -86,6 +148,5 @@ public class PlayerInputHandler : MonoBehaviour
         var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, results);
         return results.Count > 0;
-    }   
-        
+    }
 }

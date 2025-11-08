@@ -1,21 +1,31 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using GlobalResourceStorageSystem;
 using TMPro;
 using UnityEngine;
 using Zenject;
 
-public class ResourcesCountView : MonoBehaviour
+public class ResourcesCountView : UIModule
 {
     [SerializeField] private TextMeshProUGUI foodText;
     [SerializeField] private TextMeshProUGUI woodText;
     [SerializeField] private TextMeshProUGUI goldText;
 
-    [Inject] private GlobalResourceStorage _globalResourceStorage;
+    [Inject] private ResourcesStoragesManager _resourceStorages;
+    private GlobalResourceStorage _globalResourceStorage;
     
-    private void Start()
+    private bool _initialized;
+    
+    public override void Initialize(int ownerId)
     {
+        _globalResourceStorage = _resourceStorages.Get(ownerId);
+        
         foodText.text = _globalResourceStorage.GetResource(ResourceType.Food).ToString();
         woodText.text = _globalResourceStorage.GetResource(ResourceType.Wood).ToString();
         goldText.text = _globalResourceStorage.GetResource(ResourceType.Gold).ToString();
+        
+        _globalResourceStorage.OnResourceChanged += OnResourceChanged;
+        _initialized = true;
     }
 
     private void OnResourceChanged(ResourceType resourceType, int currentAmount)
@@ -41,6 +51,7 @@ public class ResourcesCountView : MonoBehaviour
     
     private void OnEnable()
     {
+        if(!_initialized) return;
         _globalResourceStorage.OnResourceChanged += OnResourceChanged;
     }
 

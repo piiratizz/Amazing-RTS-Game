@@ -16,6 +16,10 @@ public class BuildingConfig : EntityConfig
     [Header("Units Production")] 
     public UnitResourceCost[] UnitsCanProduce;
     public float ProductionRatePerSecond;
+
+    [Space] 
+    [Header("Build")] 
+    public GameObject BuildPreviewPrefab;
 }
 
 [Serializable]

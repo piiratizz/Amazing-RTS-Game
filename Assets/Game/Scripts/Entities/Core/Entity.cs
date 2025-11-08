@@ -53,7 +53,7 @@ public class Entity : MonoBehaviour, IOwned
             comp.InitializeFields(entityConfig);
         }
         
-        _minimapManager = _gameplayHUD.MinimapManager;
+        _minimapManager = _gameplayHUD.GetModule<MinimapManager>();
         _minimapManager.RegisterEntity(this);
     }
 

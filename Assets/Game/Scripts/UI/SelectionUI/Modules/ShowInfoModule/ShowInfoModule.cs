@@ -33,7 +33,7 @@ namespace Game.Scripts.UI.Modules
         private Dictionary<Type, IEntityInfoPresenter> _presenters;
         private IEntityInfoPresenter _currentPresenter;
 
-        public override void Initialize()
+        public override void Initialize(int ownerId)
         {
             _presenters = new Dictionary<Type, IEntityInfoPresenter>()
             {

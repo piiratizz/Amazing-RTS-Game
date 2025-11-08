@@ -25,9 +25,9 @@ MonoBehaviour:
   Preview: {fileID: 21300000, guid: ba9a671a342d07c45a8af9ed6f3202c0, type: 3}
   BuildResourceCost:
   - Resource: 1
-    Amount: 500
+    Amount: 50
   - Resource: 2
-    Amount: 1000
+    Amount: 10
   UnitsCanProduce:
   - ResourceCost:
     - Resource: 0
@@ -36,3 +36,4 @@ MonoBehaviour:
       Config: {fileID: 11400000, guid: c4b4efc3799f30644abdb85883368522, type: 2}
       UnitPrefab: {fileID: 6676096206097128817, guid: 95e27dc40aefcd347986c0470c568303, type: 3}
   ProductionRatePerSecond: 10
+  BuildPreviewPrefab: {fileID: 5321064438635060122, guid: da00f0d5963d3094f99d6feb9fb6d36d, type: 3}

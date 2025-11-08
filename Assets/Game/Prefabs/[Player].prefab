@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 870841563430586439}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.8268342, z: -9.238795}
+  m_LocalPosition: {x: 0, y: 10, z: -12.160001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -196,7 +196,7 @@ Transform:
   m_GameObject: {fileID: 3173490054690149674}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.8268342, z: -9.238795}
+  m_LocalPosition: {x: 0, y: 10, z: -12.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -259,8 +259,10 @@ GameObject:
   - component: {fileID: 5316679333588410944}
   - component: {fileID: 2823008411803129603}
   - component: {fileID: 265158882379995662}
+  - component: {fileID: 3825186369808132313}
+  - component: {fileID: 6757787610295834407}
   m_Layer: 0
-  m_Name: Player
+  m_Name: '[Player]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -275,7 +277,7 @@ Transform:
   m_GameObject: {fileID: 5902005639738245091}
   serializedVersion: 2
   m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: 1.7, y: 21.7, z: 2.7}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -296,8 +298,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ownerId: 1
-  _playerSelectionManager: {fileID: 2823008411803129603}
-  _playerUnitsController: {fileID: 265158882379995662}
+  playerSelectionManager: {fileID: 2823008411803129603}
+  playerUnitsController: {fileID: 265158882379995662}
+  playerCameraMovement: {fileID: 3002538136942522097}
+  playerModeManager: {fileID: 3825186369808132313}
 --- !u!114 &3002538136942522097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,7 +315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  thickness: 150
+  thicknessPercent: 2
 --- !u!114 &5316679333588410944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,6 +333,11 @@ MonoBehaviour:
   camera: {fileID: 5743230167762377705}
   playerSelectionManager: {fileID: 2823008411803129603}
   playerUnitController: {fileID: 265158882379995662}
+  playerBuildingManager: {fileID: 6757787610295834407}
+  playerModeManager: {fileID: 3825186369808132313}
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &2823008411803129603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -360,3 +369,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 6656914476081953850}
   formationSpacing: 1.5
+--- !u!114 &3825186369808132313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5902005639738245091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2572227f9ff641c7a8c8b068f8816d35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6757787610295834407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5902005639738245091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd5650765ea44b38d621a3565f16539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 5743230167762377705}
+  placementLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  collisionConflictLayer:
+    serializedVersion: 2
+    m_Bits: 640
+  validPlacementMaterial: {fileID: 2100000, guid: 3eef8eae19c3acc449d797d113413cd1, type: 2}
+  invalidPlacementMaterial: {fileID: 2100000, guid: f9c00bb3790ab424a912b65a44ba0b22, type: 2}
+  player: {fileID: 6656914476081953850}
+  playerUnitsController: {fileID: 265158882379995662}

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using NaughtyAttributes; 
 
 [CreateAssetMenu(fileName = "UnitConfig",  menuName = "Configs/UnitConfig")]
@@ -40,7 +41,7 @@ public class UnitConfig : EntityConfig
     
     // --- BUILDING ---
     [Foldout("Building")]
-    public BuildingConfig[] BuildingsAvailableToBuild;
+    public BuildingConfigPrefabLink[] BuildingsAvailableToBuild;
     [Foldout("Building")]
     public int BuildingRatePerSecond;
     
@@ -60,4 +61,11 @@ public class UnitConfig : EntityConfig
     
     [Foldout("Animation Override")]
     public AnimatorOverrideController AnimationOverrideController;
+}
+
+[Serializable]
+public class BuildingConfigPrefabLink
+{
+    public BuildingConfig Config;
+    public BuildingEntity Prefab;
 }

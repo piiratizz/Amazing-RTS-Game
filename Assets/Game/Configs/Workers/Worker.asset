@@ -42,8 +42,16 @@ MonoBehaviour:
   GatherRatePerSecond: 5
   LiftingCapacity: 20
   BuildingsAvailableToBuild:
-  - {fileID: 11400000, guid: 081d215487ff9ff49a12964699538041, type: 2}
-  - {fileID: 11400000, guid: b5e504c2429694643bf499419becd46a, type: 2}
+  - Config: {fileID: 11400000, guid: 081d215487ff9ff49a12964699538041, type: 2}
+    Prefab: {fileID: 3586531835046653686, guid: 2a6082d48159bf34b8dc2251df0157ed, type: 3}
+  - Config: {fileID: 11400000, guid: d8e0442b774a458438fe4321429101f8, type: 2}
+    Prefab: {fileID: 7569933923917703589, guid: 6b7eddd6c997eb941b8502fb340a0bf2, type: 3}
+  - Config: {fileID: 11400000, guid: d16384ffddc7cf94ab67200bace3de91, type: 2}
+    Prefab: {fileID: 7627359314723417412, guid: 5ac512bfb6705994790a8f7a13f28dc3, type: 3}
+  - Config: {fileID: 11400000, guid: 4c01ecb0d159a654a8030d8e2b2a2342, type: 2}
+    Prefab: {fileID: 4543200640813814052, guid: 94619e962859aae41bd28c3eca04e2b8, type: 3}
+  - Config: {fileID: 11400000, guid: b5e504c2429694643bf499419becd46a, type: 2}
+    Prefab: {fileID: 3477233060432461936, guid: fe5036b4f0945c643934d034c545c409, type: 3}
   BuildingRatePerSecond: 10
   TotalProductionCost: 100
   DamageLostDistanceModifierCurve:

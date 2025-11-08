@@ -5,25 +5,24 @@ using Zenject;
 public class Player : MonoBehaviour
 {
     [SerializeField] private int ownerId;
-    [SerializeField] private PlayerSelectionManager _playerSelectionManager;
-    [SerializeField] private PlayerUnitsController _playerUnitsController;
+    [SerializeField] private PlayerSelectionManager playerSelectionManager;
+    [SerializeField] private PlayerUnitsController playerUnitsController;
+    [SerializeField] private PlayerCameraMovement playerCameraMovement;
+    [SerializeField] private PlayerModeManager playerModeManager;
     
-    private PlayerModes _playerMode;
-    
-    public PlayerSelectionManager PlayerSelectionManager => _playerSelectionManager;
-    public PlayerUnitsController PlayerUnitsController => _playerUnitsController;
+    public PlayerSelectionManager PlayerSelectionManager => playerSelectionManager;
+    public PlayerUnitsController PlayerUnitsController => playerUnitsController;
     public int OwnerId => ownerId;
-    public PlayerModes Mode => _playerMode;
     
     [Inject]
     public void Construct(int ownerId, PlayerModes mode)
     {
         this.ownerId = ownerId;
-        _playerMode = mode;
+        playerModeManager.SetMode(mode);
     }
 
-    public void SetMode(PlayerModes mode)
+    public void SetCameraPosition(Vector3 position)
     {
-        _playerMode = mode;
+        playerCameraMovement.MoveToPosition(position);
     }
 }
