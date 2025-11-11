@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Game.Scripts.UI.Modules.Presenters
 {
     public class UnitsInfoPresenter : IEntityInfoPresenter
     {
+        private Player _player;
+        
         private UnitInfoPanelView _unitInfoPanelViewPrefab;
         private Transform _unitInfoPanelUIContainer;
 
@@ -30,7 +34,7 @@ namespace Game.Scripts.UI.Modules.Presenters
 
         private readonly Dictionary<string, Entity> _groupedEntities = new Dictionary<string, Entity>(10);
         private readonly Dictionary<string, int> _entitiesCount = new Dictionary<string, int>(10);
-
+        
         public UnitsInfoPresenter(
             UnitInfoPanelView unitInfoPanelViewPrefab,
             Transform unitInfoPanelUIContainer,
@@ -42,7 +46,8 @@ namespace Game.Scripts.UI.Modules.Presenters
             TextMeshProUGUI attackStatsText,
             TextMeshProUGUI armorStatsText,
             TextMeshProUGUI speedStatsText,
-            TextMeshProUGUI rangeStatsText)
+            TextMeshProUGUI rangeStatsText,
+            Player player)
         {
             _unitInfoPanelViewPrefab = unitInfoPanelViewPrefab;
             _unitInfoPanelUIContainer = unitInfoPanelUIContainer;
@@ -55,6 +60,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _armorStatsText = armorStatsText;
             _speedStatsText = speedStatsText;
             _rangeStatsText = rangeStatsText;
+            _player = player;
         }
 
 
@@ -101,7 +107,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             {
                 if (!_panelsInstances.ContainsKey(entityGroup.Key))
                 {
-                    var instance = CreateInfoPanelView(entityGroup.Key, entityGroup.Value);
+                    var instance = CreateInfoPanelView(entityGroup.Key, entityGroup.Value, OnUnitGroupClicked);
                     _panelsInstances.Add(entityGroup.Key, instance);
                 }
                 else
@@ -111,6 +117,11 @@ namespace Game.Scripts.UI.Modules.Presenters
                     instance.UpdateCount(_entitiesCount[entityGroup.Key]);
                 }
             }
+        }
+
+        private void OnUnitGroupClicked(string clickedEntityName)
+        {
+            _player.PlayerSelectionManager.RemoveAllFromSelection(e => e.DisplayName != clickedEntityName);
         }
 
         private void ShowSingleUnit(Entity target)
@@ -154,10 +165,10 @@ namespace Game.Scripts.UI.Modules.Presenters
             }
         }
 
-        private UnitInfoPanelView CreateInfoPanelView(string entityName, Entity selectable)
+        private UnitInfoPanelView CreateInfoPanelView(string entityName, Entity selectable, UnityAction<string> onClick)
         {
-            var instance = UnityEngine.Object.Instantiate(_unitInfoPanelViewPrefab, _unitInfoPanelUIContainer); // Use _unitInfoPanelViewPrefab
-            instance.Initialize(_entitiesCount[entityName], selectable.Icon);
+            var instance = UnityEngine.Object.Instantiate(_unitInfoPanelViewPrefab, _unitInfoPanelUIContainer);
+            instance.Initialize(entityName, _entitiesCount[entityName], selectable.Icon, onClick);
             return instance;
         }
         

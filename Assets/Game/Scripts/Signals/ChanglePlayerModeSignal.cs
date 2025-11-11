@@ -1,5 +1,5 @@
 ﻿public class ChanglePlayerModeSignal
 {
     public PlayerModes Mode;
-    public BuildingConfigPrefabLink Link;
+    public BuildingTypePrefabLink Link;
 }

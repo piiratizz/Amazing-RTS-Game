@@ -38,6 +38,8 @@ public class PlayerSelectionManager : MonoBehaviour
     
     public void EndSelection(Vector3 worldPoint)
     {
+        if(_isSelecting == false) return;
+        
         _bottomRight = worldPoint;
         CreateSelectionBox(_bottomLeft, _bottomRight);
         
@@ -52,6 +54,21 @@ public class PlayerSelectionManager : MonoBehaviour
     private void SelectionDestroyed(Entity entity)
     {
         _selectedEntities.Remove(entity);
+        OnSelectionChanged?.Invoke(_selectedEntities);
+    }
+
+    public void RemoveAllFromSelection(Predicate<Entity> predicate)
+    {
+        for (var i = 0; i < _selectedEntities.Count; i++)
+        {
+            if (predicate(_selectedEntities[i]))
+            {
+                _selectedEntities[i].OnDeselect();
+                _selectedEntities.RemoveAt(i);
+                i = -1;
+            }
+        }
+        
         OnSelectionChanged?.Invoke(_selectedEntities);
     }
     
@@ -71,22 +88,29 @@ public class PlayerSelectionManager : MonoBehaviour
         _isSelecting = false;
     }
 
-    private void CreateSelectionBox(Vector3 left, Vector3 right)
+    private Vector3 _center;
+    private Vector3 _halfExtents;
+    
+    public void CreateSelectionBox(Vector3 left, Vector3 right)
     {
-        var width = Vector3.Distance(new Vector3(left.x, 0, left.z), new Vector3(right.x, 0, right.z));
-        var center = (left + right) / 2f + Vector3.up * (boxHeight / 2f);
-        var size = new Vector3(width, boxHeight, Mathf.Abs(left.z - right.z));
-        
+        float width = Mathf.Abs(left.x - right.x);
+        float depth = Mathf.Abs(left.z - right.z);
+
+        Vector3 center = (left + right) * 0.5f + Vector3.up * (boxHeight * 0.5f);
+        Vector3 size   = new Vector3(width, boxHeight, depth);
+
+        _center = center;
+        _halfExtents = size * 0.5f;
+
         bool unitWasSelected = false;
         
-        foreach (var col in Physics.OverlapBox(center, size / 2))
+        Collider[] cols = Physics.OverlapBox(center, _halfExtents, Quaternion.identity);
+
+        foreach (var col in cols)
         {
             if (!col.TryGetComponent(out Entity entity)) continue;
-            
-            if(!entity.Selectable) continue;
-            
+            if (!entity.Selectable) continue;
             if (!entity.IsAvailableToSelect) continue;
-
             if (entity.OwnerId != player.OwnerId && entity.OwnerId != 0) continue;
 
             if (entity is UnitEntity && !unitWasSelected)
@@ -94,17 +118,16 @@ public class PlayerSelectionManager : MonoBehaviour
                 _selectedEntities.RemoveAll(e => e is not UnitEntity);
                 unitWasSelected = true;
             }
-            
-            if(unitWasSelected && entity is not UnitEntity) continue;
-            
+
+            if (unitWasSelected && entity is not UnitEntity) continue;
+
             _selectedEntities.Add(entity);
         }
 
-        foreach (var entity in _selectedEntities)
-        {
-            entity.OnSelect();
-        }
+        foreach (var e in _selectedEntities)
+            e.OnSelect();
     }
+
     
     private void OnGUI()
     {
@@ -137,5 +160,11 @@ public class PlayerSelectionManager : MonoBehaviour
         GUI.DrawTexture(new Rect(rect.xMin, rect.yMax - thickness, rect.width, thickness), Texture2D.whiteTexture);
         GUI.DrawTexture(new Rect(rect.xMin, rect.yMin, thickness, rect.height), Texture2D.whiteTexture);
         GUI.DrawTexture(new Rect(rect.xMax - thickness, rect.yMin, thickness, rect.height), Texture2D.whiteTexture);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(_center, _halfExtents);
     }
 }

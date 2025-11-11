@@ -149,6 +149,8 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 64
+  isLongRange: 0
+  delayBetweenIterations: 0.3
 --- !u!114 &4424242276120430770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,6 +505,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8291687141c44407b9b3d3f7d2be1437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitPoint: {fileID: 0}
+  author: {fileID: 0}
 --- !u!95 &8751108666650615864 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 9595524, guid: 547dc35c50f0d8942bf5e279a07b1dd8, type: 3}

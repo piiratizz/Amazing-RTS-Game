@@ -19,15 +19,20 @@ public class PlayerBuildingManager : MonoBehaviour
     [Inject] private BuildingFactory _buildingFactory;
     [Inject] private ResourcesStoragesManager _storagesManager;
     [Inject] private GlobalGrid _grid;
+    [Inject] GlobalBuildingsStagesController _buildingStagesController;
     
     private GlobalResourceStorage _globalStorage;
     
-    private BuildingConfigPrefabLink _building;
+    private BuildingTypePrefabLink _building;
+    private BuildingConfig _buildingConfig;
     
     private MeshRenderer _buildingPreviewRenderer;
     private GameObject _buildingPreviewInstance;
 
     private Vector3 _spawnPosition;
+
+    private bool _canPlace;
+    private bool _isBuilding;
     
     private void Start()
     {
@@ -42,33 +47,46 @@ public class PlayerBuildingManager : MonoBehaviour
         _globalStorage = _storagesManager.Get(player.OwnerId);
     }
 
-    public void StartBuilding(BuildingConfigPrefabLink building)
+    public void StartBuilding(BuildingTypePrefabLink building)
     {
         _building = building;
-        var prefab = building.Config.BuildPreviewPrefab;
+        
+        _buildingConfig = _buildingStagesController.GetActualConfig(player.OwnerId, building.Type);
+        
+        var prefab = _buildingConfig.BuildPreviewPrefab;
+
+        if (_buildingPreviewInstance != null)
+        {
+            Destroy(_buildingPreviewInstance);
+        }
+        
         _buildingPreviewInstance = Instantiate(prefab);
         _buildingPreviewRenderer = _buildingPreviewInstance.GetComponent<MeshRenderer>();
         SetValidMaterial();
+        _isBuilding = true;
     }
 
     public async UniTaskVoid PlaceBuilding()
     {
-        _signalBus.Fire(new ChanglePlayerModeSignal()
-        {
-            Mode = PlayerModes.Default
-        });
+        if(!_canPlace) return;
         
         var buildingInstance =  _buildingFactory.Create(
             player.OwnerId,
             _spawnPosition,
             _building
             );
-
-        foreach (var cost in _building.Config.BuildResourceCost)
+        
+        foreach (var cost in _buildingConfig.BuildResourceCost)
         {
             _globalStorage.TrySpend(cost.Resource, cost.Amount);
         }
         
+        _isBuilding = false;
+        
+        _signalBus.Fire(new ChanglePlayerModeSignal()
+        {
+            Mode = PlayerModes.Default
+        });
         
         Destroy(_buildingPreviewInstance);
         
@@ -85,36 +103,40 @@ public class PlayerBuildingManager : MonoBehaviour
             Mode = PlayerModes.Default
         });
         
+        _isBuilding = false;
         Destroy(_buildingPreviewInstance);
     }
     
     private void Update()
     {
-        if (_buildingPreviewInstance != null)
+        if (!_isBuilding) return;
+        
+        var ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, placementLayer))
         {
-            var ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, placementLayer))
+            _spawnPosition = _grid.WorldToCell(hit.point);
+                
+            _spawnPosition.y = hit.point.y;
+                
+            var colliders = Physics.OverlapBox(
+                _spawnPosition,
+                new Vector3(_buildingConfig.SizeX / 2, 3, _buildingConfig.SizeZ / 2),
+                Quaternion.identity, 
+                collisionConflictLayer
+            );
+                
+            _buildingPreviewInstance.transform.position = _spawnPosition;
+                
+            if (colliders.Length > 0)
             {
-                _spawnPosition = _grid.WorldToCell(hit.point);
-                
-                var colliders = Physics.OverlapBox(
-                    _spawnPosition,
-                    new Vector3(_building.Config.SizeX, 3, _building.Config.SizeZ),
-                    Quaternion.identity, 
-                    collisionConflictLayer
-                    );
-                
-                _buildingPreviewInstance.transform.position = _spawnPosition;
-                
-                if (colliders.Length > 0)
-                {
-                    SetInvalidMaterial();
-                }
-                else
-                {
-                    SetValidMaterial();
-                }
+                _canPlace = false;
+                SetInvalidMaterial();
+            }
+            else
+            {
+                _canPlace = true;
+                SetValidMaterial();
             }
         }
     }
@@ -127,5 +149,11 @@ public class PlayerBuildingManager : MonoBehaviour
     private void SetInvalidMaterial()
     {
         _buildingPreviewRenderer.material = invalidPlacementMaterial;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(_spawnPosition, 0.3f);
     }
 }

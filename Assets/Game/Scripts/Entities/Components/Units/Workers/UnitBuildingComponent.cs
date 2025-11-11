@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 public class UnitBuildingComponent : EntityComponent
 {
-    private List<BuildingConfigPrefabLink> _availableBuildings;
+    private List<BuildingTypePrefabLink> _availableBuildings;
 
     private CancellationTokenSource _cancellationTokenSource;
     
@@ -17,11 +17,11 @@ public class UnitBuildingComponent : EntityComponent
     private UnitAnimationComponent _animationComponent;
     private UnitWorkerInventoryComponent _inventoryComponent;
     
-    public IReadOnlyList<BuildingConfigPrefabLink> AvailableBuildings => _availableBuildings;
+    public IReadOnlyList<BuildingTypePrefabLink> AvailableBuildings => _availableBuildings;
     
     public override void Init(Entity entity)
     {
-        _availableBuildings = new List<BuildingConfigPrefabLink>();
+        _availableBuildings = new List<BuildingTypePrefabLink>();
         
         _movementComponent = entity.GetEntityComponent<UnitMovementComponent>();
         _animationComponent = entity.GetEntityComponent<UnitAnimationComponent>();
@@ -72,12 +72,22 @@ public class UnitBuildingComponent : EntityComponent
 
     private async UniTask StartBuildingLoop(BuildingEntity buildingEntity, BuildingBuildComponent buildComponent)
     {
-        float angle = Random.Range(0f, 360f);
+        float halfX = buildingEntity.SizeX * 0.5f;
+        float halfZ = buildingEntity.SizeZ * 0.5f;
 
-        float r = Mathf.Max(buildingEntity.SizeX, buildingEntity.SizeZ);
-        float rad = angle * Mathf.Deg2Rad;
-        Vector3 offset = new Vector3(Mathf.Cos(rad), 0f, Mathf.Sin(rad)) * r;
-        Vector3 targetPoint = buildingEntity.transform.position + offset;
+        float px = buildingEntity.transform.position.x;
+        float pz = buildingEntity.transform.position.z;
+        
+        float t = Random.value;
+        
+        float per = 2f * (halfX + halfZ);
+        
+        float d = t * per;
+        
+        float x = Mathf.Clamp(d - halfZ, -halfX, halfX);
+        float z = Mathf.Clamp(halfZ - Mathf.Abs(d - halfX - halfZ), -halfZ, halfZ);
+
+        Vector3 targetPoint = new Vector3(px + x, buildingEntity.transform.position.y, pz + z);
 
         _movementComponent.MoveTo(targetPoint);
         await UniTask.Yield(_cancellationTokenSource.Token);

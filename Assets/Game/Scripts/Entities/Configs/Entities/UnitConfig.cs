@@ -41,7 +41,7 @@ public class UnitConfig : EntityConfig
     
     // --- BUILDING ---
     [Foldout("Building")]
-    public BuildingConfigPrefabLink[] BuildingsAvailableToBuild;
+    public BuildingTypePrefabLink[] BuildingsAvailableToBuild;
     [Foldout("Building")]
     public int BuildingRatePerSecond;
     
@@ -64,8 +64,8 @@ public class UnitConfig : EntityConfig
 }
 
 [Serializable]
-public class BuildingConfigPrefabLink
+public class BuildingTypePrefabLink
 {
-    public BuildingConfig Config;
+    public BuildingType Type;
     public BuildingEntity Prefab;
 }

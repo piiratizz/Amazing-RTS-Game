@@ -18,6 +18,9 @@ public class GameplayInstaller : MonoInstaller
         var resourceStorageInstance = new ResourcesStoragesManager();
         Container.Bind<ResourcesStoragesManager>().FromInstance(resourceStorageInstance).AsSingle();
         
+        var globalBuildingsStagesController = new GlobalBuildingsStagesController(resourceStorageInstance);
+        Container.Bind<GlobalBuildingsStagesController>().FromInstance(globalBuildingsStagesController).AsSingle();
+        
         var storage1 = resourceStorageInstance.Register().FromNew(1);
         storage1.Add(ResourceType.Food, 100);
         storage1.Add(ResourceType.Wood, 100);
@@ -33,12 +36,14 @@ public class GameplayInstaller : MonoInstaller
         Container.BindFactory<int, PlayerModes, Player, PlayerFactory>()
             .FromComponentInNewPrefab(playerPrefab)
             .AsSingle();
-        Container.BindFactory<int, Vector3, BuildingConfigPrefabLink, BuildingEntity, BuildingFactory>();
+        Container.BindFactory<int, Vector3, BuildingTypePrefabLink, BuildingEntity, BuildingFactory>();
         
         PlayerFactory playerFactory = Container.Resolve<PlayerFactory>();
         
         Player playerInstance = playerFactory.Create(1, PlayerModes.Default);
         Container.Bind<Player>().FromInstance(playerInstance).AsSingle();
+        
+        globalBuildingsStagesController.RegisterNewPlayer(playerInstance.OwnerId, 0);
         
         var hudInstance = Container.InstantiatePrefabForComponent<GameplayHUD>(gameplayUIPrefab);
         Container.Bind<GameplayHUD>().FromInstance(hudInstance).AsSingle();

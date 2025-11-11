@@ -30,6 +30,11 @@ public class BuildingBuildComponent : EntityComponent
         {
             throw new System.Exception("BuildingConfig is null");
         }
+
+        if (buildingConfig.SpawnHealth == buildingConfig.MaxHealth)
+        {
+            _isBuilded.Value = true;
+        }
     }
 
     public void AddBuildProgress(int progress)
@@ -43,7 +48,7 @@ public class BuildingBuildComponent : EntityComponent
         
         UpdateStageView();
     }
-
+    
     private void UpdateStageView()
     {
         float normalizedProgress = (float)_healthComponent.CurrentHealth /  _healthComponent.MaxHealth;

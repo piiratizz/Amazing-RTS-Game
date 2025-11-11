@@ -15,7 +15,6 @@ public class TreeChopEffect : MonoBehaviour
     [SerializeField] private float randomness = 90f;
     
     [Header("Chop Shake")]
-    [SerializeField] private Vector3 fallDirection = new Vector3(0, 0, 1);
     [SerializeField][MinMaxSlider(0f, 360f)] private Vector2 fallAngle;
     [SerializeField] private float fallDuration = 1.5f;
     [SerializeField] private float dropAmount = 0.3f;
@@ -45,9 +44,11 @@ public class TreeChopEffect : MonoBehaviour
         
         var seq = DOTween.Sequence();
         
-        var angle = Random.Range(fallAngle.x, fallAngle.y);
+        var randomFallAngle = Random.Range(fallAngle.x, fallAngle.y);
         
-        seq.Append(transform.DOLocalRotate(fallDirection * angle, fallDuration, RotateMode.LocalAxisAdd)
+        var randomFallDirection = Random.insideUnitCircle.normalized;;
+        
+        seq.Append(transform.DOLocalRotate(randomFallDirection * randomFallAngle, fallDuration, RotateMode.LocalAxisAdd)
             .SetEase(Ease.OutCubic));
         
         seq.Join(transform.DOMoveY(transform.position.y - dropAmount, fallDuration * 0.5f)

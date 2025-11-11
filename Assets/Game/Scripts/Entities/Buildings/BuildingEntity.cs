@@ -7,6 +7,7 @@ public class BuildingEntity : Entity
     
     public float SizeX => _config.SizeX;
     public float SizeZ => _config.SizeZ;
+    public BuildingType BuildingType => _config.Type;
     
     public override void Start()
     {

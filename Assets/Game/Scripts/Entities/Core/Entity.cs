@@ -57,6 +57,16 @@ public class Entity : MonoBehaviour, IOwned
         _minimapManager.RegisterEntity(this);
     }
 
+    public void UpdateConfig(EntityConfig config)
+    {
+        this.entityConfig = config;
+        
+        foreach (var comp in entityComponents)
+        {
+            comp.InitializeFields(config);
+        }
+    }
+    
     private void Update()
     {
         foreach (var comp in entityComponents)

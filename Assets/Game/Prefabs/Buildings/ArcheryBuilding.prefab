@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 8601811977358573893}
   - component: {fileID: 4671469753249266499}
   - component: {fileID: 8971881957703226214}
+  - component: {fileID: 8226631702014601848}
   - component: {fileID: 2032095279204843077}
   - component: {fileID: 4220516412458620231}
   m_Layer: 7
@@ -144,6 +145,7 @@ MonoBehaviour:
   - {fileID: 8601811977358573893}
   - {fileID: 4671469753249266499}
   - {fileID: 8971881957703226214}
+  - {fileID: 8226631702014601848}
   entityConfig: {fileID: 11400000, guid: d8e0442b774a458438fe4321429101f8, type: 2}
   initializeOnStart: 0
 --- !u!114 &8601811977358573893
@@ -188,6 +190,18 @@ MonoBehaviour:
   - {fileID: 2806849438344094137}
   - {fileID: 3464121226550240719}
   - {fileID: 7409714780945438041}
+--- !u!114 &8226631702014601848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3831666624265193974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567886a40e764373b8050f47578252da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &2032095279204843077
 BoxCollider:
   m_ObjectHideFlags: 0

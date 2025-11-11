@@ -62,7 +62,12 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void PlaceBuilding(InputAction.CallbackContext context)
     {
-        playerBuildingManager.PlaceBuilding();
+        if (IsPointerOverUI(Mouse.current.position.ReadValue()))
+        {
+            return;
+        }
+        
+        playerBuildingManager.PlaceBuilding().Forget();
     }
 
     private void StopBuilding(InputAction.CallbackContext context)
@@ -90,7 +95,9 @@ public class PlayerInputHandler : MonoBehaviour
     private void StartSelection(InputAction.CallbackContext context)
     {
         if (RaycastMouse(out var hit))
+        {
             playerSelectionManager.StartSelection(hit.point);
+        }
     }
 
     private void EndSelection(InputAction.CallbackContext context)

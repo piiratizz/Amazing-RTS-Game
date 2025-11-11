@@ -15,7 +15,7 @@ public class BuildMenuItemView : MonoBehaviour, IDisposable, IPointerEnterHandle
     [SerializeField] private Image previewImage;
     [SerializeField] private Button button;
     
-    public BuildingConfig Config { get; private set; }
+    public BuildingType Type { get; private set; }
     
     private IReadOnlyCollection<ResourceCost> _buildingCosts;
 
@@ -25,12 +25,12 @@ public class BuildMenuItemView : MonoBehaviour, IDisposable, IPointerEnterHandle
     
     private bool _initialized;
     
-    public void Initialize(Sprite preview, IReadOnlyCollection<ResourceCost> buildingCosts, BuildingConfig config, UnityAction<BuildingConfig> onClickCallback)
+    public void Initialize(Sprite preview, IReadOnlyCollection<ResourceCost> buildingCosts, BuildingType type, UnityAction<BuildingType> onClickCallback)
     {
         previewImage.sprite = preview;
         _buildingCosts = buildingCosts;
-        button.onClick.AddListener( () => onClickCallback(Config));
-        Config = config;
+        button.onClick.AddListener( () => onClickCallback(Type));
+        Type = type;
         
         if (!_initialized)
         {

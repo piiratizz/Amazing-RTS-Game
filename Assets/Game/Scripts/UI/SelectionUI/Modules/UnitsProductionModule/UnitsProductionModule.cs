@@ -16,7 +16,8 @@ public class UnitsProductionModule : SelectionPanelModule
     [SerializeField] private Transform unitsInProductionQueueContainer;
     [SerializeField] private Transform progressBarParent;
     [SerializeField] private Image radialFillProgressBar;
-    
+
+    private BuildingUpgradeComponent _upgradeComponent;
     private BuildingUnitsProductionComponent _productionComponent;
     private List<ProducedUnitView> _unitsInstances = new List<ProducedUnitView>();
     private List<ProductionQueueUnitView> _unitsInProductionQueueInstances = new List<ProductionQueueUnitView>();
@@ -31,31 +32,38 @@ public class UnitsProductionModule : SelectionPanelModule
     {
         _productionComponent = null;
         _selectedTargets = targets;
+
+        if(targets.Count > 1 || targets.Count == 0) return;
         
-        foreach (var target in targets)
-        {
-            if (target is not BuildingEntity) return;
+        var target = targets[0];
+        
+        if (target is not BuildingEntity) return;
 
-            _productionComponent = target.GetEntityComponent<BuildingUnitsProductionComponent>();
+        _productionComponent = target.GetEntityComponent<BuildingUnitsProductionComponent>();
+
+        if(_productionComponent == null) return;
             
-            if(_productionComponent == null) return;
+        var buildComponent = target.GetEntityComponent<BuildingBuildComponent>();
 
-            var buildComponent = target.GetEntityComponent<BuildingBuildComponent>();
-
-            if (buildComponent != null)
+        if (buildComponent != null)
+        {
+            if (!buildComponent.IsBuilded.CurrentValue)
             {
-                if (!buildComponent.IsBuilded.CurrentValue)
-                {
-                    buildComponent.IsBuilded
-                        .Where(isBuilt => isBuilt)
-                        .Subscribe(_ => OnBuildCompleted())
-                        .AddTo(_disposables);
-                    return;
-                }
+                buildComponent.IsBuilded
+                    .Where(isBuilt => isBuilt)
+                    .Subscribe(_ => UpdateView())
+                    .AddTo(_disposables);
+                return;
             }
         }
+        
+        _upgradeComponent = target.GetEntityComponent<BuildingUpgradeComponent>();
 
-        if (_productionComponent == null) return;
+        if (_upgradeComponent != null)
+        {
+            Debug.Log("SUBSCRIBED");
+            _upgradeComponent.BuildingUpgradedEvent += UpdateView;
+        }
         
         BindProgressBar();
         ShowUnits();
@@ -64,8 +72,9 @@ public class UnitsProductionModule : SelectionPanelModule
         _isOpen = true;
     }
     
-    private void OnBuildCompleted()
+    private void UpdateView()
     {
+        Debug.Log("UPDATED");
         Hide();
         Show(_selectedTargets);
     }
@@ -154,6 +163,11 @@ public class UnitsProductionModule : SelectionPanelModule
     
     public override void Hide()
     {
+        if (_upgradeComponent != null)
+        {
+            _upgradeComponent.BuildingUpgradedEvent -= UpdateView;
+        }
+        
         foreach (var instance in _unitsInstances)
         {
             NightPool.Despawn(instance);

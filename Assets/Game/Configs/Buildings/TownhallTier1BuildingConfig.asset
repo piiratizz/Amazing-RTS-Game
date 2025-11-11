@@ -20,8 +20,9 @@ MonoBehaviour:
   DetectionRadius: 0
   EntityType: 2
   Selectable: 1
-  SizeX: 5
-  SizeZ: 5
+  Type: 6
+  SizeX: 6
+  SizeZ: 6
   Preview: {fileID: 21300000, guid: ba9a671a342d07c45a8af9ed6f3202c0, type: 3}
   BuildResourceCost:
   - Resource: 1

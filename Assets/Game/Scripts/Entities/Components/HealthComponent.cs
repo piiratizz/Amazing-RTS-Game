@@ -10,6 +10,7 @@ public class HealthComponent : EntityComponent
     private int _maxHealth;
     private Entity _entity;
     private UnitCommandDispatcher _unitCommandDispatcher;
+    private BuildingBuildComponent _buildingBuildComponent;
     
     public bool IsDead { get; private set; }
     public int OwnerId { get; set; }
@@ -24,12 +25,29 @@ public class HealthComponent : EntityComponent
     {
         _entity = entity;
         OwnerId = entity.OwnerId;
+        
         _unitCommandDispatcher = _entity.GetEntityComponent<UnitCommandDispatcher>();
+        _buildingBuildComponent = _entity.GetEntityComponent<BuildingBuildComponent>();
     }
 
     public override void InitializeFields(EntityConfig config)
     {
-        _health = config.SpawnHealth;
+        if (_buildingBuildComponent != null)
+        {
+            if (_buildingBuildComponent.IsBuilded.CurrentValue)
+            {
+                _health = config.MaxHealth;
+            }
+            else
+            {
+                _health = config.SpawnHealth;
+            }
+        }
+        else
+        {
+            _health = config.SpawnHealth;
+        }
+        
         _maxHealth = config.MaxHealth;
     }
     

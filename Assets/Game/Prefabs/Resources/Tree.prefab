@@ -436,15 +436,15 @@ LODGroup:
   m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.50021386
+  - screenRelativeHeight: 0.5974336
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8141726327559224986}
-  - screenRelativeHeight: 0.125
+  - screenRelativeHeight: 0.35223958
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 2063056781935913488}
-  - screenRelativeHeight: 0.07744418
+  - screenRelativeHeight: 0.14618564
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8835670725821999476}
@@ -570,8 +570,7 @@ MonoBehaviour:
   shakeStrength: 1.5
   vibrato: 15
   randomness: 90
-  fallDirection: {x: 0, y: 0, z: 1}
-  fallAngle: {x: 30, y: 180}
+  fallAngle: {x: 30, y: 90}
   fallDuration: 1.5
   dropAmount: 0.3
 --- !u!114 &-2355317122037521210
@@ -586,10 +585,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d722ab0aa81f4ac8a135912981ef6456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  duration: 0.3
-  colorProperty: _EmissionColor
-  renderer: {fileID: 8141726327559224986}
 --- !u!208 &-5011323761599455879
 NavMeshObstacle:
   m_ObjectHideFlags: 0

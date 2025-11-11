@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BuildingConfig",  menuName = "Configs/BuildingConfig")]
 public class BuildingConfig : EntityConfig
 {
+    public BuildingType Type;
     public float SizeX;
     public float SizeZ;
 

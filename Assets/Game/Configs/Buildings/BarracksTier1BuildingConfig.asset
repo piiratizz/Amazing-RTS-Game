@@ -20,6 +20,7 @@ MonoBehaviour:
   DetectionRadius: 0
   EntityType: 2
   Selectable: 1
+  Type: 3
   SizeX: 5
   SizeZ: 5
   Preview: {fileID: 21300000, guid: bf21f58068d11cc4c830e90d765affc1, type: 3}

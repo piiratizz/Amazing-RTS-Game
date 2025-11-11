@@ -12,6 +12,10 @@ namespace Game.Scripts.UI.Modules
 {
     public class ShowInfoModule : SelectionPanelModule
     {
+        [SerializeField] private UpgradeButtonPointerHandler upgradeButtonPointerHandler;
+        [SerializeField] private GameObject upgradeResourceCostPanel;
+        [SerializeField] private ResourceCostView resourceCostViewPrefab;
+        
         [SerializeField] private UnitInfoPanelView unitInfoPanelViewPrefab;
         [SerializeField] private Transform unitInfoPanelUIContainer;
         [SerializeField] private GameObject background;
@@ -28,6 +32,8 @@ namespace Game.Scripts.UI.Modules
         [SerializeField] private TextMeshProUGUI speedStatsText;
         [SerializeField] private TextMeshProUGUI rangeStatsText;
         
+        [SerializeField] private Button upgradeButton;
+        
         [Inject] private Player _player;
         
         private Dictionary<Type, IEntityInfoPresenter> _presenters;
@@ -42,7 +48,11 @@ namespace Game.Scripts.UI.Modules
                         hpSlider,
                         hpText,
                         unitNameText,
-                        unitIconImage)
+                        unitIconImage,
+                        upgradeButton,
+                        upgradeButtonPointerHandler,
+                        upgradeResourceCostPanel,
+                        resourceCostViewPrefab)
                 },
                 {
                     typeof(ResourceEntity), new ResourceInfoPresenter(
@@ -63,7 +73,8 @@ namespace Game.Scripts.UI.Modules
                         attackStatsText,
                         armorStatsText,
                         speedStatsText,
-                        rangeStatsText)
+                        rangeStatsText,
+                        _player)
                 }
             };
 

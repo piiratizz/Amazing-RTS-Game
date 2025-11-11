@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using NTC.Pool;
 using R3;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Game.Scripts.UI.Modules.Presenters
@@ -12,22 +15,48 @@ namespace Game.Scripts.UI.Modules.Presenters
         private readonly TextMeshProUGUI _buildingHpText;
         private readonly TextMeshProUGUI _buildingNameText;
         private readonly Image _buildingIconImage;
+
+        private GameObject _upgradeResourceCostPanel;
+        private ResourceCostView _resourceCostViewPrefab;
         
-        private CompositeDisposable _resourcesSubscription;
+        private CompositeDisposable _subscriptions;
         
         private BuildingEntity _target;
+        
         private HealthComponent _buildingHealthComponent;
+        private BuildingUpgradeComponent _buildingUpgradeComponent;
+        private BuildingBuildComponent _buildingBuildComponent;
+        private UpgradeButtonPointerHandler _upgradeButtonPointerHandler;
+        
+        private Button _upgradeButton;
+
+        private List<ResourceCostView> _resourceCostViewsInstances;
+
+        private ResourceData[] _resources;
         
         public BuildingsInfoPresenter(
             Slider buildingHpSlider,
             TextMeshProUGUI buildingHpText,
             TextMeshProUGUI buildingNameText,
-            Image buildingIconImage)
+            Image buildingIconImage,
+            Button upgradeButton,
+            UpgradeButtonPointerHandler upgradeButtonPointerHandler,
+            GameObject upgradeResourceCostPanel,
+            ResourceCostView resourceCostViewPrefab)
         {
             _buildingHpSlider =  buildingHpSlider;
             _buildingHpText = buildingHpText;
             _buildingNameText = buildingNameText;
             _buildingIconImage =  buildingIconImage;
+            _upgradeButton = upgradeButton;
+            _upgradeButtonPointerHandler = upgradeButtonPointerHandler;
+            _upgradeResourceCostPanel = upgradeResourceCostPanel;
+            _resourceCostViewPrefab = resourceCostViewPrefab;
+            
+            _resourceCostViewsInstances = new List<ResourceCostView>();
+            _subscriptions = new CompositeDisposable();
+
+            _resources = Resources.LoadAll<ResourceData>("ResourcesData");
         }
         
         public void Show(List<Entity> entities)
@@ -41,19 +70,109 @@ namespace Game.Scripts.UI.Modules.Presenters
                 throw new InvalidCastException("Entity must be BuildingEntity");
             }
             
+            _buildingUpgradeComponent = _target.GetEntityComponent<BuildingUpgradeComponent>();
+            _buildingBuildComponent = _target.GetEntityComponent<BuildingBuildComponent>();
+            _buildingHealthComponent = _target.GetEntityComponent<HealthComponent>();
+
+            if (_buildingBuildComponent != null)
+            {
+                if (_buildingBuildComponent.IsBuilded.CurrentValue != true)
+                {
+                    _buildingBuildComponent.IsBuilded.Where(b => b == true).Subscribe(_ =>
+                    {
+                        UpdateFields();
+                    }).AddTo(_subscriptions);
+                }
+            }
+            
             _buildingHpSlider.gameObject.SetActive(true);
             _buildingHpText.gameObject.SetActive(true);
             _buildingNameText.gameObject.SetActive(true);
             _buildingIconImage.gameObject.SetActive(true);
 
-            var isDamageable = _target.TryGetComponent(out _buildingHealthComponent);
+            _upgradeButtonPointerHandler.PointerEnterEvent += OnUpgradeButtonPointerEnter;
+            _upgradeButtonPointerHandler.PointerExitEvent += OnUpgradeButtonPointerExit;
             
-            if(!isDamageable) return;
+            UpdateFields();
+            
+            if(_buildingHealthComponent == null) return;
+            _buildingHealthComponent.OnHealthChanged += UpdateHealth;
+        }
 
-            UpdateHealth(_buildingHealthComponent.CurrentHealth);
+        private void OnUpgradeButtonPointerEnter()
+        {
+            var upgradeCost = _buildingUpgradeComponent.GetCostOfUpgrade();
+
+            if (upgradeCost == null)
+            {
+                return;
+            }
+            
+            _upgradeResourceCostPanel.SetActive(true);
+            
+            foreach (var cost in upgradeCost)
+            {
+                var instance = NightPool.Spawn(_resourceCostViewPrefab, _upgradeResourceCostPanel.transform);
+                var data = _resources.First(d => d.ResourceType == cost.Resource);
+                instance.Initialize(data.UiDisplayIcon, cost.Amount);
+                _resourceCostViewsInstances.Add(instance);
+            }
+        }
+        
+        private void OnUpgradeButtonPointerExit()
+        {
+            _upgradeResourceCostPanel.SetActive(false);
+
+            foreach (var instance in _resourceCostViewsInstances)
+            {
+                NightPool.Despawn(instance);
+            }
+            _resourceCostViewsInstances.Clear();
+        }
+        
+        private void UpdateFields()
+        {
+            _upgradeButton.onClick.RemoveAllListeners();
+            
+            if (_buildingUpgradeComponent != null)
+            {
+                var canShowUpgradeButton = false;
+                if (_buildingBuildComponent != null)
+                {
+                    canShowUpgradeButton = _buildingBuildComponent.IsBuilded.CurrentValue;
+                }
+                else
+                {
+                    canShowUpgradeButton = true;
+                }
+
+                if (_buildingUpgradeComponent.IsFullUpgraded())
+                {
+                    canShowUpgradeButton = false;
+                }
+                
+                if (canShowUpgradeButton)
+                {
+                    Debug.Log("SUBSCRIBED UPGRADE");
+                    _upgradeButton.gameObject.SetActive(true);
+                    _upgradeButton.onClick.AddListener(() =>
+                    {
+                        _buildingUpgradeComponent.Upgrade(_target.BuildingType);
+                        UpdateFields();
+                    });
+                }
+                else
+                {
+                    _upgradeButton.gameObject.SetActive(false);
+                }
+            }
+            
             _buildingIconImage.sprite = _target.Icon;
             _buildingNameText.text = _target.DisplayName;
-            _buildingHealthComponent.OnHealthChanged += UpdateHealth;
+            
+            if(_buildingHealthComponent == null) return;
+            
+            UpdateHealth(_buildingHealthComponent.CurrentHealth);
         }
 
         private void UpdateHealth(int health)
@@ -69,7 +188,21 @@ namespace Game.Scripts.UI.Modules.Presenters
             _buildingHpText.gameObject.SetActive(false);
             _buildingNameText.gameObject.SetActive(false);
             _buildingIconImage.gameObject.SetActive(false);
+            _upgradeButton.gameObject.SetActive(false);
+            _upgradeResourceCostPanel.SetActive(false);
+            
+            _upgradeButtonPointerHandler.PointerEnterEvent -= OnUpgradeButtonPointerEnter;
+            _upgradeButtonPointerHandler.PointerExitEvent -= OnUpgradeButtonPointerExit;
+            _upgradeButton.onClick.RemoveAllListeners();
 
+            foreach (var resourceCostView in _resourceCostViewsInstances)
+            {
+                NightPool.Despawn(resourceCostView);
+            }
+            
+            _resourceCostViewsInstances.Clear();
+            _subscriptions?.Clear();
+            
             if (_buildingHealthComponent != null)
             {
                 _buildingHealthComponent.OnHealthChanged -= UpdateHealth;

@@ -98,6 +98,12 @@ public class UnitResourceGatherComponent : EntityComponent
                     {
                         break;
                     }
+
+                    if (_resourceSource.IsEmpty.CurrentValue)
+                    {
+                        break;
+                    }
+                    
                     await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken);
                 }
 
@@ -108,6 +114,11 @@ public class UnitResourceGatherComponent : EntityComponent
                         _lifterResourcesType = _resourceSource.ResourceType;
                         _liftedResources = _resourceSource.TryExtractResource(_liftingCapacity);
                         _resourceHoldingComponent?.ShowResource(_lifterResourcesType);
+                    }
+                    else
+                    {
+                        _animationComponent.SetAttack(false);
+                        continue;
                     }
                 }
                 
@@ -189,7 +200,7 @@ public class UnitResourceGatherComponent : EntityComponent
         ResourceSourceComponent nearestSource = null;
         ResourceEntity nearestResourceEntity = null;
 
-        float nearestSourceDistance = 500f;
+        float sqrNearestSourceDistance = 500f;
         var resources = Physics.OverlapSphere(transform.position, 100f, LayerMask.GetMask("Resources"));
         foreach (var resource in resources)
         {
@@ -207,11 +218,11 @@ public class UnitResourceGatherComponent : EntityComponent
                 }
                 
                 var distance = (resource.transform.position - _sourcePosition).sqrMagnitude;
-                if (distance < nearestSourceDistance * nearestSourceDistance)
+                if (distance < sqrNearestSourceDistance)
                 {
                     nearestResourceEntity = storage;
                     nearestSource = component;
-                    nearestSourceDistance = distance;
+                    sqrNearestSourceDistance = distance;
                 }
             }
         }
@@ -306,6 +317,7 @@ public class UnitResourceGatherComponent : EntityComponent
     private void StopGathering()
     {
         _cancellationToken?.Cancel();
+        _resourceSource = null;
         _animationComponent.SetAttack(false);
     }
 

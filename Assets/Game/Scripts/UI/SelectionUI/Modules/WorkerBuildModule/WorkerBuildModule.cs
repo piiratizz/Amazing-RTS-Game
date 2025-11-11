@@ -15,6 +15,7 @@ public class WorkerBuildModule : SelectionPanelModule
     
     [Inject] private SignalBus _signalBus;
     [Inject] private ResourcesStoragesManager _storagesManager;
+    [Inject] private GlobalBuildingsStagesController _stagesController;
     private GlobalResourceStorage _globalResourceStorage;
     
     private UnitBuildingComponent _unitBuildingComponent;
@@ -63,14 +64,18 @@ public class WorkerBuildModule : SelectionPanelModule
             if(item == null) 
                 continue;
             
+            var actualConfig = _stagesController.GetActualConfig(_ownerId,  item.Type);
+            
             var instance = NightPool.Spawn(buildMenuItemView, itemsContainer);
-            instance.Initialize(item.Config.Preview, item.Config.BuildResourceCost, item.Config, OnClickCallback);
+            instance.Initialize(actualConfig.Preview, actualConfig.BuildResourceCost, item.Type, OnClickCallback);
             _instances.Add(instance);
         }
     }
 
-    private void OnClickCallback(BuildingConfig config)
+    private void OnClickCallback(BuildingType type)
     {
+        var config = _stagesController.GetActualConfig(_ownerId, type);
+        
         foreach (var cost in config.BuildResourceCost)
         {
             if (!_globalResourceStorage.IsEnough(cost.Resource, cost.Amount))
@@ -81,7 +86,7 @@ public class WorkerBuildModule : SelectionPanelModule
         
         var selectedBuilding = 
             _unitBuildingComponent.AvailableBuildings
-                .First(c => c.Config == config);
+                .First(c => c.Type == type);
         
         _signalBus.Fire(new ChanglePlayerModeSignal()
         {
