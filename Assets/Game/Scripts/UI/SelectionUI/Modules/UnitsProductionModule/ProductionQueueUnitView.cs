@@ -7,14 +7,12 @@ public class ProductionQueueUnitView : MonoBehaviour
     [SerializeField] private Image previewImage;
 
     private int _queueId;
-    private UnitConfig _config;
     private Action<int> _onCancelCallback;
     
-    public void Initialize(int id, UnitConfig config, Action<int> onCancelCallback)
+    public void Initialize(int id, Sprite icon, Action<int> onCancelCallback)
     {
         _queueId = id;
-        _config = config;
-        previewImage.sprite = _config.Icon;
+        previewImage.sprite = icon;
         _onCancelCallback = onCancelCallback;
     }
 

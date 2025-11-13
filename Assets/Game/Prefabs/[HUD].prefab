@@ -1264,6 +1264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d6a40650e848dfb9e8d8f9a017d30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  productionUpgradeViewPrefab: {fileID: 8439028363522928878, guid: cf9150ec5f4e8c14985f11dcb3b47a5f, type: 3}
   producedUnitView: {fileID: 5752882417048900015, guid: b369ab1da09330d459a9381444d362c5, type: 3}
   producedQueueUnitView: {fileID: 6226398061896482127, guid: 10b4054ceb01ff94b8dac3a36775465c, type: 3}
   background: {fileID: 4246097740561884599}
@@ -1502,7 +1503,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f482e3d1c184b0b874a04ed5bb7d983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgradeButtonPointerHandler: {fileID: 5171631719025417459}
+  pointerHandler: {fileID: 5171631719025417459}
   upgradeResourceCostPanel: {fileID: 7503145926316440654}
   resourceCostViewPrefab: {fileID: 1724700492824590158, guid: 6fa379ec46f00a146b7d89953b448ba8, type: 3}
   unitInfoPanelViewPrefab: {fileID: 7340687152883053034, guid: a60976cfb41ccae4b9459902e0187cba, type: 3}

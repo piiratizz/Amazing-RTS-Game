@@ -12,12 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df80e2a9595d4087ae7896017140ff0f, type: 3}
   m_Name: MaxHealthBonus
   m_EditorClassIdentifier: 
+  Id: 0
   Icon: {fileID: 21300000, guid: 2c461076fccef8d4ab9d3717ca24ea33, type: 3}
   Name: MaxHealthBonus
   Description: "\u0414\u043E\u0431\u0430\u0432\u043B\u044F\u0435\u0442 10 \u0445\u043F
     \u043A \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u043C\u0443
     \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044E"
   EntityType: 1
+  ResourceCost:
+  - Resource: 2
+    Amount: 10
+  ProductionCost: 10
   UnitsWillUpgrade: 03000000
   Stats:
   - StatsType: 0

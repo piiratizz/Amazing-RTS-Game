@@ -14,8 +14,9 @@ public class BuildingConfig : EntityConfig
     public ResourceCost[] BuildResourceCost;
 
     [Space]
-    [Header("Units Production")] 
+    [Header("Production")] 
     public UnitResourceCost[] UnitsCanProduce;
+    public EntityUpgrade[] UpgradesCanProduce;
     public float ProductionRatePerSecond;
 
     [Space] 

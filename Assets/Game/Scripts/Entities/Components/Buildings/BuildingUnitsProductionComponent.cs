@@ -14,13 +14,15 @@ public class BuildingUnitsProductionComponent : EntityComponent
 
     [Inject] private ResourcesStoragesManager _storagesManager;
     private GlobalResourceStorage _resourceStorage;
+
+    [Inject] private GlobalUpgradesManager _globalUpgradesManager;
     
     private BuildingConfig _buildingConfig;
 
-    private Queue<ProductionLineUnit> _productionQueue;
+    private Queue<ProductionLineItem> _productionQueue;
 
     private int _ownerId;
-    
+
     private float _currentUnitProductionValue;
     private float _currentUnitProductionCost;
     private float _productionRatePerSecond;
@@ -29,19 +31,20 @@ public class BuildingUnitsProductionComponent : EntityComponent
     public ReadOnlyReactiveProperty<float> Progress => _progress;
 
     public IReadOnlyCollection<UnitResourceCost> UnitsAvailableToBuild;
-    public IReadOnlyCollection<ProductionLineUnit> ProductionQueue => _productionQueue;
+    public IReadOnlyCollection<EntityUpgrade> UpgradesAvailableToBuild;
+    public IReadOnlyCollection<ProductionLineItem> ProductionQueue => _productionQueue;
 
     private CancellationTokenSource _cancellationToken;
 
     [Inject] private UnitFactory _unitFactory;
 
-    private ProductionLineUnit _unitCurrentlyProduced;
-    
-    private Action<ConfigUnitPrefabLink> _onUnitProducedCallback;
+    private ProductionLineItem _itemCurrentlyProduced;
+
+    private Action _onItemProducedCallback;
     
     public override void Init(Entity entity)
     {
-        _productionQueue = new Queue<ProductionLineUnit>();
+        _productionQueue = new Queue<ProductionLineItem>();
         _progress = new ReactiveProperty<float>();
         _ownerId = entity.OwnerId;
         _resourceStorage = _storagesManager.Get(_ownerId);
@@ -49,52 +52,92 @@ public class BuildingUnitsProductionComponent : EntityComponent
 
     public override void InitializeFields(EntityConfig config)
     {
-        _buildingConfig = config as BuildingConfig;
+        _buildingConfig = config as BuildingConfig
+            ?? throw new InvalidCastException("Config must be of type BuildingConfig");
 
-        if (_buildingConfig == null)
-        {
-            throw new InvalidCastException("Config must be of type BuildingConfig");
-        }
-
+        UpgradesAvailableToBuild = _buildingConfig.UpgradesCanProduce;
         _productionRatePerSecond = _buildingConfig.ProductionRatePerSecond;
         UnitsAvailableToBuild = _buildingConfig.UnitsCanProduce;
     }
-
-    public bool TryAddUnitToProductionQueue(UnitConfig config, Action<ConfigUnitPrefabLink> onUnitProducedCallback)
+    
+    private bool TryPayResourceCost(IEnumerable<ResourceCost> costs)
     {
-        var unit = UnitsAvailableToBuild.First(u => u.Unit.Config == config);
-        
-        foreach (var cost in unit.ResourceCost)
-        {
-            if (!_resourceStorage.IsEnough(cost.Resource, cost.Amount))
-            {
-                return false;
-            }
-        }
-        
-        foreach (var cost in unit.ResourceCost)
-        {
-            _resourceStorage.TrySpend(cost.Resource, cost.Amount);
-        }
-        
-        _onUnitProducedCallback = onUnitProducedCallback;
-        
-        var productionLineUnit = new ProductionLineUnit()
-        {
-            UnitId = _productionQueue.Count,
-            Unit = unit.Unit,
-        };
-        
-        _productionQueue.Enqueue(productionLineUnit);
+        if (!costs.All(cost => _resourceStorage.IsEnough(cost.Resource, cost.Amount)))
+            return false;
 
-        if (_productionQueue.Count == 1)
-        {
-            StartProduction();
-        }
+        foreach (var cost in costs)
+            _resourceStorage.TrySpend(cost.Resource, cost.Amount);
 
         return true;
     }
 
+    private ProductionLineItem CreateProductionItem(
+        Sprite icon,
+        float productionCost,
+        ConfigUnitPrefabLink unit,
+        EntityUpgrade upgrade,
+        ResourceCost[] cost,
+        Action<ProductionLineItem> callback)
+    {
+        return new ProductionLineItem
+        {
+            Icon = icon,
+            Id = _productionQueue.Count,
+            ProductionCost = productionCost,
+            Unit = unit,
+            Upgrade = upgrade,
+            ResourceCost = cost,
+            OnProducedCallback = callback
+        };
+    }
+
+    private void EnqueueAndStartIfNeeded(ProductionLineItem item)
+    {
+        _productionQueue.Enqueue(item);
+        if (_productionQueue.Count == 1)
+            StartProduction();
+    }
+    
+    public bool TryAddUpgradeToProductionQueue(EntityUpgrade upgrade, Action onItemProducedCallback)
+    {
+        if (!TryPayResourceCost(upgrade.ResourceCost))
+            return false;
+
+        _onItemProducedCallback = onItemProducedCallback;
+        
+        var item = CreateProductionItem(
+            upgrade.Icon,
+            upgrade.ProductionCost,
+            null,
+            upgrade,
+            upgrade.ResourceCost,
+            OnUpgradeProductionComplete);
+        
+        EnqueueAndStartIfNeeded(item);
+        return true;
+    }
+
+    public bool TryAddUnitToProductionQueue(UnitConfig config, Action onItemProducedCallback)
+    {
+        var unit = UnitsAvailableToBuild.First(u => u.Unit.Config == config);
+
+        if (!TryPayResourceCost(unit.ResourceCost))
+            return false;
+
+        _onItemProducedCallback = onItemProducedCallback;
+
+        var item = CreateProductionItem(
+            unit.Unit.Config.Icon,
+            unit.Unit.Config.TotalProductionCost,
+            unit.Unit,
+            null,
+            unit.ResourceCost,
+            OnUnitProductionComplete);
+
+        EnqueueAndStartIfNeeded(item);
+        return true;
+    }
+    
     private void StartProduction()
     {
         _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
@@ -104,13 +147,13 @@ public class BuildingUnitsProductionComponent : EntityComponent
 
         StartProduction(_cancellationToken.Token).Forget();
     }
-    
+
     private async UniTask StartProduction(CancellationToken token)
     {
         while (_productionQueue.Count > 0)
         {
-            _unitCurrentlyProduced = _productionQueue.Peek();
-            _currentUnitProductionCost = _unitCurrentlyProduced.Unit.Config.TotalProductionCost;
+            _itemCurrentlyProduced = _productionQueue.Peek();
+            _currentUnitProductionCost = _itemCurrentlyProduced.ProductionCost;
             _currentUnitProductionValue = 0f;
 
             while (_currentUnitProductionValue < _currentUnitProductionCost)
@@ -118,59 +161,60 @@ public class BuildingUnitsProductionComponent : EntityComponent
                 token.ThrowIfCancellationRequested();
 
                 _currentUnitProductionValue += _productionRatePerSecond * Time.deltaTime;
-
                 _progress.Value = _currentUnitProductionValue / _currentUnitProductionCost;
 
                 await UniTask.Yield(PlayerLoopTiming.Update, token);
             }
 
             _productionQueue.Dequeue();
-
-            OnProductionComplete(_unitCurrentlyProduced, _onUnitProducedCallback);
+            _itemCurrentlyProduced.OnProducedCallback?.Invoke(_itemCurrentlyProduced);
 
             await UniTask.Yield(PlayerLoopTiming.Update, token);
         }
     }
 
-
     public void RemoveFromProductionQueue(int queueId)
     {
-        var unitToRemove = _productionQueue.First(i => i.UnitId == queueId);
+        var itemToRemove = _productionQueue.First(i => i.Id == queueId);
+
+        Debug.Log(itemToRemove.ResourceCost);
         
-        if (_unitCurrentlyProduced.UnitId == unitToRemove.UnitId)
-        {
+        bool wasProducing = _itemCurrentlyProduced?.Id == queueId;
+
+        if (wasProducing)
             _cancellationToken.Cancel();
-        }
-        
-        _productionQueue = new Queue<ProductionLineUnit>(
-            _productionQueue.Where(link => link.UnitId != queueId)
+
+        _productionQueue = new Queue<ProductionLineItem>(
+            _productionQueue.Where(link => link.Id != queueId)
         );
 
-        if (_unitCurrentlyProduced.UnitId == unitToRemove.UnitId)
-        {
-            if (_productionQueue.Count >= 1)
-            {
-                StartProduction();
-            }
-        }
+        if (wasProducing && _productionQueue.Count > 0)
+            StartProduction();
         
-        var resources = UnitsAvailableToBuild.First(u => u.Unit.Config == unitToRemove.Unit.Config).ResourceCost;
-
-        foreach (var cost in resources)
-        {
+        foreach (var cost in itemToRemove.ResourceCost)
             _resourceStorage.Add(cost.Resource, cost.Amount);
-        }
     }
 
-    private void OnProductionComplete(ProductionLineUnit unit, Action<ConfigUnitPrefabLink> onUnitProduced)
+    private void OnUnitProductionComplete(ProductionLineItem item)
     {
-        var instance = _unitFactory.Create(_ownerId, unit.Unit, unitsSpawnPoint.position);
-        onUnitProduced?.Invoke(unit.Unit);
+        var instance = _unitFactory.Create(_ownerId, item.Unit, unitsSpawnPoint.position);
+        _onItemProducedCallback?.Invoke();
+    }
+
+    private void OnUpgradeProductionComplete(ProductionLineItem item)
+    {
+        _globalUpgradesManager.AddUpgrade(_ownerId, item.Upgrade);
+        _onItemProducedCallback?.Invoke();
     }
 }
 
-public class ProductionLineUnit
+public class ProductionLineItem
 {
-    public int UnitId;
+    public int Id;
+    public Sprite Icon;
     public ConfigUnitPrefabLink Unit;
+    public EntityUpgrade Upgrade;
+    public float ProductionCost;
+    public ResourceCost[] ResourceCost;
+    public Action<ProductionLineItem> OnProducedCallback;
 }

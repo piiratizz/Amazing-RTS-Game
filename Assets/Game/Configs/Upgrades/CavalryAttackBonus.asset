@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df80e2a9595d4087ae7896017140ff0f, type: 3}
   m_Name: CavalryAttackBonus
   m_EditorClassIdentifier: 
+  Id: 1
   Icon: {fileID: 21300000, guid: eec19781926cd2248b7c9abfde8db555, type: 3}
   Name: CavalryAttackBonus
   Description: 
   EntityType: 1
+  ResourceCost:
+  - Resource: 2
+    Amount: 10
+  ProductionCost: 10
   UnitsWillUpgrade: 02000000
   Stats:
   - StatsType: 1

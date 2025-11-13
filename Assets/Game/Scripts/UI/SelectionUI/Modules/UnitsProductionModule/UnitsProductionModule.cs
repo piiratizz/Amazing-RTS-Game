@@ -9,6 +9,7 @@ using Zenject;
 
 public class UnitsProductionModule : SelectionPanelModule
 {
+    [SerializeField] private ProductionUpgradeView productionUpgradeViewPrefab;
     [SerializeField] private ProducedUnitView producedUnitView;
     [SerializeField] private ProductionQueueUnitView producedQueueUnitView;
     [SerializeField] private GameObject background;
@@ -20,6 +21,7 @@ public class UnitsProductionModule : SelectionPanelModule
     private BuildingUpgradeComponent _upgradeComponent;
     private BuildingUnitsProductionComponent _productionComponent;
     private List<ProducedUnitView> _unitsInstances = new List<ProducedUnitView>();
+    private List<ProductionUpgradeView> _upgradesInstances = new List<ProductionUpgradeView>();
     private List<ProductionQueueUnitView> _unitsInProductionQueueInstances = new List<ProductionQueueUnitView>();
 
     private CompositeDisposable _disposables = new CompositeDisposable();
@@ -67,6 +69,7 @@ public class UnitsProductionModule : SelectionPanelModule
         
         BindProgressBar();
         ShowUnits();
+        ShowUpgrades();
         ShowProductionQueue();
         background.SetActive(true);
         _isOpen = true;
@@ -88,6 +91,17 @@ public class UnitsProductionModule : SelectionPanelModule
     {
         radialFillProgressBar.fillAmount = progress;
     }
+
+    private void ShowUpgrades()
+    {
+        foreach (var upgrade in _productionComponent.UpgradesAvailableToBuild)
+        {
+            var upgradeInstance = NightPool.Spawn(productionUpgradeViewPrefab, unitsPanelsContainer);
+            upgradeInstance.Initialize(upgrade, TryProduceUpgrade);
+            
+            _upgradesInstances.Add(upgradeInstance);
+        }
+    }
     
     private void ShowUnits()
     {
@@ -106,13 +120,14 @@ public class UnitsProductionModule : SelectionPanelModule
 
     private void ShowProductionQueue()
     {
-        foreach (var unit in _productionComponent.ProductionQueue)
+        foreach (var item in _productionComponent.ProductionQueue)
         {
             var instance = NightPool.Spawn(
                 producedQueueUnitView,
                 unitsInProductionQueueContainer
                 );
-            instance.Initialize(unit.UnitId, unit.Unit.Config, OnProductionCancelled);
+
+            instance.Initialize(item.Id, item.Icon, OnProductionCancelled);
             _unitsInProductionQueueInstances.Add(instance);
         }
 
@@ -141,11 +156,19 @@ public class UnitsProductionModule : SelectionPanelModule
 
     private void TryProduceUnit(UnitConfig config)
     {
-        if (_productionComponent.TryAddUnitToProductionQueue(config, OnUnitProduced))
+        if (_productionComponent.TryAddUnitToProductionQueue(config, UpdateProductionQueue))
         {
             UpdateProductionQueue();
         }
         
+    }
+
+    private void TryProduceUpgrade(EntityUpgrade upgrade)
+    {
+        if (_productionComponent.TryAddUpgradeToProductionQueue(upgrade, UpdateProductionQueue))
+        {
+            UpdateProductionQueue();
+        }
     }
 
     private void UpdateProductionQueue()
@@ -156,11 +179,6 @@ public class UnitsProductionModule : SelectionPanelModule
         ShowProductionQueue();
     }
     
-    private void OnUnitProduced(ConfigUnitPrefabLink unit)
-    {
-        UpdateProductionQueue();
-    }
-    
     public override void Hide()
     {
         if (_upgradeComponent != null)
@@ -169,6 +187,11 @@ public class UnitsProductionModule : SelectionPanelModule
         }
         
         foreach (var instance in _unitsInstances)
+        {
+            NightPool.Despawn(instance);
+        }
+        
+        foreach (var instance in _upgradesInstances)
         {
             NightPool.Despawn(instance);
         }
