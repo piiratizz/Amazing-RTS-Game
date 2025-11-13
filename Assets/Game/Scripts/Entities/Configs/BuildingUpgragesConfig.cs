@@ -5,11 +5,11 @@ using UnityEngine;
 public class BuildingUpgragesConfig : ScriptableObject
 {
     public BuildingType BuildingType;
-    public UpgradeStageCost[] Stages;
+    public BuildingUpgradeStageCost[] Stages;
 }
 
 [Serializable]
-public class UpgradeStageCost
+public class BuildingUpgradeStageCost
 {
     public ResourceCost[] ResourceCosts;
     public BuildingConfig Stage;

@@ -12,6 +12,7 @@ public class UnitEntity : Entity
     public int Armor => _unitConfig.Armor;
     public float Speed => _unitConfig.Speed;
     public float Range => _unitConfig.AttackRange;
+    public UnitType UnitType => _unitConfig.UnitType;
     
     public override void Start()
     {

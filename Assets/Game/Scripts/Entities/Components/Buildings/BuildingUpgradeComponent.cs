@@ -54,12 +54,11 @@ public class BuildingUpgradeComponent : EntityComponent
 
     private void OnBuildingUpgraded(int playerId, BuildingType type, int level)
     {
-        if (_entity.OwnerId == playerId && _buildingConfig.Type == type)
-        {
-            var config = _globalBuildingsStagesController.GetActualConfig(_entity.OwnerId, _buildingConfig.Type);
-            _entity.UpdateConfig(config);
-            BuildingUpgradedEvent?.Invoke();
-        }
+        if (_entity.OwnerId != playerId || _buildingConfig.Type != type) return;
+        
+        var config = _globalBuildingsStagesController.GetActualConfig(_entity.OwnerId, _buildingConfig.Type);
+        _entity.UpdateConfig(config);
+        BuildingUpgradedEvent?.Invoke();
     }
 
     private void OnDisable()

@@ -32,6 +32,14 @@ MonoBehaviour:
   UnitsCanProduce:
   - ResourceCost:
     - Resource: 0
+      Amount: 20
+    - Resource: 2
+      Amount: 30
+    Unit:
+      Config: {fileID: 11400000, guid: d28b825c9b908744b8aeecda700ae0e1, type: 2}
+      UnitPrefab: {fileID: 5809232132187184330, guid: 58b85fcdb4c46074ead56fc84fd649ff, type: 3}
+  - ResourceCost:
+    - Resource: 0
       Amount: 100
     - Resource: 2
       Amount: 200

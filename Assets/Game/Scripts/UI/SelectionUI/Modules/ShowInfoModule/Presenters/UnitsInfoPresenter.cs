@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using NTC.Pool;
+using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -28,12 +30,19 @@ namespace Game.Scripts.UI.Modules.Presenters
         private TextMeshProUGUI _speedStatsText;
         private TextMeshProUGUI _rangeStatsText;
 
+        private Transform _upgradesContainer;
+        private UpgradeView _upgradeView;
+        private List<UpgradeView> _upgradesInstances = new List<UpgradeView>();
+
+        private GlobalUpgradesManager _globalUpgradesManager;
         private HealthComponent _singleSelectedUnitHealthComponent;
 
         private readonly Dictionary<string, UnitInfoPanelView> _panelsInstances = new Dictionary<string, UnitInfoPanelView>();
 
         private readonly Dictionary<string, Entity> _groupedEntities = new Dictionary<string, Entity>(10);
         private readonly Dictionary<string, int> _entitiesCount = new Dictionary<string, int>(10);
+        
+        private CompositeDisposable _subscriptions = new CompositeDisposable();
         
         public UnitsInfoPresenter(
             UnitInfoPanelView unitInfoPanelViewPrefab,
@@ -47,7 +56,10 @@ namespace Game.Scripts.UI.Modules.Presenters
             TextMeshProUGUI armorStatsText,
             TextMeshProUGUI speedStatsText,
             TextMeshProUGUI rangeStatsText,
-            Player player)
+            Player player,
+            Transform upgradesContainer,
+            UpgradeView upgradeView,
+            GlobalUpgradesManager globalUpgradesManager)
         {
             _unitInfoPanelViewPrefab = unitInfoPanelViewPrefab;
             _unitInfoPanelUIContainer = unitInfoPanelUIContainer;
@@ -60,7 +72,10 @@ namespace Game.Scripts.UI.Modules.Presenters
             _armorStatsText = armorStatsText;
             _speedStatsText = speedStatsText;
             _rangeStatsText = rangeStatsText;
+            _upgradesContainer = upgradesContainer;
+            _upgradeView = upgradeView;
             _player = player;
+            _globalUpgradesManager = globalUpgradesManager;
         }
 
 
@@ -140,11 +155,23 @@ namespace Game.Scripts.UI.Modules.Presenters
             _unitIconImage.gameObject.SetActive(true);
             _statsContainer.SetActive(true);
 
+            var upgrades = _globalUpgradesManager.GetByEntityType(unit.OwnerId, unit.EntityType);
+            
+            foreach (var upgrade in upgrades)
+            {
+                if (upgrade.IsCanBeAppliedOnEntity(unit))
+                {
+                    var upgradeInstance = NightPool.Spawn(_upgradeView, _upgradesContainer);
+                    upgradeInstance.Initialize(upgrade);
+                    _upgradesInstances.Add(upgradeInstance);
+                }
+            }
+            
             var isDamageable = target.TryGetComponent(out _singleSelectedUnitHealthComponent);
         
             if(!isDamageable) return;
 
-            UpdateHealth(_singleSelectedUnitHealthComponent.CurrentHealth);
+            UpdateHealth(_singleSelectedUnitHealthComponent.CurrentHealth.CurrentValue);
             _unitIconImage.sprite = unit.Icon;
             _unitNameText.text = unit.DisplayName;
             _attackStatsText.text = unit.Damage.ToString();
@@ -152,7 +179,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _speedStatsText.text = unit.Speed.ToString(CultureInfo.CurrentCulture);
             _rangeStatsText.text = unit.Range.ToString(CultureInfo.CurrentCulture);
             
-            _singleSelectedUnitHealthComponent.OnHealthChanged += UpdateHealth;
+            _singleSelectedUnitHealthComponent.CurrentHealth.Subscribe(UpdateHealth).AddTo(_subscriptions);
         }
 
         private void UpdateHealth(int health)
@@ -174,22 +201,21 @@ namespace Game.Scripts.UI.Modules.Presenters
         
         public void Hide()
         {
-            if (_singleSelectedUnitHealthComponent != null)
-            {
-                _singleSelectedUnitHealthComponent.OnHealthChanged -= UpdateHealth;
-            }
-            
-            
             foreach (var instance in _panelsInstances.Values)
             {
                 instance.gameObject.SetActive(false);
             }
+            
+            _upgradesInstances.ForEach(i => NightPool.Despawn(i));
+            _upgradesInstances.Clear();
             
             _hpSlider.gameObject.SetActive(false);
             _hpText.gameObject.SetActive(false);
             _unitNameText.gameObject.SetActive(false);
             _unitIconImage.gameObject.SetActive(false);
             _statsContainer.gameObject.SetActive(false);
+            
+            _subscriptions.Clear();
         }
     }
 }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UpgradeButtonPointerHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class PointerHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Action PointerEnterEvent;
     public Action PointerExitEvent;

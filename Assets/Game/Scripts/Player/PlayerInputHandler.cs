@@ -77,7 +77,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void UnsubscribeAllActions()
     {
-        Debug.Log("Unsubscribing all");
         inputActions.FindAction("Attack").performed -= StartSelection;
         inputActions.FindAction("Attack").canceled -= EndSelection;
         inputActions.FindAction("RightButton").performed -= TriggerPlayerCommandHandling;

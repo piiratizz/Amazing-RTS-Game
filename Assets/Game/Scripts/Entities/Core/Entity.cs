@@ -51,6 +51,7 @@ public class Entity : MonoBehaviour, IOwned
         {
             comp.Init(this);
             comp.InitializeFields(entityConfig);
+            comp.LateInit(this);
         }
         
         _minimapManager = _gameplayHUD.GetModule<MinimapManager>();
@@ -103,13 +104,24 @@ public class Entity : MonoBehaviour, IOwned
         return null;
     }
     
-    public T GetComponentByInterface<T>() where T : class
+    public T GetFirstComponentByInterface<T>() where T : class
     {
         foreach (var comp in entityComponents)
             if (comp is T tComp)
                 return tComp;
 
         return null;
+    }
+    
+    public List<T> GetAllComponentsByInterface<T>() where T : class
+    {
+        var components = new List<T>();
+        
+        foreach (var comp in entityComponents)
+            if (comp is T tComp)
+                components.Add(tComp);
+
+        return components;
     }
 
     private void OnDestroy()

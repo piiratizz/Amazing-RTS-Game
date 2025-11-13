@@ -69,12 +69,10 @@ public class GlobalBuildingsStagesController
     
     public bool UpgradeStage(int playerId, BuildingType buildingType)
     {
-        Debug.Log("UPGRADE CLICKED");
         var storage = _storagesManager.Get(playerId);
         var upgradeConfig = _configs.First( c => c.BuildingType == buildingType);
         var info = _playerUpgradesInformation.First(i => i.PlayerId == playerId);
-        Debug.Log(upgradeConfig.Stages.Length);
-        Debug.Log(info.GetLevelOfBuilding(upgradeConfig.BuildingType));
+
         var stage = upgradeConfig.Stages[info.GetLevelOfBuilding(buildingType)+1];
         
         foreach (var cost in stage.ResourceCosts)

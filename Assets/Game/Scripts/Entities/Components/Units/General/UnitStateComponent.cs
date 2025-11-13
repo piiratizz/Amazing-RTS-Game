@@ -14,7 +14,7 @@ public class UnitStateComponent : EntityComponent
 
     public override void Init(Entity entity)
     {
-        _attackComponent = entity.GetComponentByInterface<IAttackable>();
+        _attackComponent = entity.GetFirstComponentByInterface<IAttackable>();
         _unitMovementComponent = entity.GetEntityComponent<UnitMovementComponent>();
         _healthComponent = entity.GetEntityComponent<HealthComponent>();
 

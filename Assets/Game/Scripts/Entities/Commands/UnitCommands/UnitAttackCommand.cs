@@ -16,7 +16,7 @@ public class UnitAttackCommand : IEntityCommand<AttackArgs>
     {
         if (_entity.EntityType == EntityType.Unit)
         {
-            var attackable = _entity.GetComponentByInterface<IAttackable>();
+            var attackable = _entity.GetFirstComponentByInterface<IAttackable>();
             if (attackable != null)
             {
                 attackable.SetAutoAttack(true);

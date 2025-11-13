@@ -52,6 +52,7 @@ GameObject:
   - component: {fileID: 1674777325705995679}
   - component: {fileID: 7102532116806890052}
   - component: {fileID: 6785659585652912704}
+  - component: {fileID: 4396003315500039270}
   - component: {fileID: 629168906206318865}
   - component: {fileID: 4359848022910336598}
   m_Layer: 0
@@ -104,6 +105,7 @@ MonoBehaviour:
   - {fileID: 1674777325705995679}
   - {fileID: 7102532116806890052}
   - {fileID: 6785659585652912704}
+  - {fileID: 4396003315500039270}
   entityConfig: {fileID: 11400000, guid: c4b4efc3799f30644abdb85883368522, type: 2}
   initializeOnStart: 0
 --- !u!114 &367461848217558873
@@ -248,6 +250,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickaxe: {fileID: 36942677981811551}
   hammer: {fileID: 36942677981855681}
+--- !u!114 &4396003315500039270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6879839181109687417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 250bf4320ca14664b9e6da7208f05d26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &629168906206318865
 NavMeshAgent:
   m_ObjectHideFlags: 0

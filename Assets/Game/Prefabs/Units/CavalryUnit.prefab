@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: -6419410662282735536}
   - component: {fileID: 8172887142548545670}
   - component: {fileID: 8422545203593039809}
+  - component: {fileID: 5841904840183052518}
   - component: {fileID: 8451562346673274322}
   m_Layer: 6
   m_Name: CavalryUnit
@@ -94,6 +95,7 @@ MonoBehaviour:
   - {fileID: -6419410662282735536}
   - {fileID: 8172887142548545670}
   - {fileID: 8422545203593039809}
+  - {fileID: 5841904840183052518}
   entityConfig: {fileID: 11400000, guid: 943ff144fc74f804487d30c428a4b761, type: 2}
   initializeOnStart: 0
 --- !u!114 &3779574261203376947
@@ -227,6 +229,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 5132501106980638215}
+--- !u!114 &5841904840183052518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2306275375558017873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 250bf4320ca14664b9e6da7208f05d26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &8451562346673274322
 NavMeshAgent:
   m_ObjectHideFlags: 0

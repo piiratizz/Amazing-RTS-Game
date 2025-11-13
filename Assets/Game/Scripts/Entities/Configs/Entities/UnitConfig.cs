@@ -5,6 +5,8 @@ using NaughtyAttributes;
 [CreateAssetMenu(fileName = "UnitConfig",  menuName = "Configs/UnitConfig")]
 public class UnitConfig : EntityConfig
 {
+    public UnitType UnitType;
+    
     // --- VIEW ---
     [Foldout("View Settings")] 
     public string[] ActiveClothParts;

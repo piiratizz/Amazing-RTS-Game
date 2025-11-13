@@ -2,7 +2,7 @@
 using ComponentsActionTypes;
 using UnityEngine;
 
-public class UnitMeleeAttackComponent : EntityComponent, IAttackable
+public class UnitMeleeAttackComponent : EntityComponent, IAttackable, IUpgradeReceiver<UnitStatsModifierUpgrade>
 {
     [SerializeField] private UnitAnimationsEventsHandler unitAnimationsEventsHandler;
     
@@ -21,6 +21,8 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable
 
     private float _attackRange = 1f;
     private int _damage = 10;
+    private int _bonusDamage = 0;
+    
     public bool IsAttacking { get; set; }
 
     private Vector3 _attackPosition;
@@ -141,7 +143,7 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable
 
     private void PerformDamage(AnimationHitArgs hit)
     {
-        _targetUnitDamageResistanceComponent?.TakeDamage(_entity, _damageType, _damage);
+        _targetUnitDamageResistanceComponent?.TakeDamage(_entity, _damageType, _damage + _bonusDamage);
     }
 
     private void OnTargetKilled()
@@ -206,5 +208,16 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, 0.3f);
         Gizmos.DrawSphere(_attackPosition, 0.5f);
+    }
+
+    public void ReceiveUpgrade(UnitStatsModifierUpgrade upgrade)
+    {
+        upgrade.Stats.ForEach(s =>
+        {
+            if (s.StatsType == StatsType.Damage)
+            {
+                _bonusDamage += (int)s.Value;
+            }
+        });
     }
 }

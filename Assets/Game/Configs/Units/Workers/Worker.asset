@@ -10,31 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de0c381ae0684bdc9865786a1e764318, type: 3}
-  m_Name: Spearman Tier 1
+  m_Name: Worker
   m_EditorClassIdentifier: 
-  Icon: {fileID: 21300000, guid: bf21f58068d11cc4c830e90d765affc1, type: 3}
-  DisplayName: "\u041A\u043E\u043F\u0435\u0439\u0448\u0438\u043A \u0443\u0440\u043E\u0432\u0435\u043D\u044C
-    1"
+  Icon: {fileID: 21300000, guid: d42c941876031c64d913586f4cf648b8, type: 3}
+  DisplayName: "\u0420\u0430\u0431\u043E\u0447\u0438\u0439"
   MaxHealth: 100
   SpawnHealth: 100
-  DetectionRadius: 7
+  DetectionRadius: 5
   EntityType: 1
   Selectable: 1
-  ActiveClothParts:
-  - WK_Units_Arms_A
-  - WK_Units_Body_C
-  - WK_Units_head_A
-  - WK_Units_Legs_C
-  ClothLayer: ClothLayer
-  RightHandLayer: RightHandLayer
-  RightHandWeapon: WK_Units_spear
-  LeftHandLayer: LeftHandLayer
-  LeftHandWeapon: WK_Units_shield_B
-  Damage: 20
-  AttackRange: 3
-  Speed: 5
+  UnitType: 3
+  ActiveClothParts: []
+  ClothLayer: 
+  RightHandLayer: 
+  RightHandWeapon: 
+  LeftHandLayer: 
+  LeftHandWeapon: 
+  Damage: 0
+  AttackRange: 0
+  Speed: 4
   Armor: 0
-  DamageType: 1
+  DamageType: 2
   DamageResists:
   - DamageType: 0
     ResistModifier: 0
@@ -44,9 +40,20 @@ MonoBehaviour:
     ResistModifier: 0
   - DamageType: 3
     ResistModifier: 0
-  GatherRatePerSecond: 0
-  LiftingCapacity: 0
-  BuildingsAvailableToBuild: []
+  GatherRatePerSecond: 5
+  LiftingCapacity: 20
+  BuildingsAvailableToBuild:
+  - Type: 5
+    Prefab: {fileID: 3586531835046653686, guid: 2a6082d48159bf34b8dc2251df0157ed, type: 3}
+  - Type: 2
+    Prefab: {fileID: 7569933923917703589, guid: 6b7eddd6c997eb941b8502fb340a0bf2, type: 3}
+  - Type: 3
+    Prefab: {fileID: 7627359314723417412, guid: 5ac512bfb6705994790a8f7a13f28dc3, type: 3}
+  - Type: 4
+    Prefab: {fileID: 4543200640813814052, guid: 94619e962859aae41bd28c3eca04e2b8, type: 3}
+  - Type: 6
+    Prefab: {fileID: 3477233060432461936, guid: fe5036b4f0945c643934d034c545c409, type: 3}
+  BuildingRatePerSecond: 10
   TotalProductionCost: 100
   DamageLostDistanceModifierCurve:
     serializedVersion: 2

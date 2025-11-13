@@ -26,7 +26,7 @@ namespace Game.Scripts.UI.Modules.Presenters
         private HealthComponent _buildingHealthComponent;
         private BuildingUpgradeComponent _buildingUpgradeComponent;
         private BuildingBuildComponent _buildingBuildComponent;
-        private UpgradeButtonPointerHandler _upgradeButtonPointerHandler;
+        private PointerHandler _pointerHandler;
         
         private Button _upgradeButton;
 
@@ -40,7 +40,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             TextMeshProUGUI buildingNameText,
             Image buildingIconImage,
             Button upgradeButton,
-            UpgradeButtonPointerHandler upgradeButtonPointerHandler,
+            PointerHandler pointerHandler,
             GameObject upgradeResourceCostPanel,
             ResourceCostView resourceCostViewPrefab)
         {
@@ -49,7 +49,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _buildingNameText = buildingNameText;
             _buildingIconImage =  buildingIconImage;
             _upgradeButton = upgradeButton;
-            _upgradeButtonPointerHandler = upgradeButtonPointerHandler;
+            _pointerHandler = pointerHandler;
             _upgradeResourceCostPanel = upgradeResourceCostPanel;
             _resourceCostViewPrefab = resourceCostViewPrefab;
             
@@ -90,13 +90,13 @@ namespace Game.Scripts.UI.Modules.Presenters
             _buildingNameText.gameObject.SetActive(true);
             _buildingIconImage.gameObject.SetActive(true);
 
-            _upgradeButtonPointerHandler.PointerEnterEvent += OnUpgradeButtonPointerEnter;
-            _upgradeButtonPointerHandler.PointerExitEvent += OnUpgradeButtonPointerExit;
+            _pointerHandler.PointerEnterEvent += OnUpgradeButtonPointerEnter;
+            _pointerHandler.PointerExitEvent += OnUpgradeButtonPointerExit;
             
             UpdateFields();
             
             if(_buildingHealthComponent == null) return;
-            _buildingHealthComponent.OnHealthChanged += UpdateHealth;
+            _buildingHealthComponent.CurrentHealth.Subscribe(UpdateHealth).AddTo(_subscriptions);
         }
 
         private void OnUpgradeButtonPointerEnter()
@@ -153,7 +153,6 @@ namespace Game.Scripts.UI.Modules.Presenters
                 
                 if (canShowUpgradeButton)
                 {
-                    Debug.Log("SUBSCRIBED UPGRADE");
                     _upgradeButton.gameObject.SetActive(true);
                     _upgradeButton.onClick.AddListener(() =>
                     {
@@ -172,7 +171,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             
             if(_buildingHealthComponent == null) return;
             
-            UpdateHealth(_buildingHealthComponent.CurrentHealth);
+            UpdateHealth(_buildingHealthComponent.CurrentHealth.CurrentValue);
         }
 
         private void UpdateHealth(int health)
@@ -191,8 +190,8 @@ namespace Game.Scripts.UI.Modules.Presenters
             _upgradeButton.gameObject.SetActive(false);
             _upgradeResourceCostPanel.SetActive(false);
             
-            _upgradeButtonPointerHandler.PointerEnterEvent -= OnUpgradeButtonPointerEnter;
-            _upgradeButtonPointerHandler.PointerExitEvent -= OnUpgradeButtonPointerExit;
+            _pointerHandler.PointerEnterEvent -= OnUpgradeButtonPointerEnter;
+            _pointerHandler.PointerExitEvent -= OnUpgradeButtonPointerExit;
             _upgradeButton.onClick.RemoveAllListeners();
 
             foreach (var resourceCostView in _resourceCostViewsInstances)
@@ -202,11 +201,6 @@ namespace Game.Scripts.UI.Modules.Presenters
             
             _resourceCostViewsInstances.Clear();
             _subscriptions?.Clear();
-            
-            if (_buildingHealthComponent != null)
-            {
-                _buildingHealthComponent.OnHealthChanged -= UpdateHealth;
-            }
         }
     }
 }

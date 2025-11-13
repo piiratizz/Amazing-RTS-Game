@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Game.Scripts.UI.Modules.Presenters;
-using R3;
 using Zenject;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Game.Scripts.UI.Modules
 {
     public class ShowInfoModule : SelectionPanelModule
     {
-        [SerializeField] private UpgradeButtonPointerHandler upgradeButtonPointerHandler;
+        [FormerlySerializedAs("upgradeButtonPointerHandler")] [SerializeField] private PointerHandler pointerHandler;
         [SerializeField] private GameObject upgradeResourceCostPanel;
         [SerializeField] private ResourceCostView resourceCostViewPrefab;
         
@@ -34,7 +33,11 @@ namespace Game.Scripts.UI.Modules
         
         [SerializeField] private Button upgradeButton;
         
+        [SerializeField] private UpgradeView upgradeViewPrefab;
+        [SerializeField] private Transform upgradesContainer;
+        
         [Inject] private Player _player;
+        [Inject] private GlobalUpgradesManager _globalUpgradesManager;
         
         private Dictionary<Type, IEntityInfoPresenter> _presenters;
         private IEntityInfoPresenter _currentPresenter;
@@ -50,7 +53,7 @@ namespace Game.Scripts.UI.Modules
                         unitNameText,
                         unitIconImage,
                         upgradeButton,
-                        upgradeButtonPointerHandler,
+                        pointerHandler,
                         upgradeResourceCostPanel,
                         resourceCostViewPrefab)
                 },
@@ -74,7 +77,10 @@ namespace Game.Scripts.UI.Modules
                         armorStatsText,
                         speedStatsText,
                         rangeStatsText,
-                        _player)
+                        _player,
+                        upgradesContainer,
+                        upgradeViewPrefab,
+                        _globalUpgradesManager)
                 }
             };
 

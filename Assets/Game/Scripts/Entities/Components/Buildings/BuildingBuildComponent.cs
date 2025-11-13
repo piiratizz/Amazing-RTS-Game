@@ -13,7 +13,7 @@ public class BuildingBuildComponent : EntityComponent
     private ReactiveProperty<bool> _isBuilded = new ReactiveProperty<bool>();
     
     public ReadOnlyReactiveProperty<bool> IsBuilded => _isBuilded;
-    public bool IsFullHp => _healthComponent.CurrentHealth == _healthComponent.MaxHealth;
+    public bool IsFullHp => _healthComponent.CurrentHealth.CurrentValue == _healthComponent.MaxHealth;
     
     public override void Init(Entity entity)
     {
@@ -51,7 +51,7 @@ public class BuildingBuildComponent : EntityComponent
     
     private void UpdateStageView()
     {
-        float normalizedProgress = (float)_healthComponent.CurrentHealth /  _healthComponent.MaxHealth;
+        float normalizedProgress = (float)_healthComponent.CurrentHealth.CurrentValue /  _healthComponent.MaxHealth;
         int prefabIndex = (int)((buildingStagesObjects.Count-1) * normalizedProgress);
         
         buildingStagesObjects[_currentBuildingIndex].SetActive(false);

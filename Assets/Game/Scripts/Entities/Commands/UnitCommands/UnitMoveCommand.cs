@@ -12,9 +12,9 @@ public class UnitMoveCommand : IEntityCommand<MoveArgs>
     public void Init(Entity entity)
     {
         _entity = entity;
-        _moveable = entity.GetComponentByInterface<IMoveable>();
+        _moveable = entity.GetFirstComponentByInterface<IMoveable>();
         _detectionComponent = entity.GetEntityComponent<UnitDetectionComponent>();
-        _attackable = entity.GetComponentByInterface<IAttackable>();
+        _attackable = entity.GetFirstComponentByInterface<IAttackable>();
     }
 
     public void Execute(MoveArgs args)

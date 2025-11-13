@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de0c381ae0684bdc9865786a1e764318, type: 3}
-  m_Name: Spearman Tier 3
+  m_Name: Cavalry Tier 1
   m_EditorClassIdentifier: 
-  Icon: {fileID: 21300000, guid: c4f28d6a8d8f6ba41a7710f6e2368f80, type: 3}
-  DisplayName: "\u041A\u043E\u043F\u0435\u0439\u0448\u0438\u043A \u0443\u0440\u043E\u0432\u0435\u043D\u044C
-    2"
-  MaxHealth: 150
-  SpawnHealth: 150
+  Icon: {fileID: 21300000, guid: 852a6a28f56d22e45bc97e55821526b7, type: 3}
+  DisplayName: "\u041A\u0430\u0432\u0430\u043B\u0435\u0440\u0438\u044F \u0443\u0440\u043E\u0432\u0435\u043D\u044C
+    1"
+  MaxHealth: 200
+  SpawnHealth: 200
   DetectionRadius: 7
   EntityType: 1
   Selectable: 1
+  UnitType: 2
   ActiveClothParts: []
   ClothLayer: 
   RightHandLayer: 
@@ -28,9 +29,9 @@ MonoBehaviour:
   LeftHandWeapon: 
   Damage: 50
   AttackRange: 3
-  Speed: 5
-  Armor: 0
-  DamageType: 1
+  Speed: 8
+  Armor: 30
+  DamageType: 3
   DamageResists:
   - DamageType: 0
     ResistModifier: 0
@@ -43,7 +44,8 @@ MonoBehaviour:
   GatherRatePerSecond: 0
   LiftingCapacity: 0
   BuildingsAvailableToBuild: []
-  TotalProductionCost: 100
+  BuildingRatePerSecond: 0
+  TotalProductionCost: 200
   DamageLostDistanceModifierCurve:
     serializedVersion: 2
     m_Curve: []

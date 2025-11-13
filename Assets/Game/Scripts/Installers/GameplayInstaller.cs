@@ -12,6 +12,8 @@ public class GameplayInstaller : MonoInstaller
     {
         InstallSignals();
         
+        Container.BindInterfacesAndSelfTo<GlobalUpgradesManager>().AsSingle();
+        
         var gridInstance = Container.InstantiatePrefabForComponent<GlobalGrid>(gridPrefab);
         Container.Bind<GlobalGrid>().FromInstance(gridInstance).AsSingle();
         
@@ -43,6 +45,9 @@ public class GameplayInstaller : MonoInstaller
         Player playerInstance = playerFactory.Create(1, PlayerModes.Default);
         Container.Bind<Player>().FromInstance(playerInstance).AsSingle();
         
+        var globalUpgradesManager = Container.Resolve<GlobalUpgradesManager>();
+        
+        globalUpgradesManager.RegisterPlayer(playerInstance.OwnerId);
         globalBuildingsStagesController.RegisterNewPlayer(playerInstance.OwnerId, 0);
         
         var hudInstance = Container.InstantiatePrefabForComponent<GameplayHUD>(gameplayUIPrefab);
@@ -70,6 +75,7 @@ public class GameplayInstaller : MonoInstaller
         SignalBusInstaller.Install(Container);
 
         Container.DeclareSignal<ChanglePlayerModeSignal>();
+        Container.DeclareSignal<UpgradeAddedSignal>();
     }
 
 }
