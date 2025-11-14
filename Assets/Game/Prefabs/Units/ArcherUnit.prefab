@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 7013387219823043685}
   - component: {fileID: 9029475026755584653}
   - component: {fileID: 1432855410796948082}
+  - component: {fileID: -4590520686407203933}
   - component: {fileID: 854165032901534222}
   m_Layer: 6
   m_Name: ArcherUnit
@@ -193,6 +194,7 @@ MonoBehaviour:
   - {fileID: 4353454231790388555}
   - {fileID: 7013387219823043685}
   - {fileID: 9029475026755584653}
+  - {fileID: -4590520686407203933}
   entityConfig: {fileID: 11400000, guid: d28b825c9b908744b8aeecda700ae0e1, type: 2}
   initializeOnStart: 0
 --- !u!114 &6593825369954330509
@@ -339,6 +341,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrowVFXTrigger: {fileID: 1787767087618826153}
   unitAnimationsEventsHandler: {fileID: 3622598312446733729}
+--- !u!114 &-4590520686407203933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331570190538553067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 250bf4320ca14664b9e6da7208f05d26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &854165032901534222
 NavMeshAgent:
   m_ObjectHideFlags: 0

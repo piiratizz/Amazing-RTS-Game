@@ -21,7 +21,7 @@
         {
             if (resist.DamageType == damageType)
             {
-                int effectiveDamage = (int)(baseDamage * (1f - resist.ResistModifier) * (100f / (100f + _config.Armor)));
+                int effectiveDamage = (int)(baseDamage * (1f - resist.ResistModifier) * (20f / (20f + _config.Armor)));
                 _healthComponent.TakeDamage(sender, effectiveDamage);
                 return;
             }

@@ -15,8 +15,8 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: c4f28d6a8d8f6ba41a7710f6e2368f80, type: 3}
   DisplayName: "\u041A\u043E\u043F\u0435\u0439\u0448\u0438\u043A \u0443\u0440\u043E\u0432\u0435\u043D\u044C
     2"
-  MaxHealth: 120
-  SpawnHealth: 120
+  MaxHealth: 100
+  SpawnHealth: 100
   DetectionRadius: 7
   EntityType: 1
   Selectable: 1
@@ -31,7 +31,7 @@ MonoBehaviour:
   RightHandWeapon: WK_Units_spear
   LeftHandLayer: LeftHandLayer
   LeftHandWeapon: WK_Units_shield_C
-  Damage: 50
+  Damage: 20
   AttackRange: 3
   Speed: 5
   Armor: 0

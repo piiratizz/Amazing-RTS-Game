@@ -409,6 +409,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 163772, guid: cdbe91a91060b1e4eb4bd0b52d578091, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 164580, guid: cdbe91a91060b1e4eb4bd0b52d578091, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 169886, guid: cdbe91a91060b1e4eb4bd0b52d578091, type: 3}
       propertyPath: m_Name
       value: WK_worker
@@ -417,7 +425,15 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 180462, guid: cdbe91a91060b1e4eb4bd0b52d578091, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 186376, guid: cdbe91a91060b1e4eb4bd0b52d578091, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 186498, guid: cdbe91a91060b1e4eb4bd0b52d578091, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}

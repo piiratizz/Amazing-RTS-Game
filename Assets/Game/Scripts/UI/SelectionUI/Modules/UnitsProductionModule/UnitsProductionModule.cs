@@ -14,6 +14,7 @@ public class UnitsProductionModule : SelectionPanelModule
     [SerializeField] private ProductionQueueUnitView producedQueueUnitView;
     [SerializeField] private GameObject background;
     [SerializeField] private Transform unitsPanelsContainer;
+    [SerializeField] private Transform upgradesContainer;
     [SerializeField] private Transform unitsInProductionQueueContainer;
     [SerializeField] private Transform progressBarParent;
     [SerializeField] private Image radialFillProgressBar;
@@ -94,9 +95,13 @@ public class UnitsProductionModule : SelectionPanelModule
 
     private void ShowUpgrades()
     {
+        if(_productionComponent.UpgradesAvailableToBuild == null)
+        {
+            return;
+        }
         foreach (var upgrade in _productionComponent.UpgradesAvailableToBuild)
         {
-            var upgradeInstance = NightPool.Spawn(productionUpgradeViewPrefab, unitsPanelsContainer);
+            var upgradeInstance = NightPool.Spawn(productionUpgradeViewPrefab, upgradesContainer);
             upgradeInstance.Initialize(upgrade, TryProduceUpgrade);
             
             _upgradesInstances.Add(upgradeInstance);
@@ -197,6 +202,7 @@ public class UnitsProductionModule : SelectionPanelModule
         }
         
         _unitsInstances.Clear();
+        _upgradesInstances.Clear();
         HideProductionQueue();
         progressBarParent.gameObject.SetActive(false);
         background.SetActive(false);

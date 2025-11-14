@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8611b92185534c1e9a07cf01bfcfcfe6, type: 3}
   m_Name: TownhallTier1BuildingConfig
   m_EditorClassIdentifier: 
-  Icon: {fileID: 21300000, guid: ba9a671a342d07c45a8af9ed6f3202c0, type: 3}
+  Icon: {fileID: 21300000, guid: ac07ac03f10d9704ea70e4b5f76657b2, type: 3}
   DisplayName: "\u0420\u0430\u0442\u0443\u0448\u0430 \u0443\u0440\u043E\u0432\u0435\u043D\u044C
     1"
   MaxHealth: 1000
@@ -23,7 +23,7 @@ MonoBehaviour:
   Type: 6
   SizeX: 6
   SizeZ: 6
-  Preview: {fileID: 21300000, guid: ba9a671a342d07c45a8af9ed6f3202c0, type: 3}
+  Preview: {fileID: 21300000, guid: ac07ac03f10d9704ea70e4b5f76657b2, type: 3}
   BuildResourceCost:
   - Resource: 1
     Amount: 50

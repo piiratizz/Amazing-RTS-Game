@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8611b92185534c1e9a07cf01bfcfcfe6, type: 3}
   m_Name: ArcheryTier1BuildingConfig
   m_EditorClassIdentifier: 
-  Icon: {fileID: 21300000, guid: ba9a671a342d07c45a8af9ed6f3202c0, type: 3}
+  Icon: {fileID: 21300000, guid: d19f690460d4e154d9f8a4f9d24d1228, type: 3}
   DisplayName: "\u0421\u0442\u0440\u0435\u043B\u044C\u0431\u0438\u0449\u0435 \u0443\u0440\u043E\u0432\u0435\u043D\u044C
     1"
   MaxHealth: 500
@@ -23,7 +23,7 @@ MonoBehaviour:
   Type: 2
   SizeX: 5
   SizeZ: 5
-  Preview: {fileID: 21300000, guid: 40c6c1093104eb140899be533e9bd1bd, type: 3}
+  Preview: {fileID: 21300000, guid: d19f690460d4e154d9f8a4f9d24d1228, type: 3}
   BuildResourceCost:
   - Resource: 1
     Amount: 50
@@ -38,5 +38,6 @@ MonoBehaviour:
     Unit:
       Config: {fileID: 11400000, guid: d28b825c9b908744b8aeecda700ae0e1, type: 2}
       UnitPrefab: {fileID: 5809232132187184330, guid: 58b85fcdb4c46074ead56fc84fd649ff, type: 3}
+  UpgradesCanProduce: []
   ProductionRatePerSecond: 10
   BuildPreviewPrefab: {fileID: 7460839962910908748, guid: d73b1ffecffd4cc4589b9e8556267b52, type: 3}

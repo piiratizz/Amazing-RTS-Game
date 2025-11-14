@@ -23,7 +23,7 @@ MonoBehaviour:
   UnitType: 1
   ActiveClothParts:
   - WK_Units_Arms_A
-  - WK_Units_Body_C
+  - WK_Units_Body_B
   - WK_Units_head_A
   - WK_Units_Legs_C
   ClothLayer: ClothLayer

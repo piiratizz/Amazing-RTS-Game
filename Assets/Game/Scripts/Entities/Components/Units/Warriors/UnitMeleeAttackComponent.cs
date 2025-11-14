@@ -24,6 +24,9 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable, IUpgradeRe
     private int _bonusDamage = 0;
     
     public bool IsAttacking { get; set; }
+    
+    public int BaseDamage => _damage;
+    public int BonusDamage => _bonusDamage;
 
     private Vector3 _attackPosition;
     private int _unitsInFormation;

@@ -28,8 +28,7 @@ public class UpgradesReceivingManagerComponent : EntityComponent
         }
 
         var upgrades = _globalUpgradesManager.GetByEntityType(_ownerId, _entityType);
-
-        Debug.Log(upgrades.Count);
+        
         
         foreach (var upgrade in upgrades)
         {

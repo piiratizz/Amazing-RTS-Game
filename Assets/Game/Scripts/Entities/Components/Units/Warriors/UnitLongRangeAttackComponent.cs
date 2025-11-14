@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
 using UnityEngine;
 
-public class UnitLongRangeAttackComponent : EntityComponent, IAttackable
+public class UnitLongRangeAttackComponent : EntityComponent, IAttackable, IUpgradeReceiver<UnitStatsModifierUpgrade>
 {
     [SerializeField] private ArrowVFXTrigger arrowVFXTrigger;
     [SerializeField] private UnitAnimationsEventsHandler unitAnimationsEventsHandler;
@@ -30,8 +30,12 @@ public class UnitLongRangeAttackComponent : EntityComponent, IAttackable
     public bool IsCanAutoAttack { get; set; } = true;
 
     public bool IsAttacking { get; set; }
+    public int BaseDamage => _config.Damage;
+    public int BonusDamage => _bonusDamage;
 
     private bool _initialized = false;
+
+    private int _bonusDamage = 0;
     
     public override void Init(Entity entity)
     {
@@ -156,7 +160,7 @@ public class UnitLongRangeAttackComponent : EntityComponent, IAttackable
         
         var damage = CalculateDamageLostOverDistance((entity.transform.position - transform.position).magnitude);
 
-        _targetResistanceComponent.TakeDamage(_thisEntity, _config.DamageType, damage);
+        _targetResistanceComponent.TakeDamage(_thisEntity, _config.DamageType, damage + _bonusDamage);
     }
 
     private float CalculateLifetime(float speed, Vector3 startPoint, Vector3 endPoint)
@@ -234,5 +238,16 @@ public class UnitLongRangeAttackComponent : EntityComponent, IAttackable
             Gizmos.DrawWireSphere(_targetEntity.transform.position, 2);
         }
         
+    }
+
+    public void ReceiveUpgrade(UnitStatsModifierUpgrade upgrade)
+    {
+        upgrade.Stats.ForEach(s =>
+        {
+            if (s.StatsType == StatsType.Damage)
+            {
+                _bonusDamage += (int)s.Value;
+            }
+        });
     }
 }

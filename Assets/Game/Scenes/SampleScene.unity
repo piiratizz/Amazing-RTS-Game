@@ -14232,6 +14232,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpearmanUnit
       objectReference: {fileID: 0}
+    - target: {fileID: 3666445756663958888, guid: 023a2f4d881fc98449aa499a17acaa1f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666445756663959206, guid: 023a2f4d881fc98449aa499a17acaa1f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666445756664051868, guid: 023a2f4d881fc98449aa499a17acaa1f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3819158208650895756, guid: 023a2f4d881fc98449aa499a17acaa1f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.5425096

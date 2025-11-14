@@ -19,6 +19,7 @@ MonoBehaviour:
   DetectionRadius: 10
   EntityType: 1
   Selectable: 1
+  UnitType: 0
   ActiveClothParts:
   - WK_Units_Arms_A
   - WK_Units_Body_B
@@ -46,6 +47,7 @@ MonoBehaviour:
   GatherRatePerSecond: 0
   LiftingCapacity: 0
   BuildingsAvailableToBuild: []
+  BuildingRatePerSecond: 0
   TotalProductionCost: 100
   DamageLostDistanceModifierCurve:
     serializedVersion: 2

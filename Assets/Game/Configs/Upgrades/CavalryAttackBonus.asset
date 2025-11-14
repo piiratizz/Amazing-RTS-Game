@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df80e2a9595d4087ae7896017140ff0f, type: 3}
   m_Name: CavalryAttackBonus
   m_EditorClassIdentifier: 
-  Id: 1
+  Id: 2
   Icon: {fileID: 21300000, guid: eec19781926cd2248b7c9abfde8db555, type: 3}
   Name: CavalryAttackBonus
+  DisplayName: 
   Description: 
   EntityType: 1
   ResourceCost:

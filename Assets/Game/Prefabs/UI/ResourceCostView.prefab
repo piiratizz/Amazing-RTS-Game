@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 8687790422661840192}
   - component: {fileID: 1724700492824590158}
   m_Layer: 5
-  m_Name: CostDataItemUI
+  m_Name: ResourceCostView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

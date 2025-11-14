@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using ComponentsActionTypes;
 using NTC.Pool;
 using R3;
 using TMPro;
@@ -167,14 +168,27 @@ namespace Game.Scripts.UI.Modules.Presenters
                 }
             }
             
-            var isDamageable = target.TryGetComponent(out _singleSelectedUnitHealthComponent);
+            _singleSelectedUnitHealthComponent = target.GetEntityComponent<HealthComponent>();
         
-            if(!isDamageable) return;
-
+            if(_singleSelectedUnitHealthComponent == null) return;
+            
             UpdateHealth(_singleSelectedUnitHealthComponent.CurrentHealth.CurrentValue);
             _unitIconImage.sprite = unit.Icon;
             _unitNameText.text = unit.DisplayName;
-            _attackStatsText.text = unit.Damage.ToString();
+
+            string attackText = $"{unit.Damage}";
+            
+            var attackable = target.GetFirstComponentByInterface<IAttackable>();
+            
+            if (attackable != null)
+            {
+                if (attackable.BonusDamage != 0)
+                {
+                    attackText = $"{unit.Damage}(+{attackable.BonusDamage})";
+                }
+            }
+            
+            _attackStatsText.text = attackText;
             _armorStatsText.text = unit.Armor.ToString();
             _speedStatsText.text = unit.Speed.ToString(CultureInfo.CurrentCulture);
             _rangeStatsText.text = unit.Range.ToString(CultureInfo.CurrentCulture);

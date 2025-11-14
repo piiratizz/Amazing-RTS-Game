@@ -14,7 +14,7 @@
         public void Initialize(EntityUpgrade upgrade)
         {
             image.sprite = upgrade.Icon;
-            upgradeNameText.text = upgrade.Name;
+            upgradeNameText.text = upgrade.DisplayName;
             upgradeDescriptionText.text = upgrade.Description;
 
             HideInfoPanel();

@@ -11,7 +11,7 @@ namespace Game.Scripts.UI.Modules
 {
     public class ShowInfoModule : SelectionPanelModule
     {
-        [FormerlySerializedAs("upgradeButtonPointerHandler")] [SerializeField] private PointerHandler pointerHandler;
+        [SerializeField] private PointerHandler pointerHandler;
         [SerializeField] private GameObject upgradeResourceCostPanel;
         [SerializeField] private ResourceCostView resourceCostViewPrefab;
         
