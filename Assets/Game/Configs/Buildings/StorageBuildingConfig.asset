@@ -27,5 +27,6 @@ MonoBehaviour:
   - Resource: 1
     Amount: 50
   UnitsCanProduce: []
+  UpgradesCanProduce: []
   ProductionRatePerSecond: 0
   BuildPreviewPrefab: {fileID: 7473648880954476980, guid: 07ff1d4066e4e9a4493b3dc244c7e7c9, type: 3}

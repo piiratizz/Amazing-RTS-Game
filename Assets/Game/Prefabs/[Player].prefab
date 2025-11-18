@@ -338,6 +338,7 @@ MonoBehaviour:
   terrainLayer:
     serializedVersion: 2
     m_Bits: 256
+  doubleClickTime: 0.2
 --- !u!114 &2823008411803129603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,6 +356,7 @@ MonoBehaviour:
   borderColor: {r: 0.3, g: 0.6, b: 1, a: 1}
   backgroundColor: {r: 0.43574226, g: 0.5080239, b: 0.6037736, a: 0.33333334}
   player: {fileID: 6656914476081953850}
+  playerInputHandler: {fileID: 5316679333588410944}
 --- !u!114 &265158882379995662
 MonoBehaviour:
   m_ObjectHideFlags: 0

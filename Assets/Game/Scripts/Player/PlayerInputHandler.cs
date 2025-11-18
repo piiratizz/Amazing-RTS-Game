@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using R3;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,9 +15,18 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField] private PlayerBuildingManager playerBuildingManager;
     [SerializeField] private PlayerModeManager playerModeManager;
     [SerializeField] private LayerMask terrainLayer;
+    [SerializeField] private float doubleClickTime = 0.25f;
 
+    public event Action<RaycastHit> OnDoubleClick;
+    public event Action OnSelectionCancelled;
+    public event Action<Vector3> OnSelectionStarted;
+    public event Action<Vector3>  OnSelectionEnded;
+    
+    private float _lastClickTime;
+    public bool IsDoubleClick { get; private set; }
+    
     private readonly CompositeDisposable _disposables = new CompositeDisposable();
-
+    
     private void SubscribeModeChangeHandling()
     {
         UnsubscribeAllActions();
@@ -93,9 +103,29 @@ public class PlayerInputHandler : MonoBehaviour
     
     private void StartSelection(InputAction.CallbackContext context)
     {
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            float time = Time.time;
+
+            if (time - _lastClickTime <= doubleClickTime)
+            {
+                if (RaycastMouse(out RaycastHit hit1))
+                {
+                    IsDoubleClick = true;
+                    OnDoubleClick?.Invoke(hit1);
+                }
+            }
+            else
+            {
+                IsDoubleClick = false;
+            }
+            
+            _lastClickTime = time;
+        }
+        
         if (RaycastMouse(out var hit))
         {
-            playerSelectionManager.StartSelection(hit.point);
+            OnSelectionStarted?.Invoke(hit.point);
         }
     }
 
@@ -103,11 +133,11 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (RaycastMouse(out var hit))
         {
-            playerSelectionManager.EndSelection(hit.point);
+            OnSelectionEnded?.Invoke(hit.point);
         }
-        else if (playerSelectionManager.IsSelecting)
+        else
         {
-            playerSelectionManager.ClearSelection();
+            OnSelectionCancelled?.Invoke();
         }
     }
 

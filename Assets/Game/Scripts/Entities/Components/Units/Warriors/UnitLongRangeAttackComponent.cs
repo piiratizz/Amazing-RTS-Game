@@ -218,9 +218,9 @@ public class UnitLongRangeAttackComponent : EntityComponent, IAttackable, IUpgra
         unitAnimationsEventsHandler.OnProjectileLauncherEvent -= LaunchArrow;
     }
 
-    private void OnStateChanged(UnitState state)
+    private void OnStateChanged(UnitEntity unit, UnitState oldState, UnitState newState)
     {
-        if (state == UnitState.Idle)
+        if (newState == UnitState.Idle)
         {
             SetAutoAttack(true);
         }

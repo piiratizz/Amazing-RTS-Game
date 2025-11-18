@@ -12,7 +12,7 @@ public class PlayerSelectionManager : MonoBehaviour
     [SerializeField] private Color borderColor = new Color(0.3f, 0.6f, 1f);
     [SerializeField] private Color backgroundColor = new Color(0.3f, 0.6f, 1f, 0.2f);
     [SerializeField] private Player player;
-    
+    [SerializeField] private PlayerInputHandler playerInputHandler;
     public bool IsSelecting => _isSelecting;
     
     private readonly List<Entity> _selectedEntities = new();
@@ -22,13 +22,30 @@ public class PlayerSelectionManager : MonoBehaviour
     private Vector2 _currentMousePos;
     private bool _isSelecting;
     
+    private Entity _hoveredEntity;
+    
     private void Update()
     {
         if (_isSelecting)
             _currentMousePos = Mouse.current.position.ReadValue();
     }
 
-    public void StartSelection(Vector3 worldPoint)
+    private void OnEnable()
+    {
+        playerInputHandler.OnSelectionStarted += StartSelection;
+        playerInputHandler.OnSelectionEnded += EndSelection;
+        playerInputHandler.OnSelectionCancelled += CancelSelection;
+    }
+    
+    private void OnDisable()
+    {
+        playerInputHandler.OnSelectionStarted -= StartSelection;
+        playerInputHandler.OnSelectionEnded -= EndSelection;
+        playerInputHandler.OnSelectionCancelled -= CancelSelection;
+    }
+    
+
+    private void StartSelection(Vector3 worldPoint)
     {
         ClearSelection();
         _startMousePos = Mouse.current.position.ReadValue();
@@ -36,14 +53,21 @@ public class PlayerSelectionManager : MonoBehaviour
         _isSelecting = true;
     }
     
-    public void EndSelection(Vector3 worldPoint)
+    private void EndSelection(Vector3 worldPoint)
     {
         if(_isSelecting == false) return;
         
         _bottomRight = worldPoint;
         CreateSelectionBox(_bottomLeft, _bottomRight);
         
-        OnSelectionChanged?.Invoke(_selectedEntities);
+        if (playerInputHandler.IsDoubleClick)
+        {
+            if (_selectedEntities.Count > 0)
+            {
+                SelectAllInViewport(_selectedEntities[0]);
+            }
+        }
+        
         foreach (var selectable in _selectedEntities)
         {
             selectable.OnEntityDestroyed += SelectionDestroyed;
@@ -57,6 +81,64 @@ public class PlayerSelectionManager : MonoBehaviour
         OnSelectionChanged?.Invoke(_selectedEntities);
     }
 
+    private void CancelSelection()
+    {
+        if (_isSelecting)
+        {
+            ClearSelection();
+        }
+    }
+    
+    private void SelectAllInViewport(Entity clickedEntity)
+    {
+        _selectedEntities.Clear();
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
+        
+        var colliders = Physics.OverlapSphere(camera.transform.position, 500f);
+        
+        foreach (Collider col in colliders)
+        {
+            if(!GeometryUtility.TestPlanesAABB(planes, col.bounds)) continue;
+            
+            if (!col.TryGetComponent(out Entity entity)) continue;
+            if (!entity.Selectable) continue;
+            if (!entity.IsAvailableToSelect) continue;
+            if (entity.OwnerId != player.OwnerId && entity.OwnerId != 0) continue;
+
+            if (clickedEntity is UnitEntity unitEntityClicked)
+            {
+                if (entity is UnitEntity unitEntity)
+                {
+                    if (unitEntity.UnitType == unitEntityClicked.UnitType)
+                    {
+                        _selectedEntities.Add(entity);
+                    }
+                }
+            }
+            else if (clickedEntity is BuildingEntity buildingEntityClicked)
+            {
+                if (entity is BuildingEntity buildingEntity)
+                {
+                    if (buildingEntity.BuildingType == buildingEntityClicked.BuildingType)
+                    {
+                        _selectedEntities.Add(entity);
+                    }
+                }
+            }
+            else if (entity.EntityType == clickedEntity.EntityType)
+            {
+                _selectedEntities.Add(entity);
+            }
+        }
+        
+        foreach (var e in _selectedEntities)
+        {
+            e.OnSelect();
+        }
+        
+        OnSelectionChanged?.Invoke(_selectedEntities);
+    }
+    
     public void RemoveAllFromSelection(Predicate<Entity> predicate)
     {
         for (var i = 0; i < _selectedEntities.Count; i++)
@@ -72,7 +154,7 @@ public class PlayerSelectionManager : MonoBehaviour
         OnSelectionChanged?.Invoke(_selectedEntities);
     }
     
-    public void ClearSelection()
+    private void ClearSelection()
     {
         for (var i = 0; i < _selectedEntities.Count; i++)
         {
@@ -91,7 +173,7 @@ public class PlayerSelectionManager : MonoBehaviour
     private Vector3 _center;
     private Vector3 _halfExtents;
     
-    public void CreateSelectionBox(Vector3 left, Vector3 right)
+    private void CreateSelectionBox(Vector3 left, Vector3 right)
     {
         float width = Mathf.Abs(left.x - right.x);
         float depth = Mathf.Abs(left.z - right.z);
@@ -101,13 +183,14 @@ public class PlayerSelectionManager : MonoBehaviour
 
         _center = center;
         _halfExtents = size * 0.5f;
-
-        bool unitWasSelected = false;
         
         Collider[] cols = Physics.OverlapBox(center, _halfExtents, Quaternion.identity);
 
-        foreach (var col in cols)
+        bool unitWasSelected = false;
+        
+        foreach (Collider col in cols)
         {
+            
             if (!col.TryGetComponent(out Entity entity)) continue;
             if (!entity.Selectable) continue;
             if (!entity.IsAvailableToSelect) continue;
@@ -120,14 +203,18 @@ public class PlayerSelectionManager : MonoBehaviour
             }
 
             if (unitWasSelected && entity is not UnitEntity) continue;
-
+            
             _selectedEntities.Add(entity);
         }
-
+        
         foreach (var e in _selectedEntities)
+        {
             e.OnSelect();
+        }
+        
+        OnSelectionChanged?.Invoke(_selectedEntities);
     }
-
+    
     
     private void OnGUI()
     {

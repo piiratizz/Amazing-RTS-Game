@@ -38,7 +38,6 @@ MonoBehaviour:
     Unit:
       Config: {fileID: 11400000, guid: 943ff144fc74f804487d30c428a4b761, type: 2}
       UnitPrefab: {fileID: 4179078604765834347, guid: 1b828c5b1cc3bea4bbbc63ea418af8e7, type: 3}
-  UpgradesCanProduce:
-  - {fileID: 11400000, guid: d7e029a683629c148b339d8c72cb090a, type: 2}
+  UpgradesCanProduce: []
   ProductionRatePerSecond: 10
   BuildPreviewPrefab: {fileID: 106164747525110527, guid: 4d699b9982acec84ebe56a5f32f40456, type: 3}

@@ -19,6 +19,8 @@ public class UnitBuildingComponent : EntityComponent
     
     public IReadOnlyList<BuildingTypePrefabLink> AvailableBuildings => _availableBuildings;
     
+    public bool IsBuilding {get; private set;}
+    
     public override void Init(Entity entity)
     {
         _availableBuildings = new List<BuildingTypePrefabLink>();
@@ -65,7 +67,7 @@ public class UnitBuildingComponent : EntityComponent
             this.GetCancellationTokenOnDestroy(),
             new CancellationTokenSource().Token
         );
-        
+        IsBuilding = true;
         _inventoryComponent.AttachTool(WorkerTools.Hammer);
         StartBuildingLoop(buildingEntity, buildComponent).Forget();
     }
@@ -111,12 +113,13 @@ public class UnitBuildingComponent : EntityComponent
 
     private void OnBuildingComplete()
     {
+        IsBuilding = false;
         _animationComponent.SetAttack(false);
     }
     
     public override void OnExit()
     {
         _cancellationTokenSource?.Cancel();
-        _animationComponent.SetAttack(false);
+        OnBuildingComplete();
     }
 }

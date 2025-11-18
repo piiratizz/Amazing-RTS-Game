@@ -40,7 +40,7 @@ public class BuildingUnitsProductionComponent : EntityComponent
 
     private ProductionLineItem _itemCurrentlyProduced;
 
-    private Action _onItemProducedCallback;
+    private Action<ProductionCompleteCallbackArgs> _onItemProducedCallback;
     
     public override void Init(Entity entity)
     {
@@ -98,7 +98,7 @@ public class BuildingUnitsProductionComponent : EntityComponent
             StartProduction();
     }
     
-    public bool TryAddUpgradeToProductionQueue(EntityUpgrade upgrade, Action onItemProducedCallback)
+    public bool TryAddUpgradeToProductionQueue(EntityUpgrade upgrade, Action<ProductionCompleteCallbackArgs> onItemProducedCallback)
     {
         if (!TryPayResourceCost(upgrade.ResourceCost))
             return false;
@@ -117,7 +117,7 @@ public class BuildingUnitsProductionComponent : EntityComponent
         return true;
     }
 
-    public bool TryAddUnitToProductionQueue(UnitConfig config, Action onItemProducedCallback)
+    public bool TryAddUnitToProductionQueue(UnitConfig config, Action<ProductionCompleteCallbackArgs> onItemProducedCallback)
     {
         var unit = UnitsAvailableToBuild.First(u => u.Unit.Config == config);
 
@@ -198,13 +198,19 @@ public class BuildingUnitsProductionComponent : EntityComponent
     private void OnUnitProductionComplete(ProductionLineItem item)
     {
         var instance = _unitFactory.Create(_ownerId, item.Unit, unitsSpawnPoint.position);
-        _onItemProducedCallback?.Invoke();
+        _onItemProducedCallback?.Invoke(new ProductionCompleteCallbackArgs()
+        {
+            Entity = instance,
+        });
     }
 
     private void OnUpgradeProductionComplete(ProductionLineItem item)
     {
         _globalUpgradesManager.AddUpgrade(_ownerId, item.Upgrade);
-        _onItemProducedCallback?.Invoke();
+        _onItemProducedCallback?.Invoke(new ProductionCompleteCallbackArgs()
+        {
+            Upgrade = item.Upgrade,
+        });
     }
 }
 
@@ -217,4 +223,10 @@ public class ProductionLineItem
     public float ProductionCost;
     public ResourceCost[] ResourceCost;
     public Action<ProductionLineItem> OnProducedCallback;
+}
+
+public struct ProductionCompleteCallbackArgs
+{
+    public Entity Entity;
+    public EntityUpgrade Upgrade;
 }

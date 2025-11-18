@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: 472006c41c9789446b9b39f3747307b3, type: 3}
   DisplayName: "\u0414\u0435\u0440\u0435\u0432\u043E"
-  Health: 100
+  MaxHealth: 0
+  SpawnHealth: 0
   DetectionRadius: 1
   EntityType: 0
   Selectable: 0
   Resource: {fileID: 11400000, guid: 7d9e34d4e29219b4abd9cdf5a6a9ae3a, type: 2}
-  Amount: 10
+  Amount: 100
   SizeX: 1
   SizeZ: 1

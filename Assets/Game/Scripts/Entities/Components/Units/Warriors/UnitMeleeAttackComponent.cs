@@ -185,9 +185,9 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable, IUpgradeRe
         unitAnimationsEventsHandler.OnHitEvent -= PerformDamage;
     }
 
-    private void OnStateChanged(UnitState state)
+    private void OnStateChanged(UnitEntity unit, UnitState oldState, UnitState newState)
     {
-        if (state == UnitState.Idle)
+        if (newState == UnitState.Idle)
         {
             IsCanAutoAttack = true;
         }

@@ -38,6 +38,8 @@ public class UnitResourceGatherComponent : EntityComponent
     
     private readonly CompositeDisposable _resourceGatheringRoutineDisposable = new();
     
+    public (bool, ResourceType) IsGathering { get; private set; }
+    
     public override void Init(Entity entity)
     {
         _unitEntity = entity as UnitEntity;
@@ -69,6 +71,7 @@ public class UnitResourceGatherComponent : EntityComponent
     {
         try
         {
+            IsGathering = (true, _resourceSource.ResourceType);
             while (!cancellationToken.IsCancellationRequested)
             {
                 if (_resourceSource == null || _resourceSource.IsEmpty.CurrentValue)
@@ -128,7 +131,7 @@ public class UnitResourceGatherComponent : EntityComponent
                 {
                     if (!TryFindNearestStorage())
                     {
-                        return;
+                        throw new OperationCanceledException("No storage is near");
                     }
                     await FollowToStorage(cancellationToken);
                 }
@@ -148,6 +151,7 @@ public class UnitResourceGatherComponent : EntityComponent
         {
             _resourceGatheringRoutineDisposable.Clear();
             _animationComponent.SetAttack(false);
+            IsGathering = (false, default);
         }
     }
     
@@ -317,6 +321,7 @@ public class UnitResourceGatherComponent : EntityComponent
     private void StopGathering()
     {
         _cancellationToken?.Cancel();
+        IsGathering = (false, default);
         _resourceSource = null;
         _animationComponent.SetAttack(false);
     }
