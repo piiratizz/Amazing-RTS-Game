@@ -88,9 +88,12 @@ public class HealthComponent : EntityComponent, IUpgradeReceiver<UnitStatsModifi
         _entity.IsAvailableToSelect = false;
         _entity.OnDeselect();
         _entity.InvokeSelectionDestroyed();
-        
-        _unitCommandDispatcher.ExitComponents();
 
+        if (_unitCommandDispatcher != null)
+        {
+            _unitCommandDispatcher.ExitComponents();
+        }
+        
         foreach (var component in _entity.EntityComponents)
         {
             component.OnKillComponent();

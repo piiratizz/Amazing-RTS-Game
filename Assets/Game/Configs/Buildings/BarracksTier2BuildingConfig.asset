@@ -17,10 +17,12 @@ MonoBehaviour:
     2"
   MaxHealth: 500
   SpawnHealth: 0
+  HeatWeight: 1
   DetectionRadius: 0
   EntityType: 2
   Selectable: 1
   Type: 3
+  Category: 0
   SizeX: 5
   SizeZ: 5
   Preview: {fileID: 21300000, guid: 8fcedf1b7ce342540ae612ca9ce0d236, type: 3}

@@ -51,8 +51,8 @@ public class MinimapManager : UIModule
 
     private void OnMapClicked(Vector2 pos)
     {
-        float worldX = (pos.x - 0.5f) * worldSize;
-        float worldZ = (pos.y - 0.5f) * worldSize;
+        float worldX = pos.x * worldSize;
+        float worldZ = pos.y * worldSize;
 
         Vector3 worldPos = new Vector3(worldX, _player.transform.position.y, worldZ);
 

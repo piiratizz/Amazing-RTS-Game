@@ -16,10 +16,17 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
         public bool IsValid(AiContext ctx)
         {
             var building = ctx.AiBuildings.Find(b => b.BuildingType == ProductionBuilding);
+
             if (building == null)
                 return false;
             
             var prod = building.GetEntityComponent<BuildingUnitsProductionComponent>();
+            var build = building.GetEntityComponent<BuildingBuildComponent>();
+            if (!build.IsBuilded.CurrentValue)
+            {
+                return false;
+            }
+            
             var config = prod.UnitsAvailableToBuild.FirstOrDefault(u => u.Unit.Config.UnitType == UnitToBuild);
             if (config == null)
                 return false;
@@ -45,20 +52,36 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
         {
             _context = ctx;
             
-            var building = ctx.AiBuildings.Find(b => b.BuildingType == ProductionBuilding);
-            var prod = building.GetEntityComponent<BuildingUnitsProductionComponent>();
-            
-            var config = prod.UnitsAvailableToBuild
-                .First(u => u.Unit.Config.UnitType == UnitToBuild)
-                .Unit.Config;
+            var buildings = ctx.AiBuildings
+                .Where(b => b.BuildingType == ProductionBuilding)
+                .ToList();
 
-            prod.TryAddUnitToProductionQueue(config, OnUnitProduced);
+            if (buildings.Count == 0)
+                return;
+
+            foreach (var building in buildings)
+            {
+                var prod = building.GetEntityComponent<BuildingUnitsProductionComponent>();
+                if (prod == null) 
+                    continue;
+
+                var build = building.GetEntityComponent<BuildingBuildComponent>();
+                if (build != null && !build.IsBuilded.CurrentValue)
+                    continue;
+                
+                var config = prod.UnitsAvailableToBuild
+                    .FirstOrDefault(u => u.Unit.Config.UnitType == UnitToBuild);
+
+                if (config == null)
+                    continue;
+                
+                if (prod.ProductionQueue.Count >= 1)
+                    continue;
+                
+                prod.TryAddUnitToProductionQueue(config.Unit.Config, null);
+            }
         }
 
-        private void OnUnitProduced(ProductionCompleteCallbackArgs args)
-        {
-            _context.AiPlayer.AiEntitiesController.RegisterMyEntity(args.Entity);
-        }
         
         public float Cooldown => 4;
         public float LastExecutionTime { get; set; }

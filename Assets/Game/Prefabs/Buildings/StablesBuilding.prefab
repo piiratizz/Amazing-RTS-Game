@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7418232626562619650}
   - component: {fileID: 7902459433473495452}
   - component: {fileID: 2902430501397626730}
+  - component: {fileID: 6794200288544176174}
+  - component: {fileID: -7069699425661159269}
   - component: {fileID: 8784384290065046504}
   - component: {fileID: 5729660039885888198}
   m_Layer: 7
@@ -58,8 +60,11 @@ MonoBehaviour:
   - {fileID: 7418232626562619650}
   - {fileID: 7902459433473495452}
   - {fileID: 2902430501397626730}
+  - {fileID: 6939765524499746550, guid: 6b7eddd6c997eb941b8502fb340a0bf2, type: 3}
+  - {fileID: -7069699425661159269}
   entityConfig: {fileID: 11400000, guid: 4c01ecb0d159a654a8030d8e2b2a2342, type: 2}
   initializeOnStart: 0
+  heatMapUpdateInterval: 1
 --- !u!114 &7418232626562619650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,6 +107,30 @@ MonoBehaviour:
   - {fileID: 4035606307193769265}
   - {fileID: 8546630894550563859}
   - {fileID: 8284034057186166585}
+--- !u!114 &6794200288544176174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4065042018097184258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1d55c23d07c4115be3d1be2a4ecab1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7069699425661159269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4065042018097184258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 567886a40e764373b8050f47578252da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &8784384290065046504
 BoxCollider:
   m_ObjectHideFlags: 0

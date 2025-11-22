@@ -11,7 +11,7 @@ public class BuildingFactory : PlaceholderFactory<int, Vector3, BuildingTypePref
         _container = container;
     }
     
-    public override BuildingEntity Create(int id, Vector3 position, BuildingTypePrefabLink link)
+    public override BuildingEntity Create(int ownerId, Vector3 position, BuildingTypePrefabLink link)
     {
         if (_globalBuildingsStagesController == null)
         {
@@ -25,9 +25,9 @@ public class BuildingFactory : PlaceholderFactory<int, Vector3, BuildingTypePref
             null
         );
 
-        var config = _globalBuildingsStagesController.GetActualConfig(id, link.Type);
+        var config = _globalBuildingsStagesController.GetActualConfig(ownerId, link.Type);
         
-        building.Init(id, config);
+        building.Init(ownerId, config);
         return building;
     }
 }

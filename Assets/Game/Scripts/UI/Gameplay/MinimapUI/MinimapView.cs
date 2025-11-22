@@ -75,8 +75,8 @@ public class MinimapView : MonoBehaviour
             color = Color.darkGreen;
         }
         
-        float normalizedX = (pos.x / worldSize) + 0.5f;
-        float normalizedZ = (pos.z / worldSize) + 0.5f;
+        float normalizedX = pos.x / worldSize;
+        float normalizedZ = pos.z / worldSize;
 
         int x = Mathf.RoundToInt(normalizedX * (resolution - 1));
         int y = Mathf.RoundToInt(normalizedZ * (resolution - 1));

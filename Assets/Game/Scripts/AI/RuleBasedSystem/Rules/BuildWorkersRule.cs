@@ -12,6 +12,17 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
 
         public bool IsValid(AiContext ctx)
         {
+            if(ctx.AiBuildings.Count == 0) return false;
+            
+            _townhall = ctx.AiBuildings.Find(b => b.BuildingType == BuildingType.Townhall);
+            var prod = _townhall.GetEntityComponent<BuildingUnitsProductionComponent>();
+            var config = prod.UnitsAvailableToBuild.FirstOrDefault(u => u.Unit.Config.UnitType == UnitType.Worker);
+            if (config == null)
+                return false;
+
+            if (prod.ProductionQueue.Count >= 3)
+                return false;
+            
             return ctx.Food > 10;
         }
 
@@ -24,20 +35,13 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
         public void Perform(AiContext ctx)
         {
             _context = ctx;
-
-            _townhall = ctx.AiBuildings.Find(b => b.BuildingType == BuildingType.Townhall);
             var productionComponent = _townhall.GetEntityComponent<BuildingUnitsProductionComponent>();
             productionComponent.TryAddUnitToProductionQueue(
                 productionComponent.UnitsAvailableToBuild.First(c => c.Unit.Config.UnitType == UnitType.Worker).Unit
-                    .Config, RegisterWorker);
+                    .Config, null);
         }
 
         public float Cooldown => 5;
         public float LastExecutionTime { get; set; }
-
-        private void RegisterWorker(ProductionCompleteCallbackArgs args)
-        {
-            _context.AiPlayer.AiEntitiesController.RegisterMyEntity(args.Entity);
-        }
     }
 }

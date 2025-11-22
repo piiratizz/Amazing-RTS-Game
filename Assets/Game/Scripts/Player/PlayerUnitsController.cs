@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Scripts.Utils;
 using UnityEngine;
 
 public class PlayerUnitsController : MonoBehaviour
@@ -40,12 +41,29 @@ public class PlayerUnitsController : MonoBehaviour
                     SendGatherCommand(resource);
                     return;
                 case BuildingEntity building:
+                    if (entity.OwnerId != player.OwnerId)
+                    {
+                        SendAttackCommand(building);
+                        return;
+                    }
                     SendBuildCommand(building);
                     return;
             }
         }
+
+        var positions = FormationUtils.GetSquareFormationPositions(
+            hit.point,
+            _unitsInFormation,
+            formationSpacing);
         
-        MoveSelectedUnitsInSquareFormation(hit.point);
+        for (var i = 0; i < _unitsInFormation.Count; i++)
+        {
+            var unit = _unitsInFormation[i];
+            var dispatcher = unit.GetEntityComponent<UnitCommandDispatcher>();
+
+            var args = new MoveArgs() { Position = positions[i] };
+            dispatcher?.ExecuteCommand(UnitCommandsType.Move, args);
+        }
     }
 
     public void SendBuildCommand(BuildingEntity building)
@@ -67,49 +85,6 @@ public class PlayerUnitsController : MonoBehaviour
         }
     }
 
-    private void MoveSelectedUnitsInSquareFormation(Vector3 center)
-    {
-        int count = _unitsInFormation.Count;
-        int columns = Mathf.CeilToInt(Mathf.Sqrt(count));
-        int rows = Mathf.CeilToInt(count / (float)columns);
-
-        int i = 0;
-        for (int r = 0; r < rows; r++)
-        {
-            for (int c = 0; c < columns; c++)
-            {
-                if (i >= count) return;
-
-                if (_unitsInFormation[i] == null)
-                {
-                    i++;
-                    continue;
-                }
-                
-                if (!_unitsInFormation[i].IsAvailableToSelect)
-                {
-                    i++;
-                    continue;
-                }
-                
-                Vector3 offset = new Vector3(
-                    (c - columns / 2f) * formationSpacing,
-                    0,
-                    (r - rows / 2f) * formationSpacing
-                );
-
-                Vector3 targetPos = center + offset;
-                
-                var dispatcher = _unitsInFormation[i].GetEntityComponent<UnitCommandDispatcher>();
-                
-                var args = new MoveArgs() { Position = targetPos };
-                dispatcher?.ExecuteCommand(UnitCommandsType.Move, args);
-                
-                i++;
-            }
-        }
-    }
-
     public void SendGatherCommand(ResourceEntity resource)
     {
         foreach (var unit in _unitsInFormation)
@@ -128,7 +103,7 @@ public class PlayerUnitsController : MonoBehaviour
         }
     }
     
-    private void SendAttackCommand(UnitEntity target)
+    private void SendAttackCommand(Entity target)
     {
         for (var i = 0; i < _unitsInFormation.Count; i++)
         {

@@ -17,9 +17,6 @@
         Economy, 
         Production, 
         Military, 
-        Micro, 
-        Expansion, 
-        Scout,
-        Utility
+        Building,
     }
 }

@@ -197,6 +197,7 @@ MonoBehaviour:
   - {fileID: -4590520686407203933}
   entityConfig: {fileID: 11400000, guid: d28b825c9b908744b8aeecda700ae0e1, type: 2}
   initializeOnStart: 0
+  heatMapUpdateInterval: 0.3
 --- !u!114 &6593825369954330509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,7 +375,7 @@ NavMeshAgent:
   m_Height: 1.5
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 2
 --- !u!1 &404929426702807065
 GameObject:
   m_ObjectHideFlags: 0

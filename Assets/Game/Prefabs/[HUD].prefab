@@ -853,7 +853,7 @@ MonoBehaviour:
   gridScale: 0.002
   gridResolution: 10
   mapResolution: 120
-  worldSize: 200
+  worldSize: 256
 --- !u!114 &4815706811085012397
 MonoBehaviour:
   m_ObjectHideFlags: 0

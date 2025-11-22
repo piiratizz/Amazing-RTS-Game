@@ -16,10 +16,12 @@ MonoBehaviour:
   DisplayName: "\u0421\u043A\u043B\u0430\u0434"
   MaxHealth: 200
   SpawnHealth: 0
+  HeatWeight: 1
   DetectionRadius: 0
   EntityType: 2
   Selectable: 1
   Type: 5
+  Category: 1
   SizeX: 5
   SizeZ: 5
   Preview: {fileID: 21300000, guid: 01a777c978ece3c4f8f8b6b62b72fb7c, type: 3}

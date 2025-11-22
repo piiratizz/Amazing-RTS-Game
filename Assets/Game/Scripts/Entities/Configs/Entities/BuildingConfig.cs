@@ -5,6 +5,8 @@ using UnityEngine;
 public class BuildingConfig : EntityConfig
 {
     public BuildingType Type;
+    public BuildingCategory Category;
+    
     public float SizeX;
     public float SizeZ;
 
@@ -43,4 +45,12 @@ public class ConfigUnitPrefabLink
 {
     public UnitConfig Config;
     public UnitEntity UnitPrefab;
+}
+
+public enum BuildingCategory
+{
+    Military,
+    Economy,
+    Research,
+    Defence
 }

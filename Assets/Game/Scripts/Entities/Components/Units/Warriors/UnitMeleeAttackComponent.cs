@@ -5,7 +5,7 @@ using UnityEngine;
 public class UnitMeleeAttackComponent : EntityComponent, IAttackable, IUpgradeReceiver<UnitStatsModifierUpgrade>
 {
     [SerializeField] private UnitAnimationsEventsHandler unitAnimationsEventsHandler;
-    
+
     public bool IsCanAutoAttack { get; set; } = true;
 
     private Entity _entity;
@@ -15,17 +15,18 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable, IUpgradeRe
     private UnitStateComponent _unitStateComponent;
     private UnitAnimationComponent _unitAnimationComponent;
 
-    private UnitEntity _target;
+    private Entity _target;
     private HealthComponent _targetHealthComponent;
     private UnitDamageResistanceComponent _targetUnitDamageResistanceComponent;
 
     private float _attackRange = 1f;
     private int _damage = 10;
     private int _bonusDamage = 0;
-    
+
     public bool IsAttacking { get; set; }
-    
+
     public int BaseDamage => _damage;
+
     public int BonusDamage => _bonusDamage;
 
     private Vector3 _attackPosition;
@@ -33,9 +34,13 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable, IUpgradeRe
     private int _unitOffset;
 
     private DamageType _damageType;
-    
-    private bool _initialized = false;
-    
+    private bool _initialized;
+
+    public void SetAutoAttack(bool status)
+    {
+        IsCanAutoAttack = status;
+    }
+
     public override void Init(Entity entity)
     {
         _entity = entity;
@@ -47,7 +52,7 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable, IUpgradeRe
 
         _unitStateComponent.OnStateChange += OnStateChanged;
         unitAnimationsEventsHandler.OnHitEvent += PerformDamage;
-        
+
         _initialized = true;
     }
 
@@ -63,28 +68,38 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable, IUpgradeRe
 
     public override void OnUpdate()
     {
-        if(!_initialized) return;
-        
-        if (_unitStateComponent.CurrentState == UnitState.Dead) return;
-
-        if (IsCanAutoAttack)
-        {
-            var closestEnemy = _unitDetectionComponent?.ClosestEnemy;
-            if (closestEnemy != null && closestEnemy != _target)
-            {
-                _unitCommandDispatcher.ExecuteCommand(UnitCommandsType.Attack,
-                    new AttackArgs()
-                        { Entity = closestEnemy, TotalUnits = 1, UnitOffsetIndex = 0 });
-            }
-        }
-
-
-        if (!IsAttacking || _targetHealthComponent == null)
-        {
+        if (!_initialized || _unitStateComponent.CurrentState == UnitState.Dead)
             return;
-        }
 
-        if (_targetHealthComponent.IsDead)
+        AutoAttackCheck();
+        AttackLogicUpdate();
+    }
+
+    private void AutoAttackCheck()
+    {
+        if (!IsCanAutoAttack)
+            return;
+
+        var closestEnemy = _unitDetectionComponent?.ClosestEnemy;
+
+        if (closestEnemy == null)
+            return;
+
+        if (closestEnemy != _target)
+        {
+            _unitCommandDispatcher.ExecuteCommand(
+                UnitCommandsType.Attack,
+                new AttackArgs { Entity = closestEnemy, TotalUnits = 1, UnitOffsetIndex = 0 }
+            );
+        }
+    }
+
+    private void AttackLogicUpdate()
+    {
+        if (!IsAttacking)
+            return;
+
+        if (_target == null || _targetHealthComponent == null || _targetHealthComponent.IsDead)
         {
             OnTargetKilled();
             return;
@@ -93,104 +108,180 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable, IUpgradeRe
         Vector3 toTarget = _target.transform.position - transform.position;
         toTarget.y = 0f;
 
-        float angleOffset = 180f + Mathf.Atan2(toTarget.z, toTarget.x) * Mathf.Rad2Deg;
-        _attackPosition =
-            GetCirclePosition(_target.transform.position, _unitsInFormation, 1f, _unitOffset, angleOffset);
+        float radius = 1;
+
+        BuildingEntity buildingEntity = null;
         
+        if (_target is BuildingEntity building)
+        {
+            buildingEntity = building;
+            radius = Mathf.Max(buildingEntity.SizeX, buildingEntity.SizeZ);
+        }
+        
+        float angleOffset = 180f + Mathf.Atan2(toTarget.z, toTarget.x) * Mathf.Rad2Deg;
+        _attackPosition = GetCirclePosition(
+            _target.transform.position,
+            _unitsInFormation,
+            radius,
+            _unitOffset,
+            angleOffset
+        );
+
         _unitMovementComponent.MoveTo(_attackPosition);
 
-        if (toTarget != Vector3.zero)
+        if (toTarget.sqrMagnitude > 0f)
         {
-            Quaternion lookRotation = Quaternion.LookRotation(toTarget);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, 360f * Time.deltaTime);
+            Quaternion rot = Quaternion.LookRotation(toTarget);
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                rot,
+                360f * Time.deltaTime
+            );
         }
 
         bool inRange = toTarget.sqrMagnitude <= _attackRange * _attackRange;
 
-        _unitAnimationComponent?.SetAttack(inRange);
+        
+        
+        if (buildingEntity != null)
+        {
+            var biggestSide = Mathf.Max(buildingEntity.SizeX, buildingEntity.SizeZ);
+            inRange = toTarget.sqrMagnitude <= biggestSide
+                * biggestSide + _attackRange;
+        }
+        
+        _unitAnimationComponent.SetAttack(inRange);
     }
 
     public void AttackEntity(Entity entity)
     {
-        AttackUnit(entity as UnitEntity);
+        if (entity is UnitEntity unitEntity)
+        {
+            AttackUnit(unitEntity);
+        }
+        else if (entity is BuildingEntity buildingEntity)
+        {
+            AttackBuilding(buildingEntity);
+        }
     }
-    
-    public void SetAutoAttack(bool status)
+
+    private void AttackBuilding(BuildingEntity buildingEntity)
     {
-        IsCanAutoAttack = status;
+        if (buildingEntity == null)
+            return;
+
+        if (buildingEntity != _target)
+            OnTargetLost();
+        
+        var health = buildingEntity.GetEntityComponent<HealthComponent>();
+
+        if (health != null && !health.IsDead)
+        {
+            _target = buildingEntity;
+            _targetHealthComponent = health;
+            _unitsInFormation = 1;
+            _unitOffset = 0;
+
+            IsAttacking = true;
+        }
     }
-    
+
     private void AttackUnit(UnitEntity unitEntity, int unitCircleOffset = 0, int unitsInFormation = 1)
     {
-        if (unitEntity == null) return;
+        if (unitEntity == null)
+            return;
 
         if (unitEntity != _target)
-        {
             OnTargetLost();
-        }
-        
+
         _targetUnitDamageResistanceComponent = unitEntity.GetEntityComponent<UnitDamageResistanceComponent>();
         var health = unitEntity.GetEntityComponent<HealthComponent>();
+
         if (health != null && !health.IsDead)
         {
             _target = unitEntity;
             _targetHealthComponent = health;
             _unitsInFormation = unitsInFormation;
             _unitOffset = unitCircleOffset;
-            //_unitsInFormation = 10;
-            //_unitOffset = unit.AttackersCount;
+
             IsAttacking = true;
+
             unitEntity.AddAttacker();
         }
     }
 
     private void PerformDamage(AnimationHitArgs hit)
     {
-        _targetUnitDamageResistanceComponent?.TakeDamage(_entity, _damageType, _damage + _bonusDamage);
+        if (_target == null ||
+            _targetHealthComponent == null ||
+            _targetHealthComponent.IsDead)
+            return;
+
+        if (_targetUnitDamageResistanceComponent != null)
+        {
+            _targetUnitDamageResistanceComponent.TakeDamage(
+                _entity,
+                _damageType,
+                _damage + _bonusDamage
+            );
+        }
+        else
+        {
+            _targetHealthComponent.TakeDamage(_entity, _damage + _bonusDamage);
+        }
+        
+        
     }
 
     private void OnTargetKilled()
     {
         OnExit();
-        _unitMovementComponent.OnExit();
+        _unitMovementComponent?.OnExit();
     }
 
     private void OnTargetLost()
     {
-        _target?.RemoveAttacker();
+        if (_target is not UnitEntity unitEntity) return;
+        
+        if (unitEntity.AttackersCount > 0)
+        {
+            unitEntity.RemoveAttacker();
+        }
     }
 
     public override void OnExit()
     {
         OnTargetLost();
+
         IsAttacking = false;
-        _unitAnimationComponent.SetAttack(false);
+
+        if (_unitAnimationComponent != null)
+            _unitAnimationComponent.SetAttack(false);
+
         _target = null;
         _targetHealthComponent = null;
     }
 
+    private void OnStateChanged(UnitEntity unit, UnitState oldState, UnitState newState)
+    {
+        if (newState == UnitState.Idle)
+            IsCanAutoAttack = true;
+    }
+
     private void OnEnable()
     {
-        if(!_initialized) return;
-        
+        if (!_initialized) return;
+
         _unitStateComponent.OnStateChange += OnStateChanged;
         unitAnimationsEventsHandler.OnHitEvent += PerformDamage;
     }
 
     private void OnDisable()
     {
-        if(!_initialized) return;
-        
+        if (!_initialized) return;
+
         _unitStateComponent.OnStateChange -= OnStateChanged;
         unitAnimationsEventsHandler.OnHitEvent -= PerformDamage;
-    }
-
-    private void OnStateChanged(UnitEntity unit, UnitState oldState, UnitState newState)
-    {
-        if (newState == UnitState.Idle)
-        {
-            IsCanAutoAttack = true;
-        }
     }
 
     private Vector3 GetCirclePosition(Vector3 center, int count, float radius, int index, float angleOffset = 0f)
@@ -204,23 +295,12 @@ public class UnitMeleeAttackComponent : EntityComponent, IAttackable, IUpgradeRe
         return center + new Vector3(Mathf.Cos(rad) * radius, 0f, Mathf.Sin(rad) * radius);
     }
 
-    private void OnDrawGizmos()
-    {
-        if(!IsAttacking) return;
-        
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 0.3f);
-        Gizmos.DrawSphere(_attackPosition, 0.5f);
-    }
-
     public void ReceiveUpgrade(UnitStatsModifierUpgrade upgrade)
     {
-        upgrade.Stats.ForEach(s =>
+        foreach (var s in upgrade.Stats)
         {
             if (s.StatsType == StatsType.Damage)
-            {
                 _bonusDamage += (int)s.Value;
-            }
-        });
+        }
     }
 }

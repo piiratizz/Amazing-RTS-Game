@@ -16,6 +16,7 @@ MonoBehaviour:
   DisplayName: "\u041B\u0443\u0447\u043D\u0438\u043A "
   MaxHealth: 100
   SpawnHealth: 100
+  HeatWeight: 3
   DetectionRadius: 10
   EntityType: 1
   Selectable: 1

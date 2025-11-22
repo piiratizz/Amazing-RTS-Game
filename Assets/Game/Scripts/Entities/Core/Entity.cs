@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Scripts.GlobalSystems;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
@@ -13,8 +14,12 @@ public class Entity : MonoBehaviour, IOwned
     [SerializeField] private List<EntityComponent> entityComponents;
     [SerializeField] private EntityConfig entityConfig;
     [SerializeField] private bool initializeOnStart = true;
+    [SerializeField] private float heatMapUpdateInterval = 1f;
 
+    [Inject] private GlobalGrid _globalGrid;
     [Inject] private GameplayHUD _gameplayHUD;
+    [Inject] private WorldEntitiesRegistry _entitiesRegistry;
+
     private MinimapManager _minimapManager;
 
     protected EntityConfig Config => entityConfig;
@@ -42,6 +47,8 @@ public class Entity : MonoBehaviour, IOwned
     /// </summary>
     public bool IsAvailableToSelect { get; set; } = true;
 
+    public bool IsDead { get; private set; }
+
     public virtual void Start()
     {
         if (initializeOnStart)
@@ -62,25 +69,46 @@ public class Entity : MonoBehaviour, IOwned
             comp.LateInit(this);
         }
 
+        if (ownerId != 0)
+        {
+            _globalGrid.HeatMap.GetCell(transform.position, out _lastXHeatMapPosition, out _lastYHeatMapPosition);
+            _globalGrid.HeatMap.AddHeat(ownerId, transform.position, entityConfig.HeatWeight);
+        }
+
         _minimapManager = _gameplayHUD.GetModule<MinimapManager>();
         _minimapManager.RegisterEntity(this);
+        _entitiesRegistry.Register(this);
     }
 
     public void UpdateConfig(EntityConfig config)
     {
+        _globalGrid.HeatMap.RemoveHeat(ownerId, transform.position, entityConfig.HeatWeight);
         this.entityConfig = config;
-
+        _globalGrid.HeatMap.AddHeat(ownerId, transform.position, entityConfig.HeatWeight);
+        
         foreach (var comp in entityComponents)
         {
             comp.InitializeFields(config);
         }
     }
 
+    private float _timer;
+
     private void Update()
     {
         foreach (var comp in entityComponents)
         {
             comp.OnUpdate();
+        }
+
+        if (ownerId == 0) return;
+
+        _timer += Time.deltaTime;
+
+        if (_timer >= heatMapUpdateInterval)
+        {
+            _timer = 0;
+            UpdateHeatMap();
         }
     }
 
@@ -93,9 +121,10 @@ public class Entity : MonoBehaviour, IOwned
     {
         selectionOutlineObject.SetActive(false);
     }
-    
+
     public void InvokeSelectionDestroyed()
     {
+        IsDead = true;
         OnEntityDestroyed?.Invoke(this);
     }
 
@@ -133,9 +162,45 @@ public class Entity : MonoBehaviour, IOwned
         return components;
     }
 
+    private int _lastXHeatMapPosition, _lastYHeatMapPosition;
+
+    private void UpdateHeatMap()
+    {
+        _globalGrid.HeatMap.GetCell(transform.position, out int x, out int y);
+
+        if (x != _lastXHeatMapPosition || y != _lastYHeatMapPosition)
+        {
+            _globalGrid.HeatMap.RemoveHeat(ownerId,
+                new Vector3(_lastXHeatMapPosition * _globalGrid.HeatMap.CellSize, 0,
+                    _lastYHeatMapPosition * _globalGrid.HeatMap.CellSize),
+                entityConfig.HeatWeight);
+            _globalGrid.HeatMap.AddHeat(ownerId, transform.position, entityConfig.HeatWeight);
+
+            _lastXHeatMapPosition = x;
+            _lastYHeatMapPosition = y;
+        }
+    }
+
     private void OnDestroy()
     {
         OnEntityDestroyed = null;
-        _minimapManager.DeleteEntity(this);
+        if (_minimapManager != null)
+        {
+            _minimapManager.DeleteEntity(this);
+        }
+
+        if (_globalGrid != null && ownerId != 0)
+        {
+            
+            _globalGrid.HeatMap.RemoveHeat(ownerId,
+                new Vector3(_lastXHeatMapPosition * _globalGrid.HeatMap.CellSize, 0,
+                    _lastYHeatMapPosition * _globalGrid.HeatMap.CellSize),
+                entityConfig.HeatWeight);
+        }
+        
+        if (_entitiesRegistry != null)
+        {
+            _entitiesRegistry.UnRegister(this);
+        }
     }
 }

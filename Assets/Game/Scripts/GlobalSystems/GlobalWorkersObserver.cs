@@ -74,12 +74,6 @@ namespace Game.Scripts.GlobalSystems
 
             if (changed)
             {
-                Debug.Log(
-                    $"Lazy workers: {_workersData[worker.OwnerId].Entities[UnitState.Idle].EntitiesList.Count}" + 
-                    $"Food workers: {_workersData[worker.OwnerId].Entities[UnitState.GatheringFood].EntitiesList.Count}" +
-                    $"Wood workers: {_workersData[worker.OwnerId].Entities[UnitState.GatheringWood].EntitiesList.Count}" +
-                    $"Gold workers: {_workersData[worker.OwnerId].Entities[UnitState.GatheringGold].EntitiesList.Count}"
-                    );
                 WorkerStateChanged?.Invoke(worker.OwnerId);
             }
            

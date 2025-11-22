@@ -53,7 +53,7 @@ namespace Game.Scripts.AI
             {
                 if (rule.Category != category)
                     continue;
-
+                
                 if (!rule.IsValid(_ctx))
                     continue;
 
@@ -62,15 +62,19 @@ namespace Game.Scripts.AI
 
                 float util = rule.GetUtility(_ctx);
 
+                
+                
                 if (util > bestUtility)
                 {
                     bestUtility = util;
                     bestRule = rule;
                 }
             }
-
+            
+            
             if (bestRule != null)
             {
+                Debug.Log($"PERFORMING RULE {bestRule} : {bestUtility}");
                 bestRule.Perform(_ctx);
                 bestRule.LastExecutionTime = Time.time;
             }

@@ -70,7 +70,10 @@ MonoBehaviour:
     tickRate: 2
     timer: 0
   - category: 2
-    tickRate: 2
+    tickRate: 0.5
+    timer: 0
+  - category: 3
+    tickRate: 3
     timer: 0
 --- !u!114 &1872391759346875254
 MonoBehaviour:
@@ -98,6 +101,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40681fe238654ece9acce3bcd1a205ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entitiesLayer:
-    serializedVersion: 2
-    m_Bits: 704
+  enemyNearBaseRadiusCheck: 4
+  updateInterval: 3

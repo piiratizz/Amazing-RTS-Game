@@ -195,9 +195,10 @@ public class BuildingUnitsProductionComponent : EntityComponent
             _resourceStorage.Add(cost.Resource, cost.Amount);
     }
 
-    private void OnUnitProductionComplete(ProductionLineItem item)
+    private async void OnUnitProductionComplete(ProductionLineItem item)
     {
         var instance = _unitFactory.Create(_ownerId, item.Unit, unitsSpawnPoint.position);
+        await UniTask.Yield(PlayerLoopTiming.Update, this.GetCancellationTokenOnDestroy());
         _onItemProducedCallback?.Invoke(new ProductionCompleteCallbackArgs()
         {
             Entity = instance,
