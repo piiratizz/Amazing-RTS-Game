@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a63872879bd4443a709a25dfd6634c2, type: 3}
   m_Name: TownhallUpgradesConfig
   m_EditorClassIdentifier: 
-  BuildingType: 6
+  BuildingType: 7
   Stages:
   - ResourceCosts: []
     Stage: {fileID: 11400000, guid: b5e504c2429694643bf499419becd46a, type: 2}

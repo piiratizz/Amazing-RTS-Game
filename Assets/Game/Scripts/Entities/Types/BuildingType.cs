@@ -6,5 +6,6 @@
     Barracks,
     Stables,
     Storage,
+    Market,
     Townhall
 }

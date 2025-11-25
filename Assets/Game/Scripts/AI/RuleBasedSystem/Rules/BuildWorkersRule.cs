@@ -20,10 +20,10 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
             if (config == null)
                 return false;
 
-            if (prod.ProductionQueue.Count >= 3)
+            if (prod.ProductionQueue.Count >= 1)
                 return false;
             
-            return ctx.Food > 10;
+            return ctx.Food > 50;
         }
 
         public float GetUtility(AiContext ctx)

@@ -22,6 +22,10 @@ public class BuildingConfig : EntityConfig
     public float ProductionRatePerSecond;
 
     [Space] 
+    [Header("Trading")] 
+    public int ResourceAmountForOneGold;
+    
+    [Space] 
     [Header("Build")] 
     public GameObject BuildPreviewPrefab;
 }

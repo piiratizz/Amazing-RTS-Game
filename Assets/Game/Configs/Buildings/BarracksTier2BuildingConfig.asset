@@ -28,9 +28,7 @@ MonoBehaviour:
   Preview: {fileID: 21300000, guid: 8fcedf1b7ce342540ae612ca9ce0d236, type: 3}
   BuildResourceCost:
   - Resource: 1
-    Amount: 50
-  - Resource: 2
-    Amount: 10
+    Amount: 150
   UnitsCanProduce:
   - ResourceCost:
     - Resource: 0

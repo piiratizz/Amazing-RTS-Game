@@ -31,7 +31,7 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
             if (config == null)
                 return false;
 
-            if (prod.ProductionQueue.Count >= 3)
+            if (prod.ProductionQueue.Count >= 1)
                 return false;
             
             int countNow = ctx.AiUnits.Count(u => u.UnitType == UnitToBuild);

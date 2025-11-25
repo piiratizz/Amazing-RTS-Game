@@ -3,6 +3,7 @@
     public enum ButtonActionType
     {
         WindowOpen,
-        CloseApplication
+        CloseApplication,
+        SwitchScene
     }
 }

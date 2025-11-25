@@ -60,7 +60,7 @@ MonoBehaviour:
   - {fileID: 7418232626562619650}
   - {fileID: 7902459433473495452}
   - {fileID: 2902430501397626730}
-  - {fileID: 6939765524499746550, guid: 6b7eddd6c997eb941b8502fb340a0bf2, type: 3}
+  - {fileID: 6794200288544176174}
   - {fileID: -7069699425661159269}
   entityConfig: {fileID: 11400000, guid: 4c01ecb0d159a654a8030d8e2b2a2342, type: 2}
   initializeOnStart: 0

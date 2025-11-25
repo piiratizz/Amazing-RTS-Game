@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Worker
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: d42c941876031c64d913586f4cf648b8, type: 3}
-  DisplayName: "\u0420\u0430\u0431\u043E\u0447\u0438\u0439"
+  DisplayName: "\u0420\u043E\u0431\u043E\u0447\u0438\u0439"
   MaxHealth: 100
   SpawnHealth: 100
   HeatWeight: 2
@@ -29,7 +29,7 @@ MonoBehaviour:
   LeftHandWeapon: 
   Damage: 0
   AttackRange: 0
-  Speed: 4
+  Speed: 5
   Armor: 0
   DamageType: 2
   DamageResists:
@@ -41,7 +41,7 @@ MonoBehaviour:
     ResistModifier: 0
   - DamageType: 3
     ResistModifier: 0
-  GatherRatePerSecond: 5
+  GatherRatePerSecond: 2
   LiftingCapacity: 20
   BuildingsAvailableToBuild:
   - Type: 5
@@ -53,9 +53,9 @@ MonoBehaviour:
   - Type: 4
     Prefab: {fileID: 4543200640813814052, guid: 94619e962859aae41bd28c3eca04e2b8, type: 3}
   - Type: 6
-    Prefab: {fileID: 3477233060432461936, guid: fe5036b4f0945c643934d034c545c409, type: 3}
+    Prefab: {fileID: 3351682631017078695, guid: 2bceca8701c192b4b9b2bcedb4e17c36, type: 3}
   BuildingRatePerSecond: 10
-  TotalProductionCost: 100
+  TotalProductionCost: 200
   DamageLostDistanceModifierCurve:
     serializedVersion: 2
     m_Curve: []

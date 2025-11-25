@@ -22,7 +22,7 @@ namespace Game.Scripts.AI
         public int AiArmyCost;
         public int EnemyArmyCost;
         public List<UnitEntity> EnemyArmy = new List<UnitEntity>();
-
+        public List<BuildingEntity> EnemyBuildings = new List<BuildingEntity>();
         public bool EnemyNearBase;
 
         public Vector3 EnemyBasePosition;

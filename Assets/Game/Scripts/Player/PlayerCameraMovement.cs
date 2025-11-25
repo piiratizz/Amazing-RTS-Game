@@ -9,6 +9,12 @@ public class PlayerCameraMovement : MonoBehaviour
 
     private Vector3 _direction;
 
+    public int _minX = 0;
+    public int _maxX = 1000;
+    
+    public int _minZ = 0;
+    public int _maxZ = 1000;
+    
     private void Update()
     {
         Vector2 mousePos = Mouse.current.position.ReadValue();
@@ -30,9 +36,28 @@ public class PlayerCameraMovement : MonoBehaviour
         else
             _direction.z = 0;
 
-        transform.Translate(_direction * speed * Time.deltaTime, Space.World);
+        Vector3 translation = _direction * speed * Time.deltaTime;
+
+        var nextPos = transform.position + translation;
+
+        if (nextPos.x < _minX ||  nextPos.x > _maxX)
+        {
+            return;
+        }
+
+        if (nextPos.z < _minZ || nextPos.z > _maxZ)
+        {
+            return;
+        }
+        
+        transform.Translate(translation, Space.World);
     }
 
+    public void SetMovementLimit()
+    {
+        
+    }
+    
     public void MoveToPosition(Vector3 position)
     {
         transform.position = position;

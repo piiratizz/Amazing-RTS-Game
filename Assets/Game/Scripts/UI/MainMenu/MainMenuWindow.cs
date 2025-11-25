@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Scripts.GlobalSystems;
+using Game.Scripts.GlobalSystems.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace MainMenu
 {
@@ -9,21 +12,25 @@ namespace MainMenu
     {
         [SerializeField] private List<ButtonsToWindowsTypeBinding> buttonsToWindowsTypeBindings;
 
-        private WindowsManager _manager;
+        [Inject] private SceneManager _sceneManager;
+        private WindowsManager _windowsManager;
         
         public override void Initialize(MainMenuHUD hud)
         {
-            _manager = hud.GetModule<WindowsManager>();
+            _windowsManager = hud.GetModule<WindowsManager>();
             
             foreach (var binding in buttonsToWindowsTypeBindings)
             {
                 switch (binding.ButtonActionType)
                 {
                     case ButtonActionType.WindowOpen:
-                        binding.Button.onClick.AddListener(() => _manager.OpenWindow(binding.WindowType));
+                        binding.Button.onClick.AddListener(() => _windowsManager.OpenWindow(binding.WindowType));
                         break;
                     case ButtonActionType.CloseApplication:
-                        Application.Quit();
+                        binding.Button.onClick.AddListener(() => Application.Quit());
+                        break;
+                    case ButtonActionType.SwitchScene:
+                        binding.Button.onClick.AddListener(() => _sceneManager.SwitchScene(Scenes.Gameplay).Forget());
                         break;
                 }
             }

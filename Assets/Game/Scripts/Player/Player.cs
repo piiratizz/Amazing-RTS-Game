@@ -21,6 +21,11 @@ public class Player : MonoBehaviour
         playerModeManager.SetMode(mode);
     }
 
+    public void ClampMovementInWorld(int worldSizeX, int worldSizeY)
+    {
+        
+    }
+    
     public void SetCameraPosition(Vector3 position)
     {
         playerCameraMovement.MoveToPosition(position);

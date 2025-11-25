@@ -60,7 +60,8 @@ namespace Game.Scripts.AI
                     unitImportance = 1.0f
                 },
                 new PlaceNewBuildingRule(_globalBuildingsStagesController, _buildingFactory),
-                new ReturnArmyToBaseRule()
+                new ReturnArmyToBaseRule(),
+                new AttackPlayerBuildingRule(_globalGrid.HeatMap)
             });
         }
     }

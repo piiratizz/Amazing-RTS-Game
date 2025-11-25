@@ -22,6 +22,11 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
                 return false;
             }
 
+            if (ctx.EnemyArmy.Count <= 0)
+            {
+                return false;
+            }
+            
             if (ctx.EnemyNearBase)
             {
                 return true;

@@ -92,7 +92,7 @@ MonoBehaviour:
   - {fileID: 6782802167778918042}
   - {fileID: 2211484418422237730}
   - {fileID: 4070437120828640418}
-  - {fileID: 6939765524499746550, guid: 6b7eddd6c997eb941b8502fb340a0bf2, type: 3}
+  - {fileID: 4316074982469935777}
   entityConfig: {fileID: 11400000, guid: 081d215487ff9ff49a12964699538041, type: 2}
   initializeOnStart: 0
   heatMapUpdateInterval: 1

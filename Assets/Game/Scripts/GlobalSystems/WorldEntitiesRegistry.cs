@@ -6,7 +6,6 @@ namespace Game.Scripts.GlobalSystems
     {
         private Dictionary<int, List<Entity>> _entities = new Dictionary<int, List<Entity>>();
         
-        
         public void Register(Entity entity)
         {
             if (!_entities.ContainsKey(entity.OwnerId))

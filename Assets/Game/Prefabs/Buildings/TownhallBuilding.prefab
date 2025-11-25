@@ -211,7 +211,7 @@ MonoBehaviour:
   - {fileID: 845361553529814911}
   - {fileID: 4568258674866962540}
   - {fileID: 561554556284915056}
-  - {fileID: 6939765524499746550, guid: 6b7eddd6c997eb941b8502fb340a0bf2, type: 3}
+  - {fileID: 5697311997691890425}
   - {fileID: 7867957466331471778}
   entityConfig: {fileID: 11400000, guid: b5e504c2429694643bf499419becd46a, type: 2}
   initializeOnStart: 0

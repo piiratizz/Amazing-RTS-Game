@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8611b92185534c1e9a07cf01bfcfcfe6, type: 3}
+  m_Name: TradeBuildingConfig
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: 50123457cf70f9f4b838dd237a6704bc, type: 3}
+  DisplayName: "\u0420\u0438\u043D\u043E\u043A"
+  MaxHealth: 300
+  SpawnHealth: 0
+  HeatWeight: 1
+  DetectionRadius: 0
+  EntityType: 2
+  Selectable: 1
+  Type: 6
+  Category: 1
+  SizeX: 5
+  SizeZ: 5
+  Preview: {fileID: 21300000, guid: 50123457cf70f9f4b838dd237a6704bc, type: 3}
+  BuildResourceCost:
+  - Resource: 1
+    Amount: 100
+  UnitsCanProduce: []
+  UpgradesCanProduce: []
+  ProductionRatePerSecond: 0
+  ResourceAmountForOneGold: 2
+  BuildPreviewPrefab: {fileID: 4507330632695145868, guid: 814303ca50880e640a1c47fd9f186253, type: 3}

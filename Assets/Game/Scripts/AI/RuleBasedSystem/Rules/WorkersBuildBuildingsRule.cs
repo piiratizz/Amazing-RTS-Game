@@ -53,8 +53,13 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
             Debug.Log("Sending Workers to Build");
             
             var workers = ctx.AiUnits.FindAll(u => u.UnitType == UnitType.Worker);
+            
+            int rand = workers.Count;
 
-            var rand = Random.Range(0,  workers.Count / 3);
+            if (workers.Count > 2)
+            {
+                rand = Random.Range(0, workers.Count / 3);
+            }
 
             int workersOnBuilding = 0;
             workers.ForEach(w =>

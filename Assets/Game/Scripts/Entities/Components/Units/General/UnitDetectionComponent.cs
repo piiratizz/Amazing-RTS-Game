@@ -9,12 +9,12 @@ public class UnitDetectionComponent : EntityComponent
     [SerializeField] private bool isLongRange;
     [SerializeField] private float delayBetweenIterations = 0.3f;
     
-    public UnitEntity ClosestEnemy { get; private set; }
+    public Entity ClosestEnemy { get; private set; }
     
     private Entity _entity;
     private float _detectionRadius;
 
-    private Stack<UnitEntity> _potentialTargets;
+    private Stack<Entity> _potentialTargets;
     private Collider[] _cachedHitsColliders;
     
     private Coroutine _getClosestUnitCoroutine;
@@ -23,7 +23,7 @@ public class UnitDetectionComponent : EntityComponent
     {
         _entity = entity;
         _cachedHitsColliders = new Collider[100];
-        _potentialTargets = new Stack<UnitEntity>(20);
+        _potentialTargets = new Stack<Entity>(20);
         
         _getClosestUnitCoroutine = StartCoroutine(GetClosestUnitCoroutine());
     }
@@ -41,18 +41,18 @@ public class UnitDetectionComponent : EntityComponent
             yield return new WaitForSeconds(delayBetweenIterations);
             
             int spottedCount = Physics.OverlapSphereNonAlloc(transform.position, _detectionRadius, _cachedHitsColliders, layerMask);
-            UnitEntity closest = null;
+            Entity closest = null;
             float minDist = float.MaxValue;
 
             for (var i = 0; i < spottedCount; i++)
             {
-                var entity = _cachedHitsColliders[i].GetComponent<UnitEntity>();
+                var entity = _cachedHitsColliders[i].GetComponent<Entity>();
 
                 if (entity == null)
                 {
                     continue;
                 }
-
+                
                 if (entity.GetEntityComponent<HealthComponent>().IsDead)
                 {
                     continue;
@@ -82,16 +82,20 @@ public class UnitDetectionComponent : EntityComponent
             {
                 ClosestEnemy = closest;
             }
-            
-            if (closest?.AttackersCount > 3 && _potentialTargets.Count > 1)
+
+            if (ClosestEnemy is UnitEntity unitEntity)
             {
-                _potentialTargets.Pop();
-                ClosestEnemy = _potentialTargets.Pop();
+                if (unitEntity.AttackersCount > 3 && _potentialTargets.Count > 1)
+                {
+                    _potentialTargets.Pop();
+                    ClosestEnemy = _potentialTargets.Pop();
+                }
+                else
+                {
+                    ClosestEnemy = closest;
+                }
             }
-            else
-            {
-                ClosestEnemy = closest;
-            }
+           
         }
     }
     

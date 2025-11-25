@@ -79,15 +79,15 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
         
         private bool CanAffordWithReserve(AiContext ctx, BuildingConfig config)
         {
-            float r = 1.2f;
+            float reserve = 1.2f * ctx.AiBuildings.Count(b => b.BuildingType == config.Type);
 
             foreach (var cost in config.BuildResourceCost)
             {
                 switch (cost.Resource)
                 {
-                    case ResourceType.Food when ctx.Food < cost.Amount * r:
-                    case ResourceType.Wood when ctx.Wood < cost.Amount * r:
-                    case ResourceType.Gold when ctx.Gold < cost.Amount * r:
+                    case ResourceType.Food when ctx.Food < cost.Amount * reserve:
+                    case ResourceType.Wood when ctx.Wood < cost.Amount * reserve:
+                    case ResourceType.Gold when ctx.Gold < cost.Amount * reserve:
                         return false;
                 }
             }

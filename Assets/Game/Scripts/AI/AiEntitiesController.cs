@@ -49,19 +49,14 @@ namespace Game.Scripts.AI
             var myEntities = _entitiesRegistry.GetEntities(_context.OwnerId);
 
             foreach (var e in myEntities)
+            {
                 RegisterMyEntity(e);
+            }
+                
 
             if (_townhall == null)
             {
-                _townhall = myEntities.First(e =>
-                {
-                    if (e is BuildingEntity b)
-                    {
-                        return b.BuildingType == BuildingType.Townhall;
-                    }
-
-                    return false;
-                });
+                _townhall = _context.AiBuildings.First(e => e.BuildingType == BuildingType.Townhall);
                 
                 _context.AiBasePosition = _townhall.transform.position;
             }
@@ -100,7 +95,7 @@ namespace Game.Scripts.AI
             {
                 case UnitEntity unit:
                     _context.AiUnits.Add(unit);
-                    if (unit.UnitType != UnitType.Worker)
+                    if (unit.UnitType != null && unit.UnitType != UnitType.Worker)
                         _context.AiArmyCost += 1;
                     break;
 
@@ -125,6 +120,7 @@ namespace Game.Scripts.AI
                     break;
 
                 case BuildingEntity building:
+                    _context.EnemyBuildings.Add(building);
                     _context.EnemyBaseKnown = true;
                     _context.EnemyBasePosition = building.transform.position;
                     break;
