@@ -29,9 +29,6 @@ namespace MainMenu
                     case ButtonActionType.CloseApplication:
                         binding.Button.onClick.AddListener(() => Application.Quit());
                         break;
-                    case ButtonActionType.SwitchScene:
-                        binding.Button.onClick.AddListener(() => _sceneManager.SwitchScene(Scenes.Gameplay).Forget());
-                        break;
                 }
             }
         }

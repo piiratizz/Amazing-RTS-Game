@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Game.Scripts.GlobalSystems;
+using Game.Scripts.Settings;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
@@ -49,19 +50,23 @@ public class Entity : MonoBehaviour, IOwned
 
     public bool IsDead { get; private set; }
 
+    public PlayerColor PlayerColor {get; private set;}
+    
     public virtual void Start()
     {
         if (initializeOnStart)
         {
-            Init(ownerId, entityConfig);
+            Init(ownerId, entityConfig, PlayerColor.Red);
         }
     }
 
-    public void Init(int ownerId, EntityConfig entityConfig)
+    public void Init(int ownerId, EntityConfig entityConfig, PlayerColor color)
     {
         this.ownerId = ownerId;
         this.entityConfig = entityConfig;
 
+        PlayerColor = color;
+        
         foreach (var comp in entityComponents)
         {
             comp.Init(this);

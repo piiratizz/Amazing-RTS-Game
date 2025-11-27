@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Scripts.Settings;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -25,8 +26,7 @@ public class MinimapView : MonoBehaviour
         IReadOnlyCollection<Entity> entitiesToShow,
         int resolution,
         Color backgroundColor,
-        Color enemyColor,
-        Color friendlyColor,
+        Dictionary<PlayerColor, Color> colors,
         int worldSize,
         float gridScale)
     {
@@ -44,7 +44,7 @@ public class MinimapView : MonoBehaviour
         
         foreach (var entity in entitiesToShow)
         {
-            DrawEntity(entity, worldSize,resolution, enemyColor, friendlyColor);
+            DrawEntity(entity, worldSize,resolution, colors[entity.PlayerColor]);
         }
         
         _minimapTexture.SetPixels(_pixels);
@@ -59,11 +59,10 @@ public class MinimapView : MonoBehaviour
     }
 
     
-    private void DrawEntity(Entity entity, int worldSize, int resolution, Color enemyColor, Color friendlyColor)
+    private void DrawEntity(Entity entity, int worldSize, int resolution, Color color)
     {
         Vector3 pos = entity.transform.position;
-
-        Color color = entity.OwnerId == _player.OwnerId ? friendlyColor : enemyColor;
+        
         int entitySize = 1;
 
         if (entity as BuildingEntity != null)

@@ -111,7 +111,12 @@ namespace Game.Scripts.Installers
                 null
             );
 
-            unit.Init(ownerId, link.Config);
+            var color = container.Resolve<MatchSettingsManager>()
+                .Settings
+                .MatchPlayers
+                .First(s => s.OwnerId == ownerId).Color;
+            
+            unit.Init(ownerId, link.Config, color);
             return unit;
         }
 

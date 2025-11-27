@@ -150,7 +150,10 @@ public class UnitResourceGatherComponent : EntityComponent
         catch (OperationCanceledException)
         {
             _resourceGatheringRoutineDisposable.Clear();
-            _animationComponent.SetAttack(false);
+            if (_animationComponent != null)
+            {
+                _animationComponent.SetAttack(false);
+            }
             IsGathering = (false, default);
         }
     }

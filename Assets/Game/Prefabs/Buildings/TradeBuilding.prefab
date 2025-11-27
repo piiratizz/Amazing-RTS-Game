@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 3455938038582806514}
   - component: {fileID: 8629398463546511085}
   - component: {fileID: 2063457296649492875}
+  - component: {fileID: 9088754844239445809}
   - component: {fileID: 9079874647829906025}
   m_Layer: 7
   m_Name: TradeBuilding
@@ -93,6 +94,7 @@ MonoBehaviour:
   - {fileID: 3455938038582806514}
   - {fileID: 8629398463546511085}
   - {fileID: 2063457296649492875}
+  - {fileID: 9088754844239445809}
   entityConfig: {fileID: 11400000, guid: e8a73a65586340e4085313b286ca2be3, type: 2}
   initializeOnStart: 0
   heatMapUpdateInterval: 1
@@ -170,6 +172,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4bcde5e765847ef9c849063f7673b4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9088754844239445809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1882974075414029722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27033fdc6d3440c99626a099f6f6b7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderersWillBeChanged:
+  - {fileID: 8156869852138035081}
 --- !u!208 &9079874647829906025
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -471,6 +487,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 814303ca50880e640a1c47fd9f186253, type: 3}
+--- !u!23 &8156869852138035081 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4507330632697084748, guid: 814303ca50880e640a1c47fd9f186253, type: 3}
+  m_PrefabInstance: {fileID: 5746105755273178309}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8156869852139804009 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4507330632694659500, guid: 814303ca50880e640a1c47fd9f186253, type: 3}

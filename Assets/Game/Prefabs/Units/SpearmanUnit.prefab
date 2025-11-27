@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 713660155424730004}
   - component: {fileID: -7690387564244148432}
   - component: {fileID: 5377128937220240867}
+  - component: {fileID: 1751956024311819384}
   - component: {fileID: 8451562346673274322}
   m_Layer: 6
   m_Name: SpearmanUnit
@@ -96,6 +97,7 @@ MonoBehaviour:
   - {fileID: 713660155424730004}
   - {fileID: -7690387564244148432}
   - {fileID: 5377128937220240867}
+  - {fileID: 1751956024311819384}
   entityConfig: {fileID: 11400000, guid: e45830f79d9de4341943818f43752548, type: 2}
   initializeOnStart: 0
   heatMapUpdateInterval: 0.3
@@ -242,6 +244,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 5132501106980638215}
+--- !u!114 &1751956024311819384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2306275375558017873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27033fdc6d3440c99626a099f6f6b7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderersWillBeChanged:
+  - {fileID: 3666445756675502008}
+  - {fileID: 3666445756675540626}
+  - {fileID: 3666445756675495794}
+  - {fileID: 3666445756675571210}
+  - {fileID: 3666445756675477200}
+  - {fileID: 3666445756675510940}
+  - {fileID: 3666445756675511476}
+  - {fileID: 3666445756675535878}
+  - {fileID: 3666445756675497352}
+  - {fileID: 3666445756675535300}
+  - {fileID: 3666445756675466902}
+  - {fileID: 3666445756675546416}
+  - {fileID: 3666445756675476100}
+  - {fileID: 3666445756675570746}
+  - {fileID: 3666445756675512072}
+  - {fileID: 3666445756675480534}
+  - {fileID: 3666445756675570778}
+  - {fileID: 3666445756675459062}
+  - {fileID: 3666445756675472922}
+  - {fileID: 3666445756675477678}
+  - {fileID: 3666445756675571452}
+  - {fileID: 3666445756675568454}
+  - {fileID: 3666445756675501790}
 --- !u!195 &8451562346673274322
 NavMeshAgent:
   m_ObjectHideFlags: 0

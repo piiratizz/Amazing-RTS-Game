@@ -20,13 +20,13 @@ namespace Game.Scripts.GlobalSystems
                     new MatchPlayerData()
                     {
                         OwnerId = 1,
-                        Color = PlayerColor.Blue,
+                        Color = PlayerColor.Yellow,
                         IsAI = false
                     },
                     new MatchPlayerData()
                     {
                         OwnerId = 2,
-                        Color = PlayerColor.Red,
+                        Color = PlayerColor.Green,
                         IsAI = true
                     },
                 }

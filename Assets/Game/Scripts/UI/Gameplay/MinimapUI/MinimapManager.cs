@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Scripts.GlobalSystems;
+using Game.Scripts.Settings;
 using UnityEngine;
 using Zenject;
 
@@ -22,6 +24,14 @@ public class MinimapManager : UIModule
 
     private float _elapsedTime = 0;
     
+    private Dictionary<PlayerColor, Color> _colors = new Dictionary<PlayerColor, Color>()
+    {
+        { PlayerColor.Red, Color.red },
+        { PlayerColor.Blue, Color.blue },
+        { PlayerColor.Yellow, Color.yellow },
+        { PlayerColor.Green, Color.green }
+    };
+    
     private void Update()
     {
         if (_elapsedTime > updateInterval)
@@ -31,8 +41,7 @@ public class MinimapManager : UIModule
                 _registeredEntities,
                 mapResolution,
                 backgroundColor,
-                enemyColor,
-                friendlyColor,
+                _colors,
                 worldSize,
                 gridScale);
         }

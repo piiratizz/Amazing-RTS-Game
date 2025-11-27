@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 561554556284915056}
   - component: {fileID: 5697311997691890425}
   - component: {fileID: 7867957466331471778}
+  - component: {fileID: 1318861457851831194}
   - component: {fileID: 2053579499171497363}
   - component: {fileID: 5138872218112278492}
   m_Layer: 7
@@ -213,6 +214,7 @@ MonoBehaviour:
   - {fileID: 561554556284915056}
   - {fileID: 5697311997691890425}
   - {fileID: 7867957466331471778}
+  - {fileID: 1318861457851831194}
   entityConfig: {fileID: 11400000, guid: b5e504c2429694643bf499419becd46a, type: 2}
   initializeOnStart: 0
   heatMapUpdateInterval: 1
@@ -282,6 +284,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cebde0d16834e64a23c01efc962a09e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1318861457851831194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8772023555039426579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27033fdc6d3440c99626a099f6f6b7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderersWillBeChanged:
+  - {fileID: 1563337144714286876}
 --- !u!65 &2053579499171497363
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -371,11 +387,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Castle
       objectReference: {fileID: 0}
+    - target: {fileID: 5321064438635060122, guid: da00f0d5963d3094f99d6feb9fb6d36d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da00f0d5963d3094f99d6feb9fb6d36d, type: 3}
+--- !u!23 &1563337144714286876 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5321064438637053274, guid: da00f0d5963d3094f99d6feb9fb6d36d, type: 3}
+  m_PrefabInstance: {fileID: 6659171504316650054}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1563337144716187132 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5321064438634760122, guid: da00f0d5963d3094f99d6feb9fb6d36d, type: 3}

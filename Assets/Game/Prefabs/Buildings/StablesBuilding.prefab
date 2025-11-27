@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2902430501397626730}
   - component: {fileID: 6794200288544176174}
   - component: {fileID: -7069699425661159269}
+  - component: {fileID: 464272382711187269}
   - component: {fileID: 8784384290065046504}
   - component: {fileID: 5729660039885888198}
   m_Layer: 7
@@ -62,6 +63,7 @@ MonoBehaviour:
   - {fileID: 2902430501397626730}
   - {fileID: 6794200288544176174}
   - {fileID: -7069699425661159269}
+  - {fileID: 464272382711187269}
   entityConfig: {fileID: 11400000, guid: 4c01ecb0d159a654a8030d8e2b2a2342, type: 2}
   initializeOnStart: 0
   heatMapUpdateInterval: 1
@@ -131,6 +133,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567886a40e764373b8050f47578252da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &464272382711187269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4065042018097184258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27033fdc6d3440c99626a099f6f6b7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderersWillBeChanged:
+  - {fileID: 8284034057188366841}
 --- !u!65 &8784384290065046504
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -455,6 +471,11 @@ GameObject:
 --- !u!4 &8284034057186466585 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 106164747524679391, guid: 4d699b9982acec84ebe56a5f32f40456, type: 3}
+  m_PrefabInstance: {fileID: 8327121986559344070}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8284034057188366841 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 106164747522909247, guid: 4d699b9982acec84ebe56a5f32f40456, type: 3}
   m_PrefabInstance: {fileID: 8327121986559344070}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8546630894550596275
