@@ -24,6 +24,7 @@ namespace Game.Scripts.AI
         public List<UnitEntity> EnemyArmy = new List<UnitEntity>();
         public List<BuildingEntity> EnemyBuildings = new List<BuildingEntity>();
         public bool EnemyNearBase;
+        public bool EnemyAttackingEntity;
 
         public Vector3 EnemyBasePosition;
         public bool EnemyBaseKnown;

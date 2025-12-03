@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StablesTier1BuildingConfig
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: 7dedf16a6d409bc4aa09c2cd8469786f, type: 3}
-  DisplayName: "\u041A\u043E\u043D\u044E\u0448\u043D\u044F \u0443\u0440\u043E\u0432\u0435\u043D\u044C
+  DisplayName: "\u0421\u0442\u0430\u0439\u043D\u044F \u0440\u0456\u0432\u0435\u043D\u044C
     1"
   MaxHealth: 500
   SpawnHealth: 0
@@ -40,4 +40,5 @@ MonoBehaviour:
       UnitPrefab: {fileID: 4179078604765834347, guid: 1b828c5b1cc3bea4bbbc63ea418af8e7, type: 3}
   UpgradesCanProduce: []
   ProductionRatePerSecond: 10
+  ResourceAmountForOneGold: 0
   BuildPreviewPrefab: {fileID: 106164747525110527, guid: 4d699b9982acec84ebe56a5f32f40456, type: 3}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Archer Tier 2
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: 03fc502acb80a7249af8b89b694b9846, type: 3}
-  DisplayName: "\u0410\u0440\u0431\u0430\u043B\u0435\u0442\u0447\u0438\u043A"
+  DisplayName: "\u0410\u0440\u0431\u0430\u043B\u0435\u0442\u043D\u0438\u043A"
   MaxHealth: 100
   SpawnHealth: 100
   HeatWeight: 3

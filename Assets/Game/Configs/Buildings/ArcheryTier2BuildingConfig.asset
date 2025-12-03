@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ArcheryTier2BuildingConfig
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: d19f690460d4e154d9f8a4f9d24d1228, type: 3}
-  DisplayName: "\u0421\u0442\u0440\u0435\u043B\u044C\u0431\u0438\u0449\u0435 \u0443\u0440\u043E\u0432\u0435\u043D\u044C
+  DisplayName: "\u0421\u0442\u0440\u0456\u043B\u044C\u0431\u0438\u0449\u0435 \u0440\u0456\u0432\u0435\u043D\u044C
     2"
   MaxHealth: 1000
   SpawnHealth: 0
@@ -49,4 +49,5 @@ MonoBehaviour:
   UpgradesCanProduce:
   - {fileID: 11400000, guid: 93a3e771fdfbdf24f851fa6e1930119f, type: 2}
   ProductionRatePerSecond: 10
+  ResourceAmountForOneGold: 0
   BuildPreviewPrefab: {fileID: 7460839962910908748, guid: d73b1ffecffd4cc4589b9e8556267b52, type: 3}

@@ -24,6 +24,7 @@ namespace Game.Scripts.UI.Modules
         
         [SerializeField] private TextMeshProUGUI unitNameText;
         [SerializeField] private Image unitIconImage;
+        [SerializeField] private GameObject unitIconFrame;
 
         [SerializeField] private GameObject statsContainer;
         [SerializeField] private TextMeshProUGUI attackStatsText;
@@ -52,6 +53,7 @@ namespace Game.Scripts.UI.Modules
                         hpText,
                         unitNameText,
                         unitIconImage,
+                        unitIconFrame,
                         upgradeButton,
                         pointerHandler,
                         upgradeResourceCostPanel,
@@ -62,7 +64,8 @@ namespace Game.Scripts.UI.Modules
                         hpSlider,
                         hpText,
                         unitNameText,
-                        unitIconImage)
+                        unitIconImage,
+                        unitIconFrame)
                 },
                 {
                     typeof(UnitEntity), new UnitsInfoPresenter(
@@ -72,6 +75,7 @@ namespace Game.Scripts.UI.Modules
                         hpText,
                         unitNameText,
                         unitIconImage,
+                        unitIconFrame,
                         statsContainer,
                         attackStatsText,
                         armorStatsText,

@@ -40,12 +40,12 @@ public class PlayerCameraMovement : MonoBehaviour
 
         var nextPos = transform.position + translation;
 
-        if (nextPos.x < _minX ||  nextPos.x > _maxX)
+        if (nextPos.x < _minX ||  nextPos.x >= _maxX)
         {
             return;
         }
 
-        if (nextPos.z < _minZ || nextPos.z > _maxZ)
+        if (nextPos.z < _minZ || nextPos.z >= _maxZ)
         {
             return;
         }

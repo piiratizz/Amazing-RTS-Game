@@ -22,3 +22,9 @@ MonoBehaviour:
     - Resource: 2
       Amount: 10
     Stage: {fileID: 11400000, guid: 5b9025b690ef8d04a80ae20bb918ae24, type: 2}
+  - ResourceCosts:
+    - Resource: 1
+      Amount: 10
+    - Resource: 2
+      Amount: 10
+    Stage: {fileID: 11400000, guid: 458265a5cc65d3d4d8ade2a8d59b216b, type: 2}

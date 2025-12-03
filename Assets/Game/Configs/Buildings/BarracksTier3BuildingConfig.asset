@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8611b92185534c1e9a07cf01bfcfcfe6, type: 3}
+  m_Name: BarracksTier3BuildingConfig
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: 8fcedf1b7ce342540ae612ca9ce0d236, type: 3}
+  DisplayName: "\u041A\u0430\u0437\u0430\u0440\u043C\u0430 \u0440\u0456\u0432\u0435\u043D\u044C
+    3"
+  MaxHealth: 1000
+  SpawnHealth: 0
+  HeatWeight: 1
+  DetectionRadius: 0
+  EntityType: 2
+  Selectable: 1
+  Type: 3
+  Category: 0
+  SizeX: 5
+  SizeZ: 5
+  Preview: {fileID: 21300000, guid: 8fcedf1b7ce342540ae612ca9ce0d236, type: 3}
+  BuildResourceCost:
+  - Resource: 1
+    Amount: 150
+  UnitsCanProduce:
+  - ResourceCost:
+    - Resource: 0
+      Amount: 20
+    - Resource: 2
+      Amount: 30
+    Unit:
+      Config: {fileID: 11400000, guid: e45830f79d9de4341943818f43752548, type: 2}
+      UnitPrefab: {fileID: 4179078604765834347, guid: 023a2f4d881fc98449aa499a17acaa1f, type: 3}
+  - ResourceCost:
+    - Resource: 0
+      Amount: 20
+    - Resource: 2
+      Amount: 30
+    Unit:
+      Config: {fileID: 11400000, guid: 76b9426a7e08a3f4b8ede2ffe045baf8, type: 2}
+      UnitPrefab: {fileID: 4179078604765834347, guid: 023a2f4d881fc98449aa499a17acaa1f, type: 3}
+  - ResourceCost:
+    - Resource: 0
+      Amount: 20
+    - Resource: 2
+      Amount: 30
+    Unit:
+      Config: {fileID: 11400000, guid: f528c12aa26f2f6459e14f8a281771c1, type: 2}
+      UnitPrefab: {fileID: 4179078604765834347, guid: 023a2f4d881fc98449aa499a17acaa1f, type: 3}
+  UpgradesCanProduce: []
+  ProductionRatePerSecond: 10
+  ResourceAmountForOneGold: 0
+  BuildPreviewPrefab: {fileID: 5626776173143630017, guid: db7cfbf19659a2a48b1b5d2aa567bcc2, type: 3}

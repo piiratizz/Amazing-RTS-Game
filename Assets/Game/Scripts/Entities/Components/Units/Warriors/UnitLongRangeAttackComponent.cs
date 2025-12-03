@@ -126,6 +126,8 @@ public class UnitLongRangeAttackComponent : EntityComponent, IAttackable, IUpgra
     {
         if(entity == null) return;
         
+        if(entity is BuildingEntity) return;
+        
         _targetEntity = entity;
         _targetHealthComponent = entity.GetEntityComponent<HealthComponent>();
         

@@ -7,6 +7,11 @@ public class HealthComponent : EntityComponent, IUpgradeReceiver<UnitStatsModifi
 {
     [SerializeField] private bool canCounterAttack;
     
+    [SerializeField] private float recentlyDamagedDuration = 0.5f; 
+    
+    private bool _isRecentlyDamaged;
+    private Coroutine _recentDamageCoroutine;
+
     private ReactiveProperty<int> _health;
     private int _maxHealth;
     private Entity _entity;
@@ -18,6 +23,8 @@ public class HealthComponent : EntityComponent, IUpgradeReceiver<UnitStatsModifi
 
     public ReadOnlyReactiveProperty<int> CurrentHealth => _health;
     public int MaxHealth => _maxHealth;
+    
+    public bool IsRecentlyDamaged => _isRecentlyDamaged;
 
     public Action OnDead;
 
@@ -36,14 +43,9 @@ public class HealthComponent : EntityComponent, IUpgradeReceiver<UnitStatsModifi
     {
         if (_buildingBuildComponent != null)
         {
-            if (_buildingBuildComponent.IsBuilded.CurrentValue)
-            {
-                _health.Value = config.MaxHealth;
-            }
-            else
-            {
-                _health.Value = config.SpawnHealth;
-            }
+            _health.Value = _buildingBuildComponent.IsBuilded.CurrentValue
+                ? config.MaxHealth
+                : config.SpawnHealth;
         }
         else
         {
@@ -55,29 +57,54 @@ public class HealthComponent : EntityComponent, IUpgradeReceiver<UnitStatsModifi
     
     public void TakeDamage(Entity sender, int finalDamage)
     {
-        if(IsDead) return;
-        
-        if (_health.CurrentValue - finalDamage > 0)
+        if (IsDead) return;
+
+        int newHp = _health.CurrentValue - finalDamage;
+
+        _health.Value = newHp > 0 ? newHp : 0;
+
+        if (newHp <= 0)
         {
-            _health.Value -= finalDamage;
-        }
-        else
-        {
-            _health.Value -= finalDamage;
             Dead();
+            return;
         }
 
-        if (canCounterAttack)
+        ActivateRecentlyDamaged();
+
+        if (canCounterAttack && _unitCommandDispatcher != null)
         {
             _unitCommandDispatcher.ExecuteCommand(
                 UnitCommandsType.Attack,
-                new AttackArgs() { Entity = sender , TotalUnits = 1, UnitOffsetIndex = 0});
+                new AttackArgs()
+                {
+                    Entity = sender,
+                    TotalUnits = 1,
+                    UnitOffsetIndex = 0
+                });
         }
+    }
+    
+    private void ActivateRecentlyDamaged()
+    {
+        _isRecentlyDamaged = true;
+
+        if (_recentDamageCoroutine != null)
+            StopCoroutine(_recentDamageCoroutine);
+
+        _recentDamageCoroutine = StartCoroutine(RecentlyDamagedTimer());
+    }
+
+    private IEnumerator RecentlyDamagedTimer()
+    {
+        yield return new WaitForSeconds(recentlyDamagedDuration);
+        _isRecentlyDamaged = false;
+        _recentDamageCoroutine = null;
     }
 
     public void ApplyHealing(int amount)
     {
-        if (_health.CurrentValue + amount > _maxHealth) return;
+        if (_health.CurrentValue + amount > _maxHealth)
+            return;
         
         _health.Value += amount;
     }
@@ -85,9 +112,11 @@ public class HealthComponent : EntityComponent, IUpgradeReceiver<UnitStatsModifi
     private void Dead()
     {
         IsDead = true;
+        _isRecentlyDamaged = false;
+
         _entity.IsAvailableToSelect = false;
         _entity.OnDeselect();
-        _entity.InvokeSelectionDestroyed();
+        _entity.OnEntityDead();
 
         if (_unitCommandDispatcher != null)
         {
@@ -108,7 +137,7 @@ public class HealthComponent : EntityComponent, IUpgradeReceiver<UnitStatsModifi
         {
             if (s.StatsType == StatsType.Health)
             {
-                var oldMax = _maxHealth;;
+                var oldMax = _maxHealth;
                 _maxHealth += (int)s.Value;
 
                 if (_health.CurrentValue == oldMax)

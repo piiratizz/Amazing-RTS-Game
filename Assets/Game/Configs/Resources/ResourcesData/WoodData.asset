@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fff346f0fd546449fae8537a8822370, type: 3}
   m_Name: WoodData
   m_EditorClassIdentifier: 
-  ResourceName: "\u0414\u0440\u0435\u0432\u0435\u0441\u0438\u043D\u0430"
+  ResourceName: "\u0414\u0435\u0440\u0435\u0432\u0438\u043D\u0430"
   UiDisplayIcon: {fileID: 21300000, guid: ab396d2c04c28e64394f09b06bc3ad50, type: 3}
   ResourceType: 1

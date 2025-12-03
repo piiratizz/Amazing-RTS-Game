@@ -35,7 +35,7 @@ public class Entity : MonoBehaviour, IOwned
     /// </summary>
     public bool Selectable => entityConfig.Selectable;
 
-    public Action<Entity> OnEntityDestroyed { get; set; }
+    public event Action<Entity> OnEntityDestroyed;
 
     public int OwnerId
     {
@@ -127,10 +127,29 @@ public class Entity : MonoBehaviour, IOwned
         selectionOutlineObject.SetActive(false);
     }
 
-    public void InvokeSelectionDestroyed()
+    public void OnEntityDead()
     {
         IsDead = true;
         OnEntityDestroyed?.Invoke(this);
+        
+        if (_minimapManager != null)
+        {
+            _minimapManager.DeleteEntity(this);
+        }
+
+        if (_globalGrid != null && ownerId != 0)
+        {
+            
+            _globalGrid.HeatMap.RemoveHeat(ownerId,
+                new Vector3(_lastXHeatMapPosition * _globalGrid.HeatMap.CellSize, 0,
+                    _lastYHeatMapPosition * _globalGrid.HeatMap.CellSize),
+                entityConfig.HeatWeight);
+        }
+        
+        if (_entitiesRegistry != null)
+        {
+            _entitiesRegistry.UnRegister(this);
+        }
     }
 
     public GameObject SelectedObject()
@@ -188,24 +207,11 @@ public class Entity : MonoBehaviour, IOwned
 
     private void OnDestroy()
     {
-        OnEntityDestroyed = null;
-        if (_minimapManager != null)
+        if (IsDead == false)
         {
-            _minimapManager.DeleteEntity(this);
-        }
-
-        if (_globalGrid != null && ownerId != 0)
-        {
-            
-            _globalGrid.HeatMap.RemoveHeat(ownerId,
-                new Vector3(_lastXHeatMapPosition * _globalGrid.HeatMap.CellSize, 0,
-                    _lastYHeatMapPosition * _globalGrid.HeatMap.CellSize),
-                entityConfig.HeatWeight);
+            OnEntityDead();
         }
         
-        if (_entitiesRegistry != null)
-        {
-            _entitiesRegistry.UnRegister(this);
-        }
+        OnEntityDestroyed = null;
     }
 }

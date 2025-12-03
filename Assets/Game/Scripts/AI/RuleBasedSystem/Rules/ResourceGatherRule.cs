@@ -15,16 +15,16 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
         public float GetUtility(AiContext ctx)
         {
             if (ctx.LazyWorkers > 0)
-                return 3f;
+                return 1f;
 
             if (ctx.FoodWorkers == 0 || ctx.WoodWorkers == 0 || ctx.GoldWorkers == 0)
-                return 2f;
+                return 1f;
 
             int max = Mathf.Max(ctx.FoodWorkers, ctx.WoodWorkers, ctx.GoldWorkers);
             int min = Mathf.Min(ctx.FoodWorkers, ctx.WoodWorkers, ctx.GoldWorkers);
 
-            if (max - min >= 2)
-                return 1.5f;
+            if (max - min >= 4)
+                return 1f;
 
             return 0.3f;
         }

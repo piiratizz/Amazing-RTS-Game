@@ -24,6 +24,7 @@ namespace Game.Scripts.UI.Modules.Presenters
 
         private TextMeshProUGUI _unitNameText;
         private Image _unitIconImage;
+        private GameObject _unitIconFrame;
 
         private GameObject _statsContainer;
         private TextMeshProUGUI _attackStatsText;
@@ -52,6 +53,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             TextMeshProUGUI hpText,
             TextMeshProUGUI unitNameText,
             Image unitIconImage,
+            GameObject unitIconFrame,
             GameObject statsContainer,
             TextMeshProUGUI attackStatsText,
             TextMeshProUGUI armorStatsText,
@@ -68,6 +70,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _hpText = hpText;
             _unitNameText = unitNameText;
             _unitIconImage = unitIconImage;
+            _unitIconFrame = unitIconFrame;
             _statsContainer = statsContainer;
             _attackStatsText = attackStatsText;
             _armorStatsText = armorStatsText;
@@ -101,6 +104,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _hpText.gameObject.SetActive(false);
             _unitNameText.gameObject.SetActive(false);
             _unitIconImage.gameObject.SetActive(false);
+            _unitIconFrame.gameObject.SetActive(false);
             _statsContainer.SetActive(false);
             
             foreach (var target in targets)
@@ -154,6 +158,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _hpText.gameObject.SetActive(true);
             _unitNameText.gameObject.SetActive(true);
             _unitIconImage.gameObject.SetActive(true);
+            _unitIconFrame.gameObject.SetActive(true);
             _statsContainer.SetActive(true);
 
             var upgrades = _globalUpgradesManager.GetByEntityType(unit.OwnerId, unit.EntityType);
@@ -227,6 +232,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _hpText.gameObject.SetActive(false);
             _unitNameText.gameObject.SetActive(false);
             _unitIconImage.gameObject.SetActive(false);
+            _unitIconFrame.gameObject.SetActive(false);
             _statsContainer.gameObject.SetActive(false);
             
             _subscriptions.Clear();

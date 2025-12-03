@@ -61,7 +61,8 @@ namespace Game.Scripts.AI
                 },
                 new PlaceNewBuildingRule(_globalBuildingsStagesController, _buildingFactory),
                 new ReturnArmyToBaseRule(),
-                new AttackPlayerBuildingRule(_globalGrid.HeatMap)
+                new AttackPlayerBuildingRule(_globalGrid.HeatMap),
+                new TradeResourcesRule()
             });
         }
     }

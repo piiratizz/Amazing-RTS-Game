@@ -26,6 +26,11 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
             {
                 return false;
             }
+
+            if (ctx.EnemyAttackingEntity)
+            {
+                return true;
+            }
             
             if (ctx.EnemyNearBase)
             {
@@ -38,6 +43,11 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
         public float GetUtility(AiContext ctx)
         {
             if (ctx.EnemyNearBase)
+            {
+                return 1;
+            }
+            
+            if (ctx.EnemyAttackingEntity)
             {
                 return 1;
             }

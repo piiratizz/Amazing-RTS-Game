@@ -48,10 +48,22 @@ namespace Game.Scripts.AI
             
             var myEntities = _entitiesRegistry.GetEntities(_context.OwnerId);
 
+            bool isAttacking = false;
+            
             foreach (var e in myEntities)
             {
+                var healthComponent = e.GetEntityComponent<HealthComponent>();
+                if (healthComponent != null)
+                {
+                    if (healthComponent.IsRecentlyDamaged)
+                    {
+                        isAttacking = true;
+                    }
+                }
                 RegisterMyEntity(e);
             }
+
+            _context.EnemyAttackingEntity = isAttacking;
                 
 
             if (_townhall == null)

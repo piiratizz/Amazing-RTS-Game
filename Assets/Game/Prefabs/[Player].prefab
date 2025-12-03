@@ -316,6 +316,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 20
   thicknessPercent: 2
+  _minX: 0
+  _maxX: 256
+  _minZ: 0
+  _maxZ: 256
 --- !u!114 &5316679333588410944
 MonoBehaviour:
   m_ObjectHideFlags: 0

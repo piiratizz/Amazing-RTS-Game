@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using R3;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Game.Scripts.UI.Modules.Presenters
@@ -12,6 +13,7 @@ namespace Game.Scripts.UI.Modules.Presenters
         private readonly TextMeshProUGUI _resourceCountText;
         private readonly TextMeshProUGUI _resourceNameText;
         private readonly Image _resourceIconImage;
+        private readonly GameObject _resourceIconFrame;
 
         private int _baseResourcesAmount;
         private CompositeDisposable _resourcesSubscription;
@@ -22,12 +24,14 @@ namespace Game.Scripts.UI.Modules.Presenters
             Slider resourceCountSlider,
             TextMeshProUGUI resourceCountText,
             TextMeshProUGUI resourceNameText,
-            Image resourceIconImage)
+            Image resourceIconImage,
+            GameObject resourceIconFrame)
         {
             _resourceSlider =  resourceCountSlider;
             _resourceCountText = resourceCountText;
             _resourceNameText = resourceNameText;
             _resourceIconImage =  resourceIconImage;
+            _resourceIconFrame = resourceIconFrame;
         }
         
         public void Show(List<Entity> entities)
@@ -45,6 +49,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _resourceCountText.gameObject.SetActive(true);
             _resourceNameText.gameObject.SetActive(true);
             _resourceIconImage.gameObject.SetActive(true);
+            _resourceIconFrame.gameObject.SetActive(true);
 
             var resourceStorage = _target.GetEntityComponent<ResourceSourceComponent>();
             _baseResourcesAmount = resourceStorage.BaseAmount;
@@ -79,6 +84,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _resourceCountText.gameObject.SetActive(false);
             _resourceNameText.gameObject.SetActive(false);
             _resourceIconImage.gameObject.SetActive(false);
+            _resourceIconFrame.gameObject.SetActive(false);
             RemoveSubscriptions();
         }
     }

@@ -4,6 +4,7 @@ using Game.Scripts.Settings;
 using Game.Scripts.UI;
 using UnityEngine;
 using Zenject;
+using R3;
 
 namespace Game.Scripts.Installers
 {
@@ -11,10 +12,14 @@ namespace Game.Scripts.Installers
     {
         [SerializeField] private MatchSettingsManager matchSettingsPrefab;
         [SerializeField] private LoadingScreen loadingScreenPrefab;
+        [SerializeField] private FpsCounter fpsCounterPrefab;
         
         public override void InstallBindings()
         {
             Container.Bind<SaveLoadSystem>().FromNew().AsSingle().NonLazy();
+            
+            var fpsCounterInstance = Container.InstantiatePrefabForComponent<FpsCounter>(fpsCounterPrefab);
+            Container.Bind<FpsCounter>().FromInstance(fpsCounterInstance).AsSingle();
             
             var loadingScreenInstance = Container.InstantiatePrefabForComponent<LoadingScreen>(loadingScreenPrefab);
             Container.Bind<LoadingScreen>().FromInstance(loadingScreenInstance).AsSingle();

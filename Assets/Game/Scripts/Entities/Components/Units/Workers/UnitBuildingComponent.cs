@@ -102,7 +102,14 @@ public class UnitBuildingComponent : EntityComponent
         {
             if(_cancellationTokenSource.Token.IsCancellationRequested) 
                 break;
-            
+
+            if (buildingEntity.IsDead)
+            {
+                OnBuildingComplete();
+                return;
+            }
+                
+                
             buildComponent.AddBuildProgress(_unitConfig.BuildingRatePerSecond);
             
             await UniTask.WaitForSeconds(1, cancellationToken: _cancellationTokenSource.Token);

@@ -5,7 +5,7 @@ namespace Game.Scripts.GlobalSystems
     public class GameSettingsProxy
     {
         public readonly GameSettings Data;
-        
+
         public ReactiveProperty<float> MasterVolume;
         public ReactiveProperty<float> MusicVolume;
         public ReactiveProperty<int> GraphicsQuality;
@@ -15,10 +15,10 @@ namespace Game.Scripts.GlobalSystems
         {
             Data = data;
 
-            MasterVolume     = new ReactiveProperty<float>(data.MasterVolume);
-            MusicVolume      = new ReactiveProperty<float>(data.MusicVolume);
-            GraphicsQuality  = new ReactiveProperty<int>(data.GraphicsQuality);
-            ShowFps          = new ReactiveProperty<bool>(data.ShowFps);
+            MasterVolume = new ReactiveProperty<float>(data.MasterVolume);
+            MusicVolume = new ReactiveProperty<float>(data.MusicVolume);
+            GraphicsQuality = new ReactiveProperty<int>(data.GraphicsQuality);
+            ShowFps = new ReactiveProperty<bool>(data.ShowFps);
 
             MasterVolume.Subscribe(v => Data.MasterVolume = v);
             MusicVolume.Subscribe(v => Data.MusicVolume = v);
@@ -26,5 +26,4 @@ namespace Game.Scripts.GlobalSystems
             ShowFps.Subscribe(v => Data.ShowFps = v);
         }
     }
-
 }

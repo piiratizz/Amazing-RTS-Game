@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Spearman Tier 3
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: 014a9e8866c3eeb488ce802443447361, type: 3}
-  DisplayName: "\u041A\u043E\u043F\u0435\u0439\u0448\u0438\u043A \u0443\u0440\u043E\u0432\u0435\u043D\u044C
+  DisplayName: "\u041A\u043E\u043F\u0456\u0439\u043D\u0438\u043A \u0440\u0456\u0432\u0435\u043D\u044C
     3"
   MaxHealth: 100
   SpawnHealth: 100

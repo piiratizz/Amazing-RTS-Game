@@ -4,6 +4,7 @@
     {
         WindowOpen,
         CloseApplication,
-        SwitchScene
+        SwitchScene,
+        CloseWindow
     }
 }

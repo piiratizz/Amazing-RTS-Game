@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   matchSettingsPrefab: {fileID: 7944585928740069828, guid: f6f3a57951d065e42b24c323ffe816cb, type: 3}
   loadingScreenPrefab: {fileID: 3999196272351636920, guid: 1ff01cbd5901dc94b9792ada117e1053, type: 3}
+  fpsCounterPrefab: {fileID: 7413068939884817588, guid: b274fcb9092a680499ba7219c777be0f, type: 3}

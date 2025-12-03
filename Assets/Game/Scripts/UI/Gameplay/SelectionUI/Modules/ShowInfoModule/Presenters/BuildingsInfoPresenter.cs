@@ -15,6 +15,7 @@ namespace Game.Scripts.UI.Modules.Presenters
         private readonly TextMeshProUGUI _buildingHpText;
         private readonly TextMeshProUGUI _buildingNameText;
         private readonly Image _buildingIconImage;
+        private readonly GameObject _buildingIconFrame;
 
         private GameObject _upgradeResourceCostPanel;
         private ResourceCostView _resourceCostViewPrefab;
@@ -39,6 +40,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             TextMeshProUGUI buildingHpText,
             TextMeshProUGUI buildingNameText,
             Image buildingIconImage,
+            GameObject buildingIconFrame,
             Button upgradeButton,
             PointerHandler pointerHandler,
             GameObject upgradeResourceCostPanel,
@@ -52,6 +54,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _pointerHandler = pointerHandler;
             _upgradeResourceCostPanel = upgradeResourceCostPanel;
             _resourceCostViewPrefab = resourceCostViewPrefab;
+            _buildingIconFrame = buildingIconFrame;
             
             _resourceCostViewsInstances = new List<ResourceCostView>();
             _subscriptions = new CompositeDisposable();
@@ -89,6 +92,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _buildingHpText.gameObject.SetActive(true);
             _buildingNameText.gameObject.SetActive(true);
             _buildingIconImage.gameObject.SetActive(true);
+            _buildingIconFrame.gameObject.SetActive(true);
 
             _pointerHandler.PointerEnterEvent += OnUpgradeButtonPointerEnter;
             _pointerHandler.PointerExitEvent += OnUpgradeButtonPointerExit;
@@ -187,6 +191,7 @@ namespace Game.Scripts.UI.Modules.Presenters
             _buildingHpText.gameObject.SetActive(false);
             _buildingNameText.gameObject.SetActive(false);
             _buildingIconImage.gameObject.SetActive(false);
+            _buildingIconFrame.gameObject.SetActive(false);
             _upgradeButton.gameObject.SetActive(false);
             _upgradeResourceCostPanel.SetActive(false);
             
