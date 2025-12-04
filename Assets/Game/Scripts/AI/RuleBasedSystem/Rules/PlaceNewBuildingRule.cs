@@ -157,7 +157,6 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
                 return;
             
 
-            // 1. Выбираем рабочего
             var worker = ctx.AiUnits.FirstOrDefault(u => u.UnitType == UnitType.Worker);
             if (worker == null)
                 return;
@@ -190,20 +189,17 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
 
             for (int attempts = 0; attempts < 20; attempts++)
             {
-                // 1) Случайная точка вокруг центра
                 Vector3 random = center + new Vector3(
                     Random.Range(-searchRadius, searchRadius),
                     0,
                     Random.Range(-searchRadius, searchRadius)
                 );
 
-                // 2) Проецируем на NavMesh
                 if (!NavMesh.SamplePosition(random, out NavMeshHit hit, 4f, NavMesh.AllAreas))
                     continue;
 
                 Vector3 pos = hit.position;
 
-                // 3) Проверяем, что здание помещается
                 if (CanPlaceBuilding(pos, buildingSize))
                 {
                     result = pos;
@@ -211,7 +207,6 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
                 }
             }
 
-            // не нашли подходящее место
             return false;
         }
 

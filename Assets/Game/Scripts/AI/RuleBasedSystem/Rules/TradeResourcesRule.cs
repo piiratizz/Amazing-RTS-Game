@@ -13,7 +13,6 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
 
         public bool IsValid(AiContext ctx)
         {
-            // 1. Есть ли рынок
             var market = ctx.AiBuildings
                 .Find(b => b.BuildingType == BuildingType.Market);
             Debug.Log(market);
@@ -25,10 +24,9 @@ namespace Game.Scripts.AI.RuleBasedSystem.Rules
             if (trade == null)
                 return false;
 
-            // 2. СЧИТАЕМ СРЕДНЕЕ — AAA-подход
             float avg = (ctx.Food + ctx.Wood + ctx.Gold) / 3f;
 
-            // 3. Проверяем СУЩЕСТВЕННЫЙ дисбаланс
+
             bool deficit =
                 ctx.Food < avg * 0.5f ||
                 ctx.Wood < avg * 0.5f ||
